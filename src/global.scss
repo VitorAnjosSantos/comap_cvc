@@ -24,3 +24,18 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+:root{
+    --ion-color-vermelho: #EF0909;
+    --ion-color-azul: #047BF2;
+  }
+  
+.ion-color-vermelho {
+    --ion-color-base: var(--ion-color-vermelho) !important;
+  }
+
+.ion-color-azul {
+    --ion-color-base: var(--ion-color-azul) !important;
+  }
+
+
