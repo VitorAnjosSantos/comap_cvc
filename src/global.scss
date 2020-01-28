@@ -28,6 +28,9 @@
 :root{
     --ion-color-vermelho: #EF0909;
     --ion-color-azul: #047BF2;
+    --ion-color-laranja: #FA932D;
+    --ion-color-verde: #24cc12;
+
   }
   
 .ion-color-vermelho {
@@ -37,5 +40,13 @@
 .ion-color-azul {
     --ion-color-base: var(--ion-color-azul) !important;
   }
+
+.ion-color-laranja {
+  --ion-color-base: var(--ion-color-laranja) !important;
+}
+
+.ion-color-verde {
+  --ion-color-base: var(--ion-color-verde) !important;
+}
 
 
