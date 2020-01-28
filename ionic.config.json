@@ -1,5 +1,7 @@
 {
   "name": "comap_cvc",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
