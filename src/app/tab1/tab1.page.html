@@ -8,59 +8,99 @@
 
 <ion-content>
 
+  
+
   <ion-grid>
 
-      <ion-row>
+    <ion-row>
 
         <ion-col>
-          <ion-button class="div" color="azul"  *ngFor= "let x of count" (click)="contador()"> 
-          Auto <br> ({{x.auto}})
+          <ion-button class="div" (click)="contador('auto')" color="azul" > 
+          Auto <br> ({{contados('auto')}})
           </ion-button>
         </ion-col>
         
         <ion-col>          
-          <ion-button block class="div utilitario" color="vermelho">
-            Auto <br> Utilitario <br> (0)   
+          <ion-button block class="div"  (click)="contador('motos')" color="vermelho">
+            Motos <br> ({{contados('motos')}})    
+          </ion-button>  
+        </ion-col>
+    
+        <ion-col>
+            <ion-button class="div" (click)="contador('onibus')" color="laranja">  
+              Onibus <br> ({{contados('onibus')}})
+            </ion-button>
+        </ion-col>
+    
+      <ion-col>
+        <ion-button class="div" (click)="contador('caminhao')" color="verde">
+          Caminhao <br> ({{contados('caminhao')}})
+        </ion-button>
+      </ion-col>
+    
+    </ion-row> 
+
+    <ion-button style="width: 100px; height: 50px;" (click)="saveStorage()" color='success'>
+      Salvar
+    </ion-button>
+    <ion-button style="width: 100px; height: 50px;" (click)="loadStorage()" color='light'>
+      Carregar
+    </ion-button>
+
+    
+
+      <!--
+      <ion-row>
+
+        <ion-col>
+          <ion-button class="div" (click)="contador('auto')" color="azul" > 
+          Auto <br> ({{contados('auto')}})
+          </ion-button>
+        </ion-col>
+        
+        <ion-col>          
+          <ion-button block class="div utilitario"  (click)="contador('utilitario')" color="vermelho">
+            Auto <br> Utilitario <br> ({{contados('utilitario')}})    
           </ion-button>  
         </ion-col>
 
         <ion-col>
-            <ion-button class="div" color="laranja">  
-              Auto <br> 3 Eixos <br> (0) 
+            <ion-button class="div" (click)="contador('auto3E')" color="laranja">  
+              Auto <br> 3 Eixos <br> ({{contados('auto3E')}})
             </ion-button>
         </ion-col>
 
       <ion-col>
-        <ion-button class="div" color="verde">
-          Auto <br> 4 Eixos <br> (0)
+        <ion-button class="div" (click)="contador('auto4E')" color="verde">
+          Auto <br> 4 Eixos <br> ({{contados('auto4E')}})
         </ion-button>
       </ion-col>
 
     </ion-row> 
-
+    <!--
     <ion-row>
 
       <ion-col>
-          <ion-button class="div" color="azul"> 
-            Onibus <br> 2 Eixos <br> (0) 
+          <ion-button class="div" (click)="contador('onibus2E')" color="azul"> 
+            Onibus <br> 2 Eixos <br> ({{contados('onibus2E')}})
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="vermelho"> 
-            Onibus <br> 3 Eixos <br> (0) 
+          <ion-button class="div" (click)="contador('onibus3E')" color="vermelho"> 
+            Onibus <br> 3 Eixos <br> ({{contados('onibus3E')}})
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="laranja"> 
-            Onibus <br> 4 Eixos <br> (0) 
+          <ion-button class="div" (click)="contador('onibus4E')" color="laranja"> 
+            Onibus <br> 4 Eixos <br> ({{contados('onibus4E')}})
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="verde"> 
-            Veiculo <br> Oficial <br> (0) 
+          <ion-button class="div" (click)="contador('veiculoOficial')" color="verde"> 
+            Veiculo <br> Oficial <br> ({{contados('veiculoOficial')}})
           </ion-button>
       </ion-col>
 
@@ -69,54 +109,26 @@
     <ion-row>
 
       <ion-col>
-          <ion-button class="div" color="azul"> 
-            Veiculo <br> Especial <br> (0) 
+          <ion-button class="div" (click)="contador('veiculoEspecial')" color="azul"> 
+            Veiculo <br> Especial <br> ({{contados('veiculoEspecial')}}) 
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="vermelho"> 
-            Motos <br> (0) 
+          <ion-button class="div" (click)="contador('motos')" color="vermelho"> 
+            Motos <br> ({{contados('motos')}}) 
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="laranja"> 
-            C Leve<br> 2E <br> (0) 
+          <ion-button class="div" (click)="contador('cLeve2E')" color="laranja"> 
+            C Leve<br> 2E <br> ({{contados('cLeve2E')}}) 
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="verde"> 
-            C 2E <br> (0) 
-          </ion-button>
-      </ion-col>
-
-    </ion-row>
-
-    <ion-row>
-
-      <ion-col>
-          <ion-button class="div" color="azul"> 
-            C3 R<br> (0) 
-          </ion-button>
-      </ion-col>
-
-      <ion-col>
-          <ion-button class="div" color="vermelho"> 
-            C3 1S<br> (0) 
-          </ion-button>
-      </ion-col>
-
-      <ion-col>
-          <ion-button class="div" color="laranja"> 
-            C4 R<br> (0) 
-          </ion-button>
-      </ion-col>
-
-      <ion-col>
-          <ion-button class="div" color="verde"> 
-            C4 1S<br> (0) 
+          <ion-button class="div" (click)="contador('c2E')" color="verde"> 
+            C 2E <br> ({{contados('c2E')}})
           </ion-button>
       </ion-col>
 
@@ -125,26 +137,54 @@
     <ion-row>
 
       <ion-col>
-          <ion-button class="div" color="azul"> 
-            C4 2S<br> (0) 
+          <ion-button class="div" (click)="contador('c3R')" color="azul"> 
+            C3 R<br> ({{contados('c3R')}})
+          </ion-button>
+      </ion-col>
+
+      <ion-col>
+          <ion-button class="div" (click)="contador('c31S')" color="vermelho"> 
+            C3 1S<br> ({{contados('c31S')}}) 
+          </ion-button>
+      </ion-col>
+
+      <ion-col>
+          <ion-button class="div" (click)="contador('c4R')" color="laranja"> 
+            C4 R<br> ({{contados('c4R')}}) 
+          </ion-button>
+      </ion-col>
+
+      <ion-col>
+          <ion-button class="div" (click)="contador('c41S')" color="verde"> 
+            C4 1S<br> ({{contados('c41S')}})  
+          </ion-button>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+
+      <ion-col>
+          <ion-button class="div" (click)="contador('c42S')"  color="azul"> 
+            C4 2S<br> ({{contados('c42S')}})
           </ion-button>
       </ion-col>
     
       <ion-col>
-          <ion-button class="div" color="vermelho"> 
-            C5 R<br> (0) 
+          <ion-button class="div" (click)="contador('c5R')" color="vermelho"> 
+            C5 R<br> ({{contados('c5R')}})
           </ion-button>
       </ion-col>
     
       <ion-col>
-          <ion-button class="div" color="laranja"> 
-            C5 1S<br> (0) 
+          <ion-button class="div" (click)="contador('c51S')" color="laranja"> 
+            C5 1S<br> ({{contados('c51S')}}) 
           </ion-button>
       </ion-col>
     
       <ion-col>
-          <ion-button class="div" color="verde"> 
-            C5 2S<br> (0) 
+          <ion-button class="div" (click)="contador('c52S')" color="verde"> 
+            C5 2S<br> ({{contados('c52S')}})
           </ion-button>
       </ion-col>
       
@@ -153,26 +193,26 @@
     <ion-row>
 
       <ion-col>
-          <ion-button class="div" color="azul"> 
-            C6 R<br> (0) 
+          <ion-button class="div" (click)="contador('c6R')" color="azul"> 
+            C6 R<br> ({{contados('c6R')}}) 
           </ion-button>
       </ion-col>
     
       <ion-col>
-          <ion-button class="div" color="vermelho"> 
-            C6 1S<br> (0) 
+          <ion-button class="div" (click)="contador('c61S')" color="vermelho"> 
+            C6 1S<br> ({{contados('c61S')}})
           </ion-button>
       </ion-col>
     
       <ion-col>
-          <ion-button class="div" color="laranja"> 
-            C6 2S<br> (0) 
+          <ion-button class="div" (click)="contador('c62S')" color="laranja"> 
+            C6 2S<br> ({{contados('c62S')}})
           </ion-button>
       </ion-col>
     
       <ion-col>
-          <ion-button class="div" color="verde"> 
-            C6 3S<br> (0) 
+          <ion-button class="div" (click)="contador('c63S')" color="verde"> 
+            C6 3S<br> ({{contados('c63S')}})
           </ion-button>
       </ion-col>
       
@@ -181,54 +221,26 @@
     <ion-row>
 
       <ion-col>
-          <ion-button class="div" color="azul"> 
-            C7 R<br> (0) 
+          <ion-button class="div" (click)="contador('c7R')" color="azul"> 
+            C7 R<br> ({{contados('c7R')}})
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="vermelho"> 
-            C7 1S<br> (0) 
+          <ion-button class="div" (click)="contador('c71S')" color="vermelho"> 
+            C7 1S<br> ({{contados('c71S')}})
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="laranja"> 
-            C7 2S<br> (0) 
+          <ion-button class="div" (click)="contador('c72S')" color="laranja"> 
+            C7 2S<br> ({{contados('c72S')}}) 
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="verde"> 
-            C7 3S<br> (0) 
-          </ion-button>
-      </ion-col>
-      
-    </ion-row>
-
-    <ion-row>
-
-      <ion-col>
-          <ion-button class="div" color="azul"> 
-            C8 R<br> (0) 
-          </ion-button>
-      </ion-col>
-
-      <ion-col>
-          <ion-button class="div" color="vermelho"> 
-            C8 1S<br> (0) 
-          </ion-button>
-      </ion-col>
-
-      <ion-col>
-          <ion-button class="div" color="laranja"> 
-            C8 2S<br> (0) 
-          </ion-button>
-      </ion-col>
-
-      <ion-col>
-          <ion-button class="div" color="verde"> 
-            C8 3S<br> (0) 
+          <ion-button class="div" (click)="contador('c73S')" color="verde"> 
+            C7 3S<br> ({{contados('c73S')}})
           </ion-button>
       </ion-col>
       
@@ -237,26 +249,54 @@
     <ion-row>
 
       <ion-col>
-          <ion-button class="div" color="azul"> 
-            C8 4S<br> (0) 
+          <ion-button class="div" (click)="contador('c8R')" color="azul"> 
+            C8 R<br> ({{contados('c8R')}}) 
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="vermelho"> 
-            C9 R<br> (0) 
+          <ion-button class="div" (click)="contador('c81S')" color="vermelho"> 
+            C8 1S<br> ({{contados('c81S')}}) 
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="laranja"> 
-            C9 1S<br> (0) 
+          <ion-button class="div" (click)="contador('c82S')" color="laranja"> 
+            C8 2S<br> ({{contados('c82S')}})
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="verde"> 
-            C9 2S<br> (0) 
+          <ion-button class="div" (click)="contador('c83S')" color="verde"> 
+            C8 3S<br> ({{contados('c83S')}}) 
+          </ion-button>
+      </ion-col>
+      
+    </ion-row>
+
+    <ion-row>
+
+      <ion-col>
+          <ion-button class="div" (click)="contador('c84S')" color="azul"> 
+            C8 4S<br> ({{contados('c84S')}})
+          </ion-button>
+      </ion-col>
+
+      <ion-col>
+          <ion-button class="div" (click)="contador('c9R')" color="vermelho"> 
+            C9 R<br> ({{contados('c9R')}}) 
+          </ion-button>
+      </ion-col>
+
+      <ion-col>
+          <ion-button class="div" (click)="contador('c91S')" color="laranja"> 
+            C9 1S<br> ({{contados('c91S')}})
+          </ion-button>
+      </ion-col>
+
+      <ion-col>
+          <ion-button class="div" (click)="contador('c92S')" color="verde"> 
+            C9 2S<br> ({{contados('c92S')}})
           </ion-button>
       </ion-col>
       
@@ -265,20 +305,20 @@
     <ion-row >
 
       <ion-col>
-          <ion-button class="div" color="azul"> 
-            C9 3S<br> (0) 
+          <ion-button class="div" (click)="contador('c93S')" color="azul"> 
+            C9 3S<br> ({{contados('c93S')}}) 
           </ion-button>
       </ion-col>
 
       <ion-col>
-          <ion-button class="div" color="vermelho"> 
-            C9 4S<br> (0) 
+          <ion-button class="div" (click)="contador('c94S')" color="vermelho"> 
+            C9 4S<br> ({{contados('c94S')}})
           </ion-button>
       </ion-col>
       
       <ion-col></ion-col><ion-col></ion-col>
     </ion-row>
-    
+    -->
   </ion-grid> 
 
 </ion-content>
