@@ -25,6 +25,7 @@
     "@ionic/angular": "^4.7.1",
     "@ionic/storage": "^2.2.0",
     "cordova-android": "8.1.0",
+    "cordova-plugin-crosswalk-webview": "^2.4.0",
     "cordova-sqlite-storage": "^4.0.0",
     "core-js": "^2.5.4",
     "rxjs": "~6.5.1",
@@ -75,7 +76,8 @@
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
       "cordova-plugin-ionic-keyboard": {},
-      "cordova-sqlite-storage": {}
+      "cordova-sqlite-storage": {},
+      "cordova-plugin-crosswalk-webview": {}
     },
     "platforms": [
       "android"

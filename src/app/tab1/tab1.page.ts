@@ -16,7 +16,7 @@ export class Tab1Page {
   constructor(private navCtrl: NavController, private storage: Storage) {
     this.count= {
       auto: 0,
-      motos:0,
+      motos: 0,
       onibus: 0,
       caminhao: 0
 
@@ -83,11 +83,14 @@ export class Tab1Page {
   loadStorage(){
 
     this.storage.get("dados").then((val) => {
-     this.contagem = console.log(val);
+     this.contagem = console.log(JSON.parse(val));
 
-    }
+      return alert(val);
+    
 
-    );
+    });
+
+    
     
   }
 
