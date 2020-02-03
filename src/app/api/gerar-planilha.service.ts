@@ -10,7 +10,7 @@ export class GerarPlanilhaService {
   constructor(public http: HttpClient) { }
 
   inserirDados(dados: any){
-    return this.http.get(this.url + '/inserir.php', dados);
+    return this.http.post(this.url + '/inserir.php', dados);
     
   }
 

@@ -16,7 +16,7 @@ export class Tab1Page {
 
   constructor(private navCtrl: NavController, 
               private storage: Storage,
-             /*  private inserir: GerarPlanilhaService*/) {
+             private inserir: GerarPlanilhaService) {
 
     this.count= {
       auto: 0,
@@ -87,33 +87,23 @@ export class Tab1Page {
   loadStorage(){
     this.storage.get("dados").then((val) => {
       console.log(JSON.parse(val));
-      let valores = JSON.parse(val);
-      alert(val)
+      console.log(JSON.parse(val));
+      alert(val);
 
       const formData = new FormData();
-
-      for(let i in valores){
-        formData.append("auto", valores[i]);
-        formData.append("motos", valores[i]);
-        formData.append("onibus", valores[i]);
-        formData.append("caminhao", valores[i]);
-
-        alert(valores[i]);
-      }
-
-      
-      
+      formData.append("contagem", val);
 
 
-      
+      this.inserir.inserirDados(formData).subscribe((data: any) => {
+        console.log(data);
+  
+        
+        
+      });
       
     }); 
     
   }
-
-  
-
-
 
 
 

@@ -7,9 +7,9 @@
     include("conexao.php");
 
 
+    $json = $_POST["contagem"];
+
     
-
-
 
 
 
