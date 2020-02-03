@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController} from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { GerarPlanilhaService } from '../api/gerar-planilha.service';
 
 @Component({
   selector: 'app-tab1',
@@ -9,11 +10,14 @@ import { Storage } from '@ionic/storage';
 })
 export class Tab1Page {
 
-  dados: string;
+  dados: any[];
   count: any;
   contagem: any;
 
-  constructor(private navCtrl: NavController, private storage: Storage) {
+  constructor(private navCtrl: NavController, 
+              private storage: Storage,
+             /*  private inserir: GerarPlanilhaService*/) {
+
     this.count= {
       auto: 0,
       motos: 0,
@@ -68,7 +72,6 @@ export class Tab1Page {
   contador(tipo: string){
     this.count[tipo]++;  
     
-
   }
 
   contados(tipo: string){
@@ -78,21 +81,39 @@ export class Tab1Page {
 
   saveStorage(){
     this.storage.set("dados", JSON.stringify(this.count));
+    
   }
 
   loadStorage(){
-
     this.storage.get("dados").then((val) => {
-     this.contagem = console.log(JSON.parse(val));
+      console.log(JSON.parse(val));
+      let valores = JSON.parse(val);
+      alert(val)
 
-      return alert(val);
-    
+      const formData = new FormData();
 
-    });
+      for(let i in valores){
+        formData.append("auto", valores[i]);
+        formData.append("motos", valores[i]);
+        formData.append("onibus", valores[i]);
+        formData.append("caminhao", valores[i]);
 
-    
+        alert(valores[i]);
+      }
+
+      
+      
+
+
+      
+      
+    }); 
     
   }
+
+  
+
+
 
 
 
