@@ -96,8 +96,6 @@ export class Tab1Page {
 
       this.inserir.inserirDados(formData).subscribe((data: any) => {
         console.log(data);
-  
-        
         
       });
       
