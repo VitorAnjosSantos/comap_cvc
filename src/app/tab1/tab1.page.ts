@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController} from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { GerarPlanilhaService } from '../api/gerar-planilha.service';
@@ -68,6 +68,10 @@ export class Tab1Page {
     };
 
   }
+
+ 
+    
+  
   
   contador(tipo: string){
     this.count[tipo]++;  
@@ -79,31 +83,35 @@ export class Tab1Page {
 
   }
 
-  saveStorage(){
-    this.storage.set("dados", JSON.stringify(this.count));
+  enviar(){
+    setInterval(() => { 
+      this.storage.set("dados", JSON.stringify(this.count)).then(()=> {
+
+        this.storage.get("dados").then((val) => {
+          console.log(JSON.parse(val));
+          alert(val);
+  
+          let dNow = new Date();
+          let localdate = dNow.getDate() + '/' + (dNow.getMonth()+1) + '/' + dNow.getFullYear() + ' ' + dNow.getHours() + ':' + dNow.getMinutes();    
     
-  }
-
-  loadStorage(){
-    this.storage.get("dados").then((val) => {
-      console.log(JSON.parse(val));
-      console.log(JSON.parse(val));
-      alert(val);
-
-      const formData = new FormData();
-      formData.append("contagem", val);
-
-
-      this.inserir.inserirDados(formData).subscribe((data: any) => {
-        console.log(data);
-        
+          const formData = new FormData();
+          formData.append("contagem", val);
+          formData.append("data_hora", localdate);
+    
+          this.inserir.inserirDados(formData).subscribe((data: any) => {
+            console.log(data);
+            
+          });
+          
+        });         
+  
       });
+    }, 10000);
+
       
-    }); 
-    
+
+      
   }
-
-
 
   
 }

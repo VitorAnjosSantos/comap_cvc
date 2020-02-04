@@ -9,9 +9,12 @@ auto int,
 motos int,
 onibus int,
 caminhao int,
+data_hora varchar(20),
 primary key(id_veiculo) 
-
-
 );
 
 select * from tb_veiculos;
+
+drop table tb_veiculos;
+
+truncate tb_veiculos;
