@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { GerarPlanilhaService } from '../services/api/gerar-planilha.service';
+import { Component} from '@angular/core';
 import { NavController} from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { GerarPlanilhaService } from '../api/gerar-planilha.service';
 
 @Component({
   selector: 'app-tab1',
@@ -16,7 +16,8 @@ export class Tab1Page {
 
   constructor(private navCtrl: NavController, 
               private storage: Storage,
-             private inserir: GerarPlanilhaService) {
+             private inserir: GerarPlanilhaService,
+            ) {
 
     this.count= {
       auto: 0,
@@ -68,10 +69,6 @@ export class Tab1Page {
     };
 
   }
-
- 
-    
-  
   
   contador(tipo: string){
     this.count[tipo]++;  
@@ -106,7 +103,7 @@ export class Tab1Page {
         });         
   
       });
-    }, 10000);
+    }, 60000);
 
       
 
