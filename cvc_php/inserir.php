@@ -22,11 +22,12 @@
 	$result = mysqli_query($conexao,$sql);
 
 	if($result){
-		echo "{sucesso: true}";
+        $id = mysqli_insert_id($conexao);
+		echo '{"sucesso": true, "id": '.$id.'}';
 
     }
     else{
-        echo"{sucesso: false}";
+        echo'{"sucesso": false}';
 	}
 	
 	

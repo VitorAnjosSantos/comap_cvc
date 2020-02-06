@@ -15,6 +15,6 @@ primary key(id_veiculo)
 
 select * from tb_veiculos;
 
-drop table tb_veiculos;
-
 truncate tb_veiculos;
+
+drop table tb_veiculos;

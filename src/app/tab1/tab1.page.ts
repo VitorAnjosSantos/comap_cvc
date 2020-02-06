@@ -81,32 +81,42 @@ export class Tab1Page {
   }
 
   enviar(){
-    setInterval(() => { 
-      this.storage.set("dados", JSON.stringify(this.count)).then(()=> {
-
-        this.storage.get("dados").then((val) => {
-          console.log(JSON.parse(val));
-          alert(val);
   
-          let dNow = new Date();
-          let localdate = dNow.getDate() + '/' + (dNow.getMonth()+1) + '/' + dNow.getFullYear() + ' ' + dNow.getHours() + ':' + dNow.getMinutes();    
+    setInterval(() => { 
+
+      this.storage.set("dados", JSON.stringify(this.count)).then(() => {
     
+        this.storage.get("dados").then((val) => {
+          JSON.parse(val);
+          alert(val);
+
+          let dNow = new Date();
+          let localdate = dNow.getDate() + '/' + (dNow.getMonth()+1) + '/' + dNow.getFullYear() + ' ' + dNow.getHours() + ':';    
+          
+          if(dNow.getMinutes() < 10){
+            let i = '0';
+            localdate += i + dNow.getMinutes();
+
+          }else{
+            localdate += dNow.getMinutes();
+          }
+
           const formData = new FormData();
           formData.append("contagem", val);
           formData.append("data_hora", localdate);
-    
+
           this.inserir.inserirDados(formData).subscribe((data: any) => {
-            console.log(data);
-            
+            this.storage.set("usuario", data.id).then(()=>{
+              console.log(data.id);
+            });  
+
           });
-          
-        });         
-  
-      });
-    }, 60000);
 
-      
+        });
+    
+      }); 
 
+    }, 10000);
       
   }
 

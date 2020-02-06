@@ -26,14 +26,21 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^4.7.1",
     "@ionic/storage": "^2.2.0",
-    "cordova-android": "8.1.0",
+    "cordova-android": "^8.1.0",
     "cordova-plugin-crosswalk-webview": "^2.4.0",
     "cordova-sqlite-storage": "^4.0.0",
     "core-js": "^2.5.4",
+    "promise-polyfill": "^8.1.3",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "uk.co.workingedge.cordova.plugin.sqliteporter": "^1.1.1",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "cordova-plugin-whitelist": "1.3.3",
+    "cordova-plugin-statusbar": "2.4.2",
+    "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-splashscreen": "5.0.2",
+    "cordova-plugin-ionic-webview": "^4.0.0",
+    "cordova-plugin-ionic-keyboard": "^2.0.5"
   },
   "devDependencies": {
     "@angular-devkit/architect": "~0.801.2",
@@ -80,7 +87,6 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-sqlite-storage": {},
-      "cordova-plugin-crosswalk-webview": {},
       "uk.co.workingedge.cordova.plugin.sqliteporter": {}
     },
     "platforms": [
