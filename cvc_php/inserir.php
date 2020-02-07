@@ -12,14 +12,19 @@
 
     $contagem = json_decode($json);
 
-    $auto = $contagem->{'auto'};
-    $motos = $contagem->{'motos'};
-    $onibus = $contagem->{'onibus'};
-    $caminhao = $contagem->{'caminhao'};
+    print_r($contagem);
 
-    $sql = "INSERT INTO tb_veiculos (auto, motos, onibus, caminhao, data_hora) VALUES ('$auto', '$motos', '$onibus', '$caminhao', '$data_hora')";
+    foreach ($contagem as $value) {
+        
+        $auto = $value->{'auto'};
+        $motos = $value->{'motos'};
+        $onibus = $value->{'onibus'};
+        $caminhao = $value->{'caminhao'};
 
-	$result = mysqli_query($conexao,$sql);
+        $sql = "INSERT INTO tb_veiculos (auto, motos, onibus, caminhao, data_hora) VALUES ('$auto', '$motos', '$onibus', '$caminhao', '$data_hora')";
+        $result = mysqli_query($conexao,$sql);
+
+    }
 
 	if($result){
         $id = mysqli_insert_id($conexao);
