@@ -13,6 +13,7 @@ export class Tab1Page {
   
   count: any;
   listaForm: any;
+  localdate: any;
 
   constructor(private navCtrl: NavController, 
               private storage: Storage,
@@ -103,8 +104,17 @@ export class Tab1Page {
       let objeto = JSON.parse(val);
       this.listaForm = this.listaForm.concat(objeto);
 
-      this.storage.set("listaForm", JSON.stringify(this.listaForm )).then((data: any) => {
-
+      this.storage.set("listaForm", JSON.stringify(this.listaForm)).then((data: any) => {
+        let dNow = new Date();
+        this.localdate = dNow.getDate() + '/' + (dNow.getMonth()+1) + '/' + dNow.getFullYear() + ' ' + dNow.getHours() + ':';    
+      
+        if(dNow.getMinutes() < 10){
+          let i = '0';
+          this.localdate += i + dNow.getMinutes();
+  
+        }else{
+          this.localdate += dNow.getMinutes();
+        }
 
       console.log(data);
       alert(data);
@@ -116,25 +126,12 @@ export class Tab1Page {
 
   enviar(){
     //setInterval(() => { 
-
    
-    this.storage.get("listaForm").then(() => {
+    this.storage.get("listaForm").then((val: any) => {
 
-
-      let dNow = new Date();
-      let localdate = dNow.getDate() + '/' + (dNow.getMonth()+1) + '/' + dNow.getFullYear() + ' ' + dNow.getHours() + ':';    
-    
-      if(dNow.getMinutes() < 10){
-        let i = '0';
-        localdate += i + dNow.getMinutes();
-
-      }else{
-        localdate += dNow.getMinutes();
-      }
-      
       const formData = new FormData();
-      formData.append("contagem", JSON.stringify(this.listaForm ));
-      formData.append("data_hora", localdate);
+      formData.append("contagem", val);
+      formData.append("data_hora", this.localdate);
 
       this.inserir.inserirDados(formData).subscribe((data: any) => {
         this.storage.set("usuario", data.id).then(()=>{
