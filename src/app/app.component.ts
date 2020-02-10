@@ -26,7 +26,7 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
-      this.dbService.createDatabase().then(()=>{
+     /* this.dbService.createDatabase().then(()=>{
 
         this.openTabsPage(this.splashScreen);
         alert("Banco Criado com Sucesso");
@@ -37,14 +37,14 @@ export class AppComponent {
         this.openTabsPage(this.splashScreen);
 
       });
-      
+       */
       
     });
   }
 
-  public openTabsPage(splashScreen: SplashScreen){
+  /*public openTabsPage(splashScreen: SplashScreen){
     splashScreen.hide();
     this.rootPage = TabsPage;
   }
-
+  */
 }
