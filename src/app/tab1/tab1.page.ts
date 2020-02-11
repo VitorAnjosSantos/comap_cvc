@@ -82,42 +82,37 @@ export class Tab1Page {
   }
 
   limpar(){
-    let limpa = {
-      auto: 0,
-      motos: 0,
-      onibus: 0,
-      caminhao: 0};
-
-    this.storage.set("listaForm", JSON.stringify(limpa)).then((data: any) => {
-      console.log(data);
+    this.storage.set("listaForm", "").then((data: any) =>{
       alert(data);
-            
-      });  
+    });
+
   }
 
   salvar(){
-    let form = this.count;
-
-    this.listaForm = [form];
     this.storage.get("listaForm").then((val: any) => {
+      let array: any[] = [];
 
-      let objeto = JSON.parse(val);
-      this.listaForm = this.listaForm.concat(objeto);
+      if (val !== "") {
+        array = array.concat(JSON.parse(val));
+      }
 
-      this.storage.set("listaForm", JSON.stringify(this.listaForm)).then((data: any) => {
+      array.push(this.count);
+
+      this.storage.set("listaForm", JSON.stringify(array)).then((data: any) => {
         let dNow = new Date();
-        this.localdate = dNow.getDate() + '/' + (dNow.getMonth()+1) + '/' + dNow.getFullYear() + ' ' + dNow.getHours() + ':';    
+        this.localdate = dNow.getDate() + '/' + (dNow.getMonth()+1) + '/' + dNow.getFullYear() + ' ' + dNow.getHours() + ':' + dNow.getSeconds() + ':';    
       
-        if(dNow.getMinutes() < 10){
+        if(dNow.getMinutes() < 10) {
           let i = '0';
           this.localdate += i + dNow.getMinutes();
   
-        }else{
+        }
+        else
+        {
           this.localdate += dNow.getMinutes();
         }
-
-      console.log(data);
-      alert(data);
+        alert(data);
+        console.log(data);
       });
     });
 
