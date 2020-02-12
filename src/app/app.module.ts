@@ -11,9 +11,9 @@ import {HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SQLite } from '@ionic-native/sqlite/ngx';
-import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
-import { DatabaseService } from './services/database/database.service';
+//import { SQLite } from '@ionic-native/sqlite/ngx';
+//import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
+//import { DatabaseService } from './services/database/database.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,9 +24,9 @@ import { DatabaseService } from './services/database/database.service';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     GerarPlanilhaService,
-    DatabaseService,
-    SQLite,
-    SQLitePorter
+    //DatabaseService,
+    //SQLite,
+    //SQLitePorter
     
   ],
   bootstrap: [AppComponent]

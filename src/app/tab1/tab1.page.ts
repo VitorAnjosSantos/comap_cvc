@@ -84,6 +84,15 @@ export class Tab1Page {
     });
     toast.present();
   }
+
+  async toastErro() {
+    const toast = await this.toastController.create({
+      message: 'Erro: os dados nçao foram enviados',
+      duration: 2000,
+     
+    });
+    toast.present();
+  }
   
   contador(tipo: string){
     this.count[tipo]++;  
@@ -113,6 +122,7 @@ export class Tab1Page {
       array.push(this.count);
 
       this.storage.set("listaForm", JSON.stringify(array)).then((data: any) => {
+
         let dNow = new Date();
         this.localdate = dNow.getDate() + '/' + (dNow.getMonth()+1) + '/' + dNow.getFullYear() + ' ' + dNow.getHours() + ':' + dNow.getSeconds() + ':';    
       
@@ -137,24 +147,25 @@ export class Tab1Page {
     //setInterval(() => { 
     await this.mostraCarregando();
    
-    this.storage.get("listaForm").then((val: any) => {
+      this.storage.get("listaForm").then((val: any) => {
 
-      const formData = new FormData();
-      formData.append("contagem", val);
-      formData.append("data_hora", this.localdate);
+        const formData = new FormData();
+        formData.append("contagem", val);
+        formData.append("data_hora", this.localdate);
 
-      this.inserir.inserirDados(formData).subscribe((data: any) => {
-        this.storage.set("usuario", data.id).then(()=>{
-          console.log(data.id);
+        
+         this.inserir.inserirDados(formData).subscribe((data: any) => {
+           this.storage.set("usuario", data.id).then(()=>{
+            console.log(data.id);
+            
+           });  
           
-        });  
-
+         });
+         
+         this.presentToast();
       });
-
-      this.presentToast();
-    });
-    await this.ocultaCarregando();  
     
+    await this.ocultaCarregando();  
 
   // }, 10000);        
   }

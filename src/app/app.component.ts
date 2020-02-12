@@ -1,9 +1,9 @@
-import { TabsPage } from './tabs/tabs.page';
+//import { TabsPage } from './tabs/tabs.page';
 import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { DatabaseService } from './services/database/database.service';
+//import { DatabaseService } from './services/database/database.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private dbService: DatabaseService
+    //private dbService: DatabaseService
     
   ) {
     this.initializeApp();
@@ -26,6 +26,7 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
+      this.splashScreen.hide();
      /* this.dbService.createDatabase().then(()=>{
 
         this.openTabsPage(this.splashScreen);
@@ -43,7 +44,7 @@ export class AppComponent {
   }
 
   /*public openTabsPage(splashScreen: SplashScreen){
-    splashScreen.hide();
+    
     this.rootPage = TabsPage;
   }
   */
