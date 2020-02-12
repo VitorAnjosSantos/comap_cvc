@@ -2,6 +2,8 @@ import { GerarPlanilhaService } from '../services/api/gerar-planilha.service';
 import { Component} from '@angular/core';
 import { NavController} from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { LoadingController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -14,10 +16,13 @@ export class Tab1Page {
   count: any;
   listaForm: any;
   localdate: any;
+  loading: any = null;
 
   constructor(private navCtrl: NavController, 
               private storage: Storage,
              private inserir: GerarPlanilhaService,
+             public loadingController: LoadingController,
+             private toastController: ToastController
             ) {
 
     this.count= {
@@ -70,6 +75,15 @@ export class Tab1Page {
     };
 
   }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Dados enviados com sucesso',
+      duration: 2000,
+     
+    });
+    toast.present();
+  }
   
   contador(tipo: string){
     this.count[tipo]++;  
@@ -119,8 +133,9 @@ export class Tab1Page {
 
   }
 
-  enviar(){
+  async enviar(){
     //setInterval(() => { 
+    await this.mostraCarregando();
    
     this.storage.get("listaForm").then((val: any) => {
 
@@ -131,18 +146,35 @@ export class Tab1Page {
       this.inserir.inserirDados(formData).subscribe((data: any) => {
         this.storage.set("usuario", data.id).then(()=>{
           console.log(data.id);
+          
         });  
 
       });
-      
+
+      this.presentToast();
     });
-   
+    await this.ocultaCarregando();  
     
-  
- // }, 10000); 
-      
+
+  // }, 10000);        
   }
 
+  async mostraCarregando() {
+    this.loading = await this.loadingController.create({
+      message: 'Enviando dados ...',
+      spinner: 'crescent',
+      duration: 3000
+      
+    });
+    
+    await this.loading.present();
+  }
   
+  async ocultaCarregando() {
+    await this.loading.dismiss();
+  }
+
+
+
 }
 
