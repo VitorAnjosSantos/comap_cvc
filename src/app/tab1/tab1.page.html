@@ -12,23 +12,23 @@
 
     <ion-row>
 
-        <ion-col>
-          <ion-button name="auto" class="div" (click)="contador('auto')" color="azul" > 
-          Auto <br> ({{contados('auto')}})
+      <ion-col>
+        <ion-button name="auto" class="div" (click)="contador('auto')" color="azul" > 
+        Auto <br> ({{contados('auto')}})
+        </ion-button>
+      </ion-col>
+      
+      <ion-col>          
+        <ion-button name="motos" block class="div"  (click)="contador('motos')" color="vermelho">
+          Motos <br> ({{contados('motos')}})    
+        </ion-button>  
+      </ion-col>
+  
+      <ion-col>
+          <ion-button name="onibus" class="div" (click)="contador('onibus')" color="laranja">  
+            Onibus <br> ({{contados('onibus')}})
           </ion-button>
-        </ion-col>
-        
-        <ion-col>          
-          <ion-button name="motos" block class="div"  (click)="contador('motos')" color="vermelho">
-            Motos <br> ({{contados('motos')}})    
-          </ion-button>  
-        </ion-col>
-    
-        <ion-col>
-            <ion-button name="onibus" class="div" (click)="contador('onibus')" color="laranja">  
-              Onibus <br> ({{contados('onibus')}})
-            </ion-button>
-        </ion-col>
+      </ion-col>
     
       <ion-col>
         <ion-button name="caminhao" class="div" (click)="contador('caminhao')" color="verde">
@@ -50,26 +50,26 @@
       Enviar
     </ion-button>
     
-      <!--
-      <ion-row>
+  <!--
+    <ion-row>
         
-        <ion-col>
-          <ion-button class="div" (click)="contador('auto')" color="azul" > 
-          Auto <br> ({{contados('auto')}})
-          </ion-button>
-        </ion-col>
-        
-        <ion-col>          
-          <ion-button block class="div utilitario"  (click)="contador('utilitario')" color="vermelho">
-            Auto <br> Utilitario <br> ({{contados('utilitario')}})    
-          </ion-button>  
-        </ion-col>
+      <ion-col>
+        <ion-button class="div" (click)="contador('auto')" color="azul" > 
+        Auto <br> ({{contados('auto')}})
+        </ion-button>
+      </ion-col>
+      
+      <ion-col>          
+        <ion-button block class="div utilitario"  (click)="contador('utilitario')" color="vermelho">
+          Auto <br> Utilitario <br> ({{contados('utilitario')}})    
+        </ion-button>  
+      </ion-col>
 
-        <ion-col>
-            <ion-button class="div" (click)="contador('auto3E')" color="laranja">  
-              Auto <br> 3 Eixos <br> ({{contados('auto3E')}})
-            </ion-button>
-        </ion-col>
+      <ion-col>
+          <ion-button class="div" (click)="contador('auto3E')" color="laranja">  
+            Auto <br> 3 Eixos <br> ({{contados('auto3E')}})
+          </ion-button>
+      </ion-col>
 
       <ion-col>
         <ion-button class="div" (click)="contador('auto4E')" color="verde">
@@ -78,7 +78,7 @@
       </ion-col>
 
     </ion-row> 
-    <!--
+    
     <ion-row>
 
       <ion-col>
@@ -319,7 +319,7 @@
       
       <ion-col></ion-col><ion-col></ion-col>
     </ion-row>
-    -->
+  -->
   </ion-grid> 
 
 </ion-content>
