@@ -124,16 +124,16 @@ export class Tab1Page {
       this.storage.set("listaForm", JSON.stringify(array)).then((data: any) => {
 
         let dNow = new Date();
-        this.localdate = dNow.getDate() + '/' + (dNow.getMonth()+1) + '/' + dNow.getFullYear() + ' ' + dNow.getHours() + ':' + dNow.getSeconds() + ':';    
+        this.localdate = dNow.getDate() + '/' + (dNow.getMonth()+1) + '/' + dNow.getFullYear() + ' ' + dNow.getHours()+ ':';    
       
         if(dNow.getMinutes() < 10) {
           let i = '0';
-          this.localdate += i + dNow.getMinutes();
+          this.localdate += i + dNow.getMinutes() + ':' + dNow.getSeconds();
   
         }
         else
         {
-          this.localdate += dNow.getMinutes();
+          this.localdate += dNow.getMinutes()+ ':' + dNow.getSeconds() ;
         }
         alert(data);
         console.log(data);
@@ -155,17 +155,24 @@ export class Tab1Page {
 
         
          this.inserir.inserirDados(formData).subscribe((data: any) => {
-           this.storage.set("usuario", data.id).then(()=>{
-            console.log(data.id);
+
+          console.log(data);
             
-           });  
-          
-         });
-         
-         this.presentToast();
+          this.ocultaCarregando();
+          this.presentToast();
+
+         }, () => {
+        
+          this.toastErro();
+          this.ocultaCarregando();
+        });
+
+        
+
+       
       });
     
-    await this.ocultaCarregando();  
+      
 
   // }, 10000);        
   }
@@ -174,7 +181,7 @@ export class Tab1Page {
     this.loading = await this.loadingController.create({
       message: 'Enviando dados ...',
       spinner: 'crescent',
-      duration: 3000
+      duration: 0 
       
     });
     

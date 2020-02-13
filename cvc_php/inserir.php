@@ -12,8 +12,6 @@
 
     $contagem = json_decode($json);
 
-    print_r($contagem);
-
     foreach ($contagem as $value) {
         
         $auto = $value->{'auto'};
@@ -28,7 +26,8 @@
 
 	if($result){
         $id = mysqli_insert_id($conexao);
-		echo '{"sucesso": true, "id": '.$id.'}';
+        echo '{"sucesso": true}';
+        print_r($contagem);
 
     }
     else{
