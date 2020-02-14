@@ -1,5 +1,7 @@
 <?php
 
+    include("Classes/PHPExcel/IOFactory.php");   
+
     header('Access-Control-Allow-Origin: *');
     //header("Access-Control-Allow-Headers: Content-Type");
     //header('Content-Type: application/json');
@@ -41,16 +43,20 @@
 		$html .= '</tr>';
 		
 	}
-        
-    header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-    header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
-    header ("Cache-Control: no-cache, must-revalidate");
-    header ("Pragma: no-cache");
-    header ("Content-type: application/x-msexcel");
-    header ("Content-Disposition: attachment; filename=\"{$arquivo}\"" );
-    header ("Content-Description: PHP Generated Data" );
+
+    echo $html;    
+    
+    //salva csv
     // Envia o conteúdo do arquivo
-    echo $html;
+    
+	
+    $objReader = PHPExcel_IOFactory::createReader('CSV');
+    $objReader->setDelimiter(";"); // define que a separação dos dados é feita por ponto e vírgula
+    $objReader->setInputEncoding('UTF-8'); // habilita os caracteres latinos.
+    $objPHPExcel = $objReader->load('arquivo.csv'); //indica qual o arquivo CSV que será convertido
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    $objWriter->save('arquivo.xls'); // Resultado da conversão; um arquivo do EXCEL 
+	
     exit;
 
 ?>
