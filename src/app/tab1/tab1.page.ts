@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { LoadingController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { InserirNoBancoService } from '../services/database/inserir-no-banco.service';
+import { GerarPlanilhaService } from '../services/api/gerar-planilha.service';
 
 @Component({
   selector: 'app-tab1',
@@ -20,6 +21,7 @@ export class Tab1Page {
   constructor(private navCtrl: NavController, 
               private storage: Storage,
               private inserir: InserirNoBancoService,
+              private gerar: GerarPlanilhaService,
               public loadingController: LoadingController,
               private toastController: ToastController
             ) {
@@ -178,7 +180,7 @@ export class Tab1Page {
             onibus: 0,
             caminhao: 0,
             data_hora: " "
-          }
+          };
 
 
          }, (error) => {

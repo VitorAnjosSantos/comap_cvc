@@ -1,6 +1,6 @@
 <?php
 
-    include("Classes/PHPExcel/IOFactory.php");   
+    include("./Classes/PHPExcel/IOFactory.php");   
 
     header('Access-Control-Allow-Origin: *');
     //header("Access-Control-Allow-Headers: Content-Type");
@@ -8,55 +8,48 @@
 
     include("conexao.php");
 
-    $select = "SELECT * FROM tb_veiculo";
+    $conecta = new PDO("mysql:host=127.0.0.1;dbname=comap_cvc", "root" , "");
+		$conecta->exec("set names utf8"); // Permite caracteres latinos.
+		$consulta = $conecta->prepare('SELECT * FROM tb_veiculos');				
+        $consulta->execute(array());  
+		$resultadoDaConsulta = $consulta->fetchAll();
 
-	$resultadoSelect = mysqli_query($conexao,$select);
+	$StringJson = "["; 
 
-	$arquivo = 'contagem.xls';
+	if ( count($resultadoDaConsulta) ) {
+			
+			// Gera arquivo CSV
+		$fp = fopen("teste.csv", "w +"); // o "a" indica que o arquivo será sobrescrito sempre que esta função for executada.
+		$escreve = fwrite($fp, "Auto,Motos,Onibus,Caminhao");
+
+
+		foreach($resultadoDaConsulta as $registro) 
+			{ 		  			
+				$escreve = fwrite($fp, "\n$registro[auto],$registro[motos],$registro[onibus],$registro[caminhao]");			  
+				if ($StringJson != "[") {$StringJson .= ",";}
+				$StringJson .= '"' . $registro['auto'] . '",';
+				$StringJson .= '"' . $registro['motos'] . '",';	
+			 	$StringJson .= '"' . $registro['onibus'] . '",';	
+				$StringJson .= '"' . $registro['caminhao'] . '"}';
+		      }
 		
-	// Criamos uma tabela HTML com o formato da planilha
-	$html = '';
-	$html .= '<table border="1">';
-	$html .= '<tr>';
-	$html .= '<td colspan="6">Contagem</tr>';
-	$html .= '</tr>';
-	
-	
-	$html .= '<tr>';
-	$html .= '<td><b>ID</b></td>';
-	$html .= '<td><b>auto</b></td>';
-	$html .= '<td><b>motos</b></td>';
-	$html .= '<td><b>onibus</b></td>';
-	$html .= '<td><b>caminhao</b></td>';
-	$html .= '</tr>';
+		echo $StringJson . "]"; // Exibe o vettor JSON
 
-    
-	
-	while($rowSelect = mysqli_fetch_assoc($resultadoSelect)){
+		fclose($fp);
 
-		$html .= '<tr>';
-		$html .= '<td>'.$$rowSelect["id"].'</td>';
-		$html .= '<td>'.$$rowSelect["auto"].'</td>';
-		$html .= '<td>'.$$rowSelect["motos"].'</td>';
-		$html .= '<td>'.$$rowSelect["onibus"].'</td>';
-		$html .= '<td>'.$$rowSelect["caminhao"].'</td>';
-		$html .= '</tr>';
-		
-	}
 
-    echo $html;    
     
     //salva csv
     // Envia o conteúdo do arquivo
     
-	
-    $objReader = PHPExcel_IOFactory::createReader('CSV');
-    $objReader->setDelimiter(";"); // define que a separação dos dados é feita por ponto e vírgula
-    $objReader->setInputEncoding('UTF-8'); // habilita os caracteres latinos.
-    $objPHPExcel = $objReader->load('arquivo.csv'); //indica qual o arquivo CSV que será convertido
-    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-    $objWriter->save('arquivo.xls'); // Resultado da conversão; um arquivo do EXCEL 
-	
-    exit;
+		
+		$objReader = new PHPExcel_Reader_CSV();
+		$objPHPExcel = $objReader->load('teste.csv'); //indica qual o arquivo CSV que será convertido
+		$objReader->setDelimiter(";"); // define que a separação dos dados é feita por ponto e vírgula
+		$objReader->setInputEncoding('UTF-8'); // habilita os caracteres latinos.
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		$objWriter->save('arquivo.xls'); // Resultado da conversão; um arquivo do EXCEL 
+		
+	}
 
 ?>
