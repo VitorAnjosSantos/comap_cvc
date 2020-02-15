@@ -104,22 +104,6 @@ export class Tab1Page {
   
   contador(tipo: string){
     this.count[tipo]++;  
-    
-  }
-
-  contados(tipo: string){
-    return this.count[tipo];
-
-  }
-
-  limpar(){
-    this.storage.set("listaForm", "").then((data: any) =>{
-      alert("Contagem vazia");
-    });
-
-  }
-
-  salvar(){
     this.storage.get("listaForm").then((val: any) => {
       let array: any[] = [];
 
@@ -154,6 +138,17 @@ export class Tab1Page {
         alert(data);
         console.log(data);
       });
+    });
+  }
+
+  contados(tipo: string){
+    return this.count[tipo];
+
+  }
+
+  limpar(){
+    this.storage.set("listaForm", "").then((data: any) =>{
+      alert("Contagem vazia");
     });
 
   }
