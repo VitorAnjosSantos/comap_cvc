@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
   providedIn: 'root'
 })
 export class GerarPlanilhaService {
-url: string="http://192.168.1.88:8081/cvc_php";
+url: string="ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php";
   //url: string="http://10.131.45.40:8081/cvc_php";
 
   constructor(public http: HttpClient) { }
