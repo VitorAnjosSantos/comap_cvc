@@ -1,0 +1,54 @@
+# Configuração do servidor Virtual Aws
+#
+# Criado por: Tairone Alves Barreto
+# Modificado: 15/02/20
+
+################### Dados da AWS Amazon #######################################
+#
+# Account: Marcia Aguilar
+# Zona: Oeste USA datacenter 1D
+# Security Groups: COMAP
+# EBS-IDs: vol-3b1d1898, vol-3b1d1898
+# Key pair: Vitor-WinServer2019
+# Public DNS: ec2-18-211-204-199.compute-1.amazonaws.com
+#
+###############################################################################
+
+################### Dados do Servidor #########################################
+#
+# Servidor Windows Server 2019 DataCenter
+# C:\ 50GB
+# D:\ 50GB
+# Arquitetura: AMD64
+# Memoria: 4GB
+# Nucleo Processador: 2
+# Ip Publico: 18.211.204.199
+# Ip Interno: 172.31.0.150 
+#
+###############################################################################
+ 
+################### Acesso RDP ################################################
+#
+# IP 18.211.204.199
+# User: Administrator
+# Password: 3AnfNRUQKcR
+#
+###############################################################################
+ 
+################### Acesso FTP ################################################
+#
+# IP 18.211.204.199
+# User: comap
+# Password: 3Anf
+# Armazenamento: Unidade D:\
+#
+###############################################################################
+
+################### Dados dos Serviços ########################################
+#
+# Gerenciamento: XAMPP 3.2.4
+# Mysql 5.7
+# Apache 2.4
+# Filezilla 3.0
+#
+###############################################################################
