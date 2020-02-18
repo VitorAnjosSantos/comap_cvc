@@ -27,11 +27,13 @@ export class Tab1Page {
             ) {
 
     this.count= {
+      date: '',
+      time: '',
       auto: 0,
       motos: 0,
       onibus: 0,
       caminhao: 0,
-      data_hora: " "
+      
 
       /* 
       auto: 0,
@@ -111,8 +113,8 @@ export class Tab1Page {
         array = array.concat(JSON.parse(val));
       }
 
-      let datas: any;
-        let horas: any;
+      let date: any;
+        let time: any;
 
         let dataCompleta = new Date(),
             horaCompleta = new Date();
@@ -124,11 +126,12 @@ export class Tab1Page {
          minutos = this.formataZerosEsquerda(horaCompleta.getMinutes()),
          segundos = this.formataZerosEsquerda(horaCompleta.getSeconds());
 
-        datas = dia + "/" + mes + "/" + ano + " ";
-        horas = hora + ":" + minutos + ":" + segundos;
-        this.localdate = datas + horas;
+         date = dia + "-" + mes + "-" + ano + " ";
+         time = hora + "-" + minutos + "-" + segundos;
         
-        this.count["data_hora"] = this.localdate;
+        
+        this.count["date"] = date;
+        this.count["time"] = time;
       
       array.push(this.count);
 
@@ -170,13 +173,16 @@ export class Tab1Page {
           this.ocultaCarregando();
 
           this.count= {
+            date: '',
+            time: '',
             auto: 0,
             motos: 0,
             onibus: 0,
-            caminhao: 0,
-            data_hora: " "
+            caminhao: 0
           };
+          this.gerar.gerarDados(formData).subscribe((data: any) => {
 
+          });
 
          }, (error) => {
         

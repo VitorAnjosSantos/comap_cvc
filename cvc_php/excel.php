@@ -15,18 +15,20 @@
 		$resultadoDaConsulta = $consulta->fetchAll();
 
 	$StringJson = "["; 
-
+	
 	if ( count($resultadoDaConsulta) ) {
 			
 			// Gera arquivo CSV
 		$fp = fopen("teste.csv", "w +"); // o "a" indica que o arquivo será sobrescrito sempre que esta função for executada.
-		$escreve = fwrite($fp, "Auto,Motos,Onibus,Caminhao");
+		$escreve = fwrite($fp, "Data,Hora,Auto,Motos,Onibus,Caminhao");
 
 
 		foreach($resultadoDaConsulta as $registro) 
 			{ 		  			
-				$escreve = fwrite($fp, "\n$registro[auto],$registro[motos],$registro[onibus],$registro[caminhao]");			  
+				$escreve = fwrite($fp, "\n$registro[date],$registro[time],$registro[auto],$registro[motos],$registro[onibus],$registro[caminhao]");			  
 				if ($StringJson != "[") {$StringJson .= ",";}
+				$StringJson .= '"' . $registro['date'] . '",';
+				$StringJson .= '"' . $registro['time'] . '",';
 				$StringJson .= '"' . $registro['auto'] . '",';
 				$StringJson .= '"' . $registro['motos'] . '",';	
 			 	$StringJson .= '"' . $registro['onibus'] . '",';	
@@ -34,9 +36,14 @@
 		      }
 		
 		echo $StringJson . "]"; // Exibe o vettor JSON
-
+		
 		fclose($fp);
 
+		$date = substr($StringJson, 2 , 10);
+		$dia= "D:".DIRECTORY_SEPARATOR.$date;
+		$horas= substr($StringJson, 16 , 8);
+		echo $data= $dia. '_'. $horas.".xls";
+		
 
     
     //salva csv
@@ -48,7 +55,7 @@
 		$objReader->setDelimiter(";"); // define que a separação dos dados é feita por ponto e vírgula
 		$objReader->setInputEncoding('UTF-8'); // habilita os caracteres latinos.
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-		$objWriter->save('D:\arquivo.xls'); // Resultado da conversão; um arquivo do EXCEL 
+		$objWriter->save($data); // Resultado da conversão; um arquivo do EXCEL 
 		
 	}
 

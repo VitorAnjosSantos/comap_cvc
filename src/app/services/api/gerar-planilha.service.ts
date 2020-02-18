@@ -10,7 +10,7 @@ url: string="ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php";
 
   constructor(public http: HttpClient) { }
 
-  inserirDados(dados: any){
+  gerarDados(dados: any){
     return this.http.post(this.url + '/excel.php', dados);
     
   }
