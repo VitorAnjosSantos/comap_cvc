@@ -1,61 +1,73 @@
 ﻿<?php
-
+	header('Access-Control-Allow-Origin: *');
     include("./Classes/PHPExcel/IOFactory.php");   
-
-    header('Access-Control-Allow-Origin: *');
     //header("Access-Control-Allow-Headers: Content-Type");
     //header('Content-Type: application/json');
 
-    include("conexao.php");
+    include("./conexao.php");
 
-    $conecta = new PDO("mysql:host=ec2-18-211-204-199.compute-1.amazonaws.com;dbname=comap_cvc", "Vitor" , "Cp052739");
-		$conecta->exec("set names utf8"); // Permite caracteres latinos.
-		$consulta = $conecta->prepare('SELECT * FROM tb_veiculos');				
-        $consulta->execute(array());  
-		$resultadoDaConsulta = $consulta->fetchAll();
-
-	$StringJson = "["; 
+    
+		$sql = 'SELECT * FROM tb_veiculos';				
+		$result = mysqli_query($conexao,$sql); 
+		$resultadoDaConsulta = $result; 
 	
-	if ( count($resultadoDaConsulta) ) {
+	if ($resultadoDaConsulta) {
 			
 			// Gera arquivo CSV
-		$fp = fopen("teste.csv", "w +"); // o "a" indica que o arquivo será sobrescrito sempre que esta função for executada.
+		$fp = fopen("planilha.csv", "w +"); // o "a" indica que o arquivo será sobrescrito sempre que esta função for executada.
 		$escreve = fwrite($fp, "Data,Hora,Auto,Motos,Onibus,Caminhao");
-
+		$data = "";
+		$hora = "";
+		$date = '';
+		$time = '';
+		$auto = '';
+		$motos = '';
+		$onibus = '';
+		$caminhao = '';
 
 		foreach($resultadoDaConsulta as $registro) 
 			{ 		  			
 				$escreve = fwrite($fp, "\n$registro[date],$registro[time],$registro[auto],$registro[motos],$registro[onibus],$registro[caminhao]");			  
-				if ($StringJson != "[") {$StringJson .= ",";}
-				$StringJson .= '"' . $registro['date'] . '",';
-				$StringJson .= '"' . $registro['time'] . '",';
-				$StringJson .= '"' . $registro['auto'] . '",';
-				$StringJson .= '"' . $registro['motos'] . '",';	
-			 	$StringJson .= '"' . $registro['onibus'] . '",';	
-				$StringJson .= '"' . $registro['caminhao'] . '"}';
+				
+				$date = $registro["date"];
+				$time = $registro["time"];
+				$auto = $registro['auto'];
+				$motos = $registro['motos'];
+				$onibus = $registro['onibus'];
+				$caminhao = $registro['caminhao'];
+				
+				'"' . $date . '",';
+				'"' . $time . '",';
+				'"' . $auto . '",';
+				'"' . $motos . '",';	
+			 	'"' . $onibus . '",';	
+				'"' . $caminhao . '"';
+
+				$data= $date;
+				$hora = $time;
 		      }
 		
-		echo $StringJson . "]"; // Exibe o vettor JSON
+		// Exibe o vettor JSON
 		
 		fclose($fp);
 
-		$date = substr($StringJson, 2 , 10);
-		$dia= "D:".DIRECTORY_SEPARATOR.$date;
-		$horas= substr($StringJson, 16 , 8);
-		echo $data= $dia. '_'. $horas.".xls";
-		
+		// $date = substr($StringJson, 2 , 10);
+		 $dia= "D:".DIRECTORY_SEPARATOR;
+		// $horas= substr($StringJson, 16 , 8);
+		  $dia .= $data. '_'. $hora.".xls";
+		  echo $dia;
 
     
     //salva csv
-    // Envia o conteúdo do arquivo
-    
+    // Envia o conteúdo do arquivo   
 		
 		$objReader = new PHPExcel_Reader_CSV();
-		$objPHPExcel = $objReader->load('teste.csv'); //indica qual o arquivo CSV que será convertido
+		$objPHPExcel = $objReader->load('planilha.csv'); //indica qual o arquivo CSV que será convertido
 		$objReader->setDelimiter(";"); // define que a separação dos dados é feita por ponto e vírgula
 		$objReader->setInputEncoding('UTF-8'); // habilita os caracteres latinos.
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-		$objWriter->save($data); // Resultado da conversão; um arquivo do EXCEL 
+		
+		$objWriter->save($dia); // Resultado da conversão; um arquivo do EXCEL 
 		
 	}
 

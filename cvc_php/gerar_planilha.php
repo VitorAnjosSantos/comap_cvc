@@ -21,8 +21,8 @@
 		$html = '';
 		$html .= '<table border="1">';		
 		$html .= '<tr>';
-		$html .= '<td><b>Date</b></td>';
-		$html .= '<td><b>Time</b></td>';
+		$html .= '<td><b>Data</b></td>';
+		$html .= '<td><b>Hora</b></td>';
 		$html .= '<td><b>Auto</b></td>';
 		$html .= '<td><b>Motos</b></td>';
 		$html .= '<td><b>Onibus</b></td>';
@@ -33,6 +33,7 @@
 		$result_msg_contatos = "SELECT * FROM tb_veiculos";
 		$resultado_msg_contatos = mysqli_query($conexao , $result_msg_contatos);
 		$data = "";
+		
 		while($row_msg_contatos = mysqli_fetch_assoc($resultado_msg_contatos)){
 			$html .= '<tr>';
 			$html .= '<td>'.$row_msg_contatos["date"].'</td>';
@@ -52,6 +53,7 @@
 		// $horas= $row_msg_contatos["time"];
 		// echo $data= $dia. '_'. $horas.".xls";
 		$data.="_". $hora.".xls";
+		$dia= "D:".DIRECTORY_SEPARATOR.$data;
 
 		// Configurações header para forçar o download
 		header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -68,7 +70,7 @@
 		$objReader->setDelimiter(";"); // define que a separação dos dados é feita por ponto e vírgula
 		$objReader->setInputEncoding('UTF-8'); // habilita os caracteres latinos.
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-		$objWriter->save($data); // Resultado da conversão; um arquivo do EXCEL 
+		$objWriter->save($dia); // Resultado da conversão; um arquivo do EXCEL 
 		// Envia o conteúdo do arquivo
 		echo $html;
 		exit; ?>

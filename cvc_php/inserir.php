@@ -7,11 +7,10 @@
     include("./conexao.php");
 
     $json = $_POST["contagem"];
-    
 
     $contagem = json_decode($json);
 
-    foreach ($contagem as $value) {
+    foreach ($contagem as $value){
 
         $date = $value->{"date"};
         $time = $value->{"time"};
@@ -24,16 +23,6 @@
         $result = mysqli_query($conexao,$sql);
 
     }
-
-	if($result){
-        echo '{"sucesso": true}';
-        //print_r($contagem);
-
-    }
-    else{
-        echo'{"sucesso": false}';
-	}
-	
 	
         
 ?>

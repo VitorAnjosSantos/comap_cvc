@@ -9,7 +9,8 @@ auto int,
 motos int,
 onibus int,
 caminhao int,
-data_hora varchar(30),
+date varchar(30),
+time varchar(30),
 primary key(id_veiculo) 
 );
 

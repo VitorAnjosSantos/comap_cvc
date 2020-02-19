@@ -166,7 +166,6 @@ export class Tab1Page {
         formData.append("contagem", val);
        
          this.inserir.inserirDados(formData).subscribe((data: any) => {
-
           console.log(data);
 
           this.presentToast();
@@ -180,6 +179,7 @@ export class Tab1Page {
             onibus: 0,
             caminhao: 0
           };
+          
           this.gerar.gerarDados(formData).subscribe((data: any) => {
 
           });
