@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  
+  <form [formGroup]="formLogin" class="formLogin">
+  <ion-item>
+    <ion-label floating>Pesquisador: </ion-label>
+    <ion-input formControlName="pesquisador" type="pesquisador" name="pesquisador"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Supervisor: </ion-label>
+    <ion-input formControlName="supervisor" type="supervisor" name="supervisor"></ion-input>
+  </ion-item>
+
+  <div style="text-align: center">
+
+     <ion-button (click)="cadastrar()" fill="clear">Cadastrar</ion-button>
+
+    <ion-button (click)="login(formLogin.value)" type='submit' color="success" round name="entrar">Entrar</ion-button>    
+  
+  </div>
+  
+  </form>  
+
+</ion-content>
