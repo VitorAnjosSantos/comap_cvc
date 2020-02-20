@@ -5,6 +5,7 @@ import { LoadingController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { InserirNoBancoService } from '../services/database/inserir-no-banco.service';
 import { GerarPlanilhaService } from '../services/api/gerar-planilha.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -23,7 +24,8 @@ export class Tab1Page {
               private inserir: InserirNoBancoService,
               private gerar: GerarPlanilhaService,
               public loadingController: LoadingController,
-              private toastController: ToastController
+              private toastController: ToastController,
+              private alertController: AlertController
             ) {
 
     this.count= {
@@ -77,8 +79,37 @@ export class Tab1Page {
       */
 
     };
+    this.storage.set("listaForm", "").then((data: any) =>{
+      
+    });   
+
 
   }
+
+  async alertaEnviar() {
+    const alert = await this.alertController.create({
+      header: 'Alerta!!',
+      message: '<strong>Deseja realmente enviar os dados de contagem?</strong>',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Envio cancelado');
+          }
+        }, {
+          text: 'Enviar',
+          handler: () => {
+            this.enviar();
+          }
+        }
+      ]
+    });
+
+    return alert.present();
+  }
+
 
   formataZerosEsquerda(valor: number) {
     return valor > 9 ? valor : "0" + valor;
@@ -138,7 +169,7 @@ export class Tab1Page {
       this.storage.set("listaForm", JSON.stringify(array)).then((data: any) => {
         
         
-        alert(data);
+        //alert(data);
         console.log(data);
       });
     });
@@ -149,47 +180,50 @@ export class Tab1Page {
 
   }
 
-  limpar(){
-    this.storage.set("listaForm", "").then((data: any) =>{
-      alert("Contagem vazia");
-    });
-
-  }
-
   async enviar(){
     //setInterval(() => { 
+     
     await this.mostraCarregando();
    
       this.storage.get("listaForm").then((val: any) => {
 
-        const formData = new FormData();
-        formData.append("contagem", val);
-       
-         this.inserir.inserirDados(formData).subscribe((data: any) => {
-          console.log(data);
-
-          this.presentToast();
-          this.ocultaCarregando();
-
-          this.count= {
-            date: '',
-            time: '',
-            auto: 0,
-            motos: 0,
-            onibus: 0,
-            caminhao: 0
-          };
-          
-          this.gerar.gerarDados(formData).subscribe((data: any) => {
-
-          });
-
-         }, (error) => {
-        
+        if(val == ""){
+          alert("Contagem vazia!!! \nCertifique-se de realizar uma contagem!!");
           this.toastErro();
           this.ocultaCarregando();
-        });
+        }
+        else{
+          const formData = new FormData();
+          formData.append("contagem", val);
+        
+          this.inserir.inserirDados(formData).subscribe((data: any) => {
+            console.log(data);
 
+            this.storage.set("listaForm", "").then((data: any) =>{
+              this.count= {
+                date: '',
+                time: '',
+                auto: 0,
+                motos: 0,
+                onibus: 0,
+                caminhao: 0
+              };
+            });          
+
+            this.presentToast();
+            this.ocultaCarregando();
+            
+            
+            this.gerar.gerarDados(formData).subscribe((data: any) => {
+
+            });
+
+          }, (error) => {
+          
+            this.toastErro();
+            this.ocultaCarregando();
+          });
+        }
       });
        
   // }, 10000);        
