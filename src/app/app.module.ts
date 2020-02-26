@@ -1,5 +1,7 @@
 import { GerarPlanilhaService } from './services/api/gerar-planilha.service';
 import { InserirNoBancoService } from './services/database/inserir-no-banco.service';
+import { LoginService } from './services/logar/login.service';
+import { CadastrarService } from './services/cadastro/cadastrar.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -26,6 +28,8 @@ import { AppComponent } from './app.component';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     GerarPlanilhaService,
     InserirNoBancoService,
+    LoginService,
+    CadastrarService
     //DatabaseService,
     //SQLite,
     //SQLitePorter

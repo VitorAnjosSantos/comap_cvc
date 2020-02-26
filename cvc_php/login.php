@@ -1,12 +1,12 @@
 <?php
 header('Access-Control-Allow-Origin: *');
 
-include('conexao.php');
+include('./conexao.php');
 
 $pesquisador = $_POST["pesquisador"];
 $supervisor = $_POST["supervisor"];
 
-$query = "SELECT id_usuario, pesquisador FROM tb_usuario
+$query = "SELECT id_usuario, pesquisador FROM tb_usuarios
             WHERE pesquisador = '".$pesquisador."' and supervisor = '".$supervisor."'";
 
 $result = mysqli_query($conexao,$query);
