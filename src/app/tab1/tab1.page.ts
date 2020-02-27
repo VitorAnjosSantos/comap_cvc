@@ -79,10 +79,6 @@ export class Tab1Page {
       */
 
     };
-    this.storage.set("listaForm", "").then((data: any) =>{
-      
-    });   
-
 
   }
 
