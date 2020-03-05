@@ -18,6 +18,8 @@ export class Tab1Page {
   listaForm: any;
   localdate: any;
   loading: any = null;
+  contagem: any;
+  conta: any;
 
   constructor(private navCtrl: NavController, 
               private storage: Storage,
@@ -28,7 +30,7 @@ export class Tab1Page {
               private alertController: AlertController
             ) {
 
-    this.count= {
+   this.count= {
       date: '',
       time: '',
       auto: 0,
@@ -36,7 +38,6 @@ export class Tab1Page {
       onibus: 0,
       caminhao: 0,
       
-
       /* 
       auto: 0,
       utilitario: 0,
@@ -79,10 +80,33 @@ export class Tab1Page {
       */
 
     };
-    this.storage.set("listaForm", "").then((data: any) =>{
 
-    }); 
+    this.contagem = this.count;
+    this.conta = this.count;
 
+    this.storage.get("listaForm").then((val: any) => {
+      if(val !== null){
+        console.log('Lista ja existe');
+      }else{
+        this.storage.set("listaForm", "").then(() => { 
+        });
+      }
+    });
+
+    this.storage.get("historico").then((val: any) => {
+      if (val) {
+        this.contagem = val;
+        this.conta = val;
+        
+      }else{
+        this.storage.set("historico", this.count).then((val: any) => {
+          this.contagem = val;
+          
+        });
+      }
+      
+    });     
+    
   }
 
   async alertaEnviar() {
@@ -109,7 +133,6 @@ export class Tab1Page {
     return alert.present();
   }
 
-
   formataZerosEsquerda(valor: number) {
     return valor > 9 ? valor : "0" + valor;
   }
@@ -132,29 +155,38 @@ export class Tab1Page {
      
     });
     toastErro.present();
-  }
-  
+  } 
+
   contador(tipo: string){
-    this.count[tipo]++;  
+
+    if(this.count[tipo] == 0 && this.conta[tipo] == 0 ){
+      this.count[tipo]++;
+      this.conta[tipo] = this.count[tipo];
+    }else{
+      this.count[tipo]++;
+      this.conta[tipo]++;
+    }
+    
     this.storage.get("listaForm").then((val: any) => {
       let array: any[] = [];
 
       if (val !== "") {
         array = array.concat(JSON.parse(val));
+         
       }
 
-      let date: any;
+        let date: any;
         let time: any;
 
         let dataCompleta = new Date(),
             horaCompleta = new Date();
 
         let dia = this.formataZerosEsquerda(dataCompleta.getDate()),
-         mes = this.formataZerosEsquerda((dataCompleta.getMonth() + 1)),
-         ano = dataCompleta.getFullYear(),
-         hora = this.formataZerosEsquerda(horaCompleta.getHours()),   
-         minutos = this.formataZerosEsquerda(horaCompleta.getMinutes()),
-         segundos = this.formataZerosEsquerda(horaCompleta.getSeconds());
+            mes = this.formataZerosEsquerda((dataCompleta.getMonth() + 1)),
+            ano = dataCompleta.getFullYear(),
+            hora = this.formataZerosEsquerda(horaCompleta.getHours()),   
+            minutos = this.formataZerosEsquerda(horaCompleta.getMinutes()),
+            segundos = this.formataZerosEsquerda(horaCompleta.getSeconds());
 
          date = dia + "-" + mes + "-" + ano + " ";
          time = hora + "-" + minutos + "-" + segundos;
@@ -163,20 +195,65 @@ export class Tab1Page {
         this.count["date"] = date;
         this.count["time"] = time;
       
-      array.push(this.count);
+        array.push(this.count);
 
-      this.storage.set("listaForm", JSON.stringify(array)).then((data: any) => {
-        
-        
-        //alert(data);
-        console.log(data);
+       this.storage.set("listaForm", JSON.stringify(array)).then((data: any) => {
+
+        this.storage.set("historico", this.conta).then((val: any) => {
+          this.contagem = val
+          this.count= {
+            date: '',
+            time: '',
+            auto: 0,
+            motos: 0,
+            onibus: 0,
+            caminhao: 0
+          };
+          
+        });
+
+       console.log(data);
+  
       });
     });
   }
 
   contados(tipo: string){
-    return this.count[tipo];
 
+    return this.contagem[tipo];
+   
+  }
+
+  limpar(){
+    this.storage.set("listaForm", "").then(() =>{
+      this.storage.set("historico", "").then(() =>{
+        this.contagem= {
+          date: '',
+          time: '',
+          auto: 0,
+          motos: 0,
+          onibus: 0,
+          caminhao: 0
+        };
+        this.conta= {
+          date: '',
+          time: '',
+          auto: 0,
+          motos: 0,
+          onibus: 0,
+          caminhao: 0
+        };
+        this.count= {
+          date: '',
+          time: '',
+          auto: 0,
+          motos: 0,
+          onibus: 0,
+          caminhao: 0
+        };
+
+      });
+    });    
   }
 
   async enviar(){
@@ -195,24 +272,13 @@ export class Tab1Page {
           const formData = new FormData();
           formData.append("contagem", val);
         
-          this.inserir.inserirDados(formData).subscribe((data: any) => {
-            console.log(data);
+          this.inserir.inserirDados(formData).subscribe(() => {
 
-            this.storage.set("listaForm", "").then((data: any) =>{
-              this.count= {
-                date: '',
-                time: '',
-                auto: 0,
-                motos: 0,
-                onibus: 0,
-                caminhao: 0
-              };
-            });          
+            this.limpar();  
 
             this.presentToast();
             this.ocultaCarregando();
-            
-            
+                        
             this.gerar.gerarDados(formData).subscribe((data: any) => {
 
             });
