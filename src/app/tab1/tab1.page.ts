@@ -188,8 +188,8 @@ export class Tab1Page {
             minutos = this.formataZerosEsquerda(horaCompleta.getMinutes()),
             segundos = this.formataZerosEsquerda(horaCompleta.getSeconds());
 
-         date = dia + "-" + mes + "-" + ano + " ";
-         time = hora + "-" + minutos + "-" + segundos;
+         date = dia + "/" + mes + "/" + ano;
+         time = hora + ":" + minutos + ":" + segundos;
         
         
         this.count["date"] = date;
