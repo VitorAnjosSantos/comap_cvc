@@ -20,6 +20,8 @@ export class Tab1Page {
   loading: any = null;
   contagem: any;
   conta: any;
+  pesquisador: any;
+  supervisor: any;
 
   constructor(private navCtrl: NavController, 
               private storage: Storage,
@@ -227,31 +229,69 @@ export class Tab1Page {
   limpar(){
     this.storage.set("listaForm", "").then(() =>{
       this.storage.set("historico", "").then(() =>{
-        this.contagem= {
-          date: '',
-          time: '',
-          auto: 0,
-          motos: 0,
-          onibus: 0,
-          caminhao: 0
-        };
-        this.conta= {
-          date: '',
-          time: '',
-          auto: 0,
-          motos: 0,
-          onibus: 0,
-          caminhao: 0
-        };
-        this.count= {
-          date: '',
-          time: '',
-          auto: 0,
-          motos: 0,
-          onibus: 0,
-          caminhao: 0
-        };
+        this.storage.set("pesquisador", "").then(() =>{
+          this.storage.set("supervisor", "").then(() =>{
 
+            this.contagem= {
+              date: '',
+              time: '',
+              auto: 0,
+              motos: 0,
+              onibus: 0,
+              caminhao: 0
+            };
+            this.conta= {
+              date: '',
+              time: '',
+              auto: 0,
+              motos: 0,
+              onibus: 0,
+              caminhao: 0
+            };
+            this.count= {
+              date: '',
+              time: '',
+              auto: 0,
+              motos: 0,
+              onibus: 0,
+              caminhao: 0
+            };
+            });
+          });
+      });
+    });    
+  }
+
+  limparCache(){
+    this.storage.set("listaForm", "").then(() =>{
+      this.storage.set("historico", "").then(() =>{
+       
+
+            this.contagem= {
+              date: '',
+              time: '',
+              auto: 0,
+              motos: 0,
+              onibus: 0,
+              caminhao: 0
+            };
+            this.conta= {
+              date: '',
+              time: '',
+              auto: 0,
+              motos: 0,
+              onibus: 0,
+              caminhao: 0
+            };
+            this.count= {
+              date: '',
+              time: '',
+              auto: 0,
+              motos: 0,
+              onibus: 0,
+              caminhao: 0
+            };
+           
       });
     });    
   }
@@ -269,24 +309,37 @@ export class Tab1Page {
           this.ocultaCarregando();
         }
         else{
+          
+          this.storage.get("pesquisador").then((pesq)=>{
+            this.storage.get("supervisor").then((supe)=>{
+              this.pesquisador = pesq;
+              this.supervisor = supe;
+              
+            });
+          });
           const formData = new FormData();
+
+          formData.append("pesquisador", this.pesquisador);
+          formData.append("supervisor", this.supervisor);
           formData.append("contagem", val);
-        
+
           this.inserir.inserirDados(formData).subscribe(() => {
-
-            this.limpar();  
-
-            this.presentToast();
-            this.ocultaCarregando();
                         
-            this.gerar.gerarDados(formData).subscribe((data: any) => {
+            this.inserir.gerarDados(formData).subscribe((data: any) => {
+              if(data.sucesso){
+                this.limparCache();  
 
+                this.presentToast();
+                this.ocultaCarregando();
+              }else{
+                 
+                this.toastErro();
+                this.ocultaCarregando();
+                
+              }
+              
             });
 
-          }, (error) => {
-          
-            this.toastErro();
-            this.ocultaCarregando();
           });
         }
       });

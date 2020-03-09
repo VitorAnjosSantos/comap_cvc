@@ -6,16 +6,23 @@
 
     include("./conexao.php");
 
+	$id = $_POST['id'];
     
-		$sql = 'SELECT * FROM tb_veiculos';				
-		$result = mysqli_query($conexao,$sql); 
-		$resultadoDaConsulta = $result; 
+	$sql = "SELECT pesquisador, supervisor, auto, motos, onibus, caminhao, date, time FROM tb_veiculos v 
+			JOIN tb_usuarios u
+			ON v.tb_usuarios_id_usuario = u.id_usuario
+			WHERE u.id_usuario = {$id}";	
+
+	$result = mysqli_query($conexao,$sql); 
+	$resultadoDaConsulta = $result; 
 	
 	if ($resultadoDaConsulta) {
 			
 			// Gera arquivo CSV
 		$fp = fopen("planilha.csv", "w +"); // o "a" indica que o arquivo será sobrescrito sempre que esta função for executada.
-		$escreve = fwrite($fp, "Data,Hora,Auto,Motos,Onibus,Caminhao");
+		$escreve = fwrite($fp, "Pesquisador,Supervisor,Data,Hora,Auto,Motos,Onibus,Caminhao");
+		$pesquisador = "";
+		$supervisor = "";
 		$data = "";
 		$hora = "";
 		$date = '';
@@ -27,8 +34,10 @@
 
 		foreach($resultadoDaConsulta as $registro) 
 			{ 		  			
-				$escreve = fwrite($fp, "\n$registro[date],$registro[time],$registro[auto],$registro[motos],$registro[onibus],$registro[caminhao]");			  
+				$escreve = fwrite($fp, "\n $registro[pesquisador],$registro[supervisor],$registro[date],$registro[time],$registro[auto],$registro[motos],$registro[onibus],$registro[caminhao]");			  
 				
+				$pesquisador = $registro["pesquisador"];
+				$supervisor = $registro["supervisor"];
 				$date = $registro["date"];
 				$time = $registro["time"];
 				$auto = $registro['auto'];
@@ -58,7 +67,7 @@
 		 $dia= "D:".DIRECTORY_SEPARATOR;
 		// $horas= substr($StringJson, 16 , 8);
 		  $dia .= $data. '_'. $hora.".xls";
-		  echo $dia;
+		  
 
     
     //salva csv

@@ -3,6 +3,7 @@ import { Component} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NavController, AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-cadastrar',
@@ -11,6 +12,8 @@ import { ToastController } from '@ionic/angular';
 })
 export class CadastrarPage {
   
+  pesquisador: any;
+  supervisor: any;
 
   formCadastrar = new FormGroup({
     pesquisador: new FormControl('', Validators.required),
@@ -18,7 +21,12 @@ export class CadastrarPage {
 
   });
 
-  constructor(private toastCtrl: ToastController, private cadastrarService: CadastrarService, private alertCtrl: AlertController, private navCtrl: NavController) { }
+  constructor(private toastCtrl: ToastController, 
+              private cadastrarService: CadastrarService, 
+              private alertCtrl: AlertController, 
+              private navCtrl: NavController,
+              private storage: Storage
+              ) { }
 
   async alerta() {
     const alerta = await this.alertCtrl.create({
@@ -44,7 +52,7 @@ export class CadastrarPage {
     
   }
 
-  async pesquisador() {
+  async pesqui() {
     const conexao = await this.alertCtrl.create({
       header: 'Atençâo!',
       subHeader: 'Erro!',
@@ -66,6 +74,15 @@ export class CadastrarPage {
 
   cadastrar(dadosCadastro: any) {
 
+    this.storage.set("pesquisador", dadosCadastro.pesquisador).then((val)=>{
+
+      this.pesquisador = val;
+
+        this.storage.set("supervisor", dadosCadastro.supervisor).then((val)=>{
+          this.supervisor = val;
+        });
+    });
+    
     const formData = new FormData();
     formData.append("pesquisador", dadosCadastro.pesquisador);
     formData.append("supervisor", dadosCadastro.supervisor);
@@ -89,7 +106,7 @@ export class CadastrarPage {
       }
 
       if(data.pesquisador === false){
-        console.log(this.pesquisador());
+        console.log(this.pesqui());
       }
     
     });

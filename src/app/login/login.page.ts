@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoginService } from '../services/logar/login.service';
 import { NavController, AlertController } from '@ionic/angular';
-
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-login',
@@ -10,14 +10,17 @@ import { NavController, AlertController } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage{
-  
 
   formLogin = new FormGroup({
     pesquisador: new FormControl('', Validators.required),
     supervisor: new FormControl('', Validators.required)
   });
 
-  constructor(private alertCtrl: AlertController, private loginService: LoginService, private navCtrl: NavController) { 
+  constructor(private alertCtrl: AlertController,
+              private loginService: LoginService, 
+              private navCtrl: NavController,
+              private storage: Storage,
+              ) { 
     
   }
 
@@ -36,23 +39,18 @@ export class LoginPage{
 
   login(dadosLogin: any) {
 
-    const formData = new FormData();
-    formData.append("pesquisador", dadosLogin.pesquisador);
-    formData.append("supervisor", dadosLogin.supervisor);
+    this.storage.set("pesquisador", dadosLogin.pesquisador).then(()=>{
 
-    this.loginService.postLogin(formData).subscribe((data: any) => {
-      console.log(data);
+      this.storage.set("supervisor", dadosLogin.pesquisador).then(()=>{
 
-      if (data.sucesso) {
-        
-          this.navCtrl.navigateRoot("/tabs/tab1");
-       
-      }
-      else{
+        this.navCtrl.navigateRoot("/tabs/tab1");
+
+      }, (error) => {
+          
         console.log(this.presentAlert());
-      }
-
+      });
     });
+
   }
 
   cadastrar(){

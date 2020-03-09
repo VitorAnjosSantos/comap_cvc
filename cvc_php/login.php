@@ -2,7 +2,7 @@
 
 header('Access-Control-Allow-Origin: *');
 
-//session_start();
+session_start();
 
 include('./conexao.php');
 
@@ -15,12 +15,14 @@ $query = "SELECT id_usuario, pesquisador FROM tb_usuarios
 $result = mysqli_query($conexao,$query);
 
 $row = mysqli_num_rows($result);
+$dados_usuario = mysqli_fetch_assoc($result);
+$_SESSION["id"] = $dados_usuario['id_usuario'];
 
 if($row > 0 ){
 
-    // $dados_usuario = mysqli_fetch_assoc($result);
-    // $_SESSION["id"] = $dados_usuario['id_usuario'];
-    echo '{"sucesso": true}';
+     
+     $id = $_SESSION["id"];
+    echo '{"sucesso": true, "id": "'.$id.'"}';
 }
 else{
     echo '{"sucesso": false}';

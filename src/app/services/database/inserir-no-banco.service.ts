@@ -15,5 +15,9 @@ export class InserirNoBancoService {
     
   }
 
+  gerarDados(dados: any){
+    return this.http.post(this.url + '/excel.php', dados);
+    
+  }
   
 }
