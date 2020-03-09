@@ -43,8 +43,11 @@
 			 	'"' . $onibus . '",';	
 				'"' . $caminhao . '"';
 
-				$data= $date;
-				$hora = $time;
+				$dateCorrigida = str_replace("/","-", $date );
+				$timeCorrigido = str_replace(":","-", $time );
+
+				$data= $dateCorrigida;
+				$hora = $timeCorrigido;
 		      }
 		
 		// Exibe o vettor JSON

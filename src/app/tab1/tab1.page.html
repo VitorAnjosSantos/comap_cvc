@@ -20,29 +20,29 @@
       
       <ion-col>          
         <ion-button name="motos" block class="div"  (click)="contador('motos')" color="vermelho">
-          Motos <br> ({{contados('motos')}})    
+           Motos <br> ({{contados('motos')}})
         </ion-button>  
       </ion-col>
   
       <ion-col>
           <ion-button name="onibus" class="div" (click)="contador('onibus')" color="laranja">  
-            Onibus <br> ({{contados('onibus')}})
+             Onibus <br> ({{contados('onibus')}}) 
           </ion-button>
       </ion-col>
     
       <ion-col>
         <ion-button name="caminhao" class="div" (click)="contador('caminhao')" color="verde">
-          Caminhao <br> ({{contados('caminhao')}})
+           Caminhao <br> ({{contados('caminhao')}}) 
         </ion-button>
       </ion-col>
     
     </ion-row> 
 
-    <ion-button style="width: 100px; height: 50px;" (click)="limpar()" color='danger'>
+    <!-- <ion-button style="width: 100px; height: 50px;" (click)="limpar()" color='danger'>
       Limpar
-    </ion-button>
+    </ion-button> -->
 
-    <ion-button style="width: 100px; height: 50px;" (click)="enviar()" color='success'>
+    <ion-button style="width: 100px; height: 50px;" (click)="alertaEnviar()" color='success'>
       Enviar
     </ion-button>
     

@@ -5,6 +5,7 @@ import { LoadingController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { InserirNoBancoService } from '../services/database/inserir-no-banco.service';
 import { GerarPlanilhaService } from '../services/api/gerar-planilha.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -17,16 +18,19 @@ export class Tab1Page {
   listaForm: any;
   localdate: any;
   loading: any = null;
+  contagem: any;
+  conta: any;
 
   constructor(private navCtrl: NavController, 
               private storage: Storage,
               private inserir: InserirNoBancoService,
               private gerar: GerarPlanilhaService,
               public loadingController: LoadingController,
-              private toastController: ToastController
+              private toastController: ToastController,
+              private alertController: AlertController
             ) {
 
-    this.count= {
+   this.count= {
       date: '',
       time: '',
       auto: 0,
@@ -34,7 +38,6 @@ export class Tab1Page {
       onibus: 0,
       caminhao: 0,
       
-
       /* 
       auto: 0,
       utilitario: 0,
@@ -78,6 +81,56 @@ export class Tab1Page {
 
     };
 
+    this.contagem = this.count;
+    this.conta = this.count;
+
+    this.storage.get("listaForm").then((val: any) => {
+      if(val !== null){
+        console.log('Lista ja existe');
+      }else{
+        this.storage.set("listaForm", "").then(() => { 
+        });
+      }
+    });
+
+    this.storage.get("historico").then((val: any) => {
+      if (val) {
+        this.contagem = val;
+        this.conta = val;
+        
+      }else{
+        this.storage.set("historico", this.count).then((val: any) => {
+          this.contagem = val;
+          
+        });
+      }
+      
+    });     
+    
+  }
+
+  async alertaEnviar() {
+    const alert = await this.alertController.create({
+      header: 'Alerta!!',
+      message: '<strong>Deseja realmente enviar os dados de contagem?</strong>',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Envio cancelado');
+          }
+        }, {
+          text: 'Enviar',
+          handler: () => {
+            this.enviar();
+          }
+        }
+      ]
+    });
+
+    return alert.present();
   }
 
   formataZerosEsquerda(valor: number) {
@@ -102,75 +155,52 @@ export class Tab1Page {
      
     });
     toastErro.present();
-  }
-  
+  } 
+
   contador(tipo: string){
-    this.count[tipo]++;  
+
+    if(this.count[tipo] == 0 && this.conta[tipo] == 0 ){
+      this.count[tipo]++;
+      this.conta[tipo] = this.count[tipo];
+    }else{
+      this.count[tipo]++;
+      this.conta[tipo]++;
+    }
+    
     this.storage.get("listaForm").then((val: any) => {
       let array: any[] = [];
 
       if (val !== "") {
         array = array.concat(JSON.parse(val));
+         
       }
 
-      let date: any;
+        let date: any;
         let time: any;
 
         let dataCompleta = new Date(),
             horaCompleta = new Date();
 
         let dia = this.formataZerosEsquerda(dataCompleta.getDate()),
-         mes = this.formataZerosEsquerda((dataCompleta.getMonth() + 1)),
-         ano = dataCompleta.getFullYear(),
-         hora = this.formataZerosEsquerda(horaCompleta.getHours()),   
-         minutos = this.formataZerosEsquerda(horaCompleta.getMinutes()),
-         segundos = this.formataZerosEsquerda(horaCompleta.getSeconds());
+            mes = this.formataZerosEsquerda((dataCompleta.getMonth() + 1)),
+            ano = dataCompleta.getFullYear(),
+            hora = this.formataZerosEsquerda(horaCompleta.getHours()),   
+            minutos = this.formataZerosEsquerda(horaCompleta.getMinutes()),
+            segundos = this.formataZerosEsquerda(horaCompleta.getSeconds());
 
-         date = dia + "-" + mes + "-" + ano + " ";
-         time = hora + "-" + minutos + "-" + segundos;
+         date = dia + "/" + mes + "/" + ano;
+         time = hora + ":" + minutos + ":" + segundos;
         
         
         this.count["date"] = date;
         this.count["time"] = time;
       
-      array.push(this.count);
+        array.push(this.count);
 
-      this.storage.set("listaForm", JSON.stringify(array)).then((data: any) => {
-        
-        
-        alert(data);
-        console.log(data);
-      });
-    });
-  }
+       this.storage.set("listaForm", JSON.stringify(array)).then((data: any) => {
 
-  contados(tipo: string){
-    return this.count[tipo];
-
-  }
-
-  limpar(){
-    this.storage.set("listaForm", "").then((data: any) =>{
-      alert("Contagem vazia");
-    });
-
-  }
-
-  async enviar(){
-    //setInterval(() => { 
-    await this.mostraCarregando();
-   
-      this.storage.get("listaForm").then((val: any) => {
-
-        const formData = new FormData();
-        formData.append("contagem", val);
-       
-         this.inserir.inserirDados(formData).subscribe((data: any) => {
-          console.log(data);
-
-          this.presentToast();
-          this.ocultaCarregando();
-
+        this.storage.set("historico", this.conta).then((val: any) => {
+          this.contagem = val
           this.count= {
             date: '',
             time: '',
@@ -180,16 +210,85 @@ export class Tab1Page {
             caminhao: 0
           };
           
-          this.gerar.gerarDados(formData).subscribe((data: any) => {
-
-          });
-
-         }, (error) => {
-        
-          this.toastErro();
-          this.ocultaCarregando();
         });
 
+       console.log(data);
+  
+      });
+    });
+  }
+
+  contados(tipo: string){
+
+    return this.contagem[tipo];
+   
+  }
+
+  limpar(){
+    this.storage.set("listaForm", "").then(() =>{
+      this.storage.set("historico", "").then(() =>{
+        this.contagem= {
+          date: '',
+          time: '',
+          auto: 0,
+          motos: 0,
+          onibus: 0,
+          caminhao: 0
+        };
+        this.conta= {
+          date: '',
+          time: '',
+          auto: 0,
+          motos: 0,
+          onibus: 0,
+          caminhao: 0
+        };
+        this.count= {
+          date: '',
+          time: '',
+          auto: 0,
+          motos: 0,
+          onibus: 0,
+          caminhao: 0
+        };
+
+      });
+    });    
+  }
+
+  async enviar(){
+    //setInterval(() => { 
+     
+    await this.mostraCarregando();
+   
+      this.storage.get("listaForm").then((val: any) => {
+
+        if(val == ""){
+          alert("Contagem vazia!!! \nCertifique-se de realizar uma contagem!!");
+          this.toastErro();
+          this.ocultaCarregando();
+        }
+        else{
+          const formData = new FormData();
+          formData.append("contagem", val);
+        
+          this.inserir.inserirDados(formData).subscribe(() => {
+
+            this.limpar();  
+
+            this.presentToast();
+            this.ocultaCarregando();
+                        
+            this.gerar.gerarDados(formData).subscribe((data: any) => {
+
+            });
+
+          }, (error) => {
+          
+            this.toastErro();
+            this.ocultaCarregando();
+          });
+        }
       });
        
   // }, 10000);        
