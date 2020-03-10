@@ -4,7 +4,7 @@ header('Access-Control-Allow-Origin: *');
 
 session_start();
 
-include('./conexao.php');
+include('./conexao_usuario.php');
 
 $pesquisador = $_POST["pesquisador"];
 $supervisor = $_POST["supervisor"];

@@ -39,9 +39,9 @@ export class LoginPage{
 
   login(dadosLogin: any) {
 
-    this.storage.set("pesquisador", dadosLogin.pesquisador).then(()=>{
+    this.storage.set("pesquisador", dadosLogin.pesquisador).then((val)=>{
 
-      this.storage.set("supervisor", dadosLogin.pesquisador).then(()=>{
+      this.storage.set("supervisor", dadosLogin.supervisor).then((data)=>{
 
         this.navCtrl.navigateRoot("/tabs/tab1");
 

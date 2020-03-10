@@ -2,7 +2,7 @@
     header('Access-Control-Allow-Origin: *');
     //header("Access-Control-Allow-Headers: Content-Type");
     //header('Content-Type: application/json');
-    include("./conexao.php");
+    include("./conexao_usuario.php");
 
     $pesquisador = $_POST["pesquisador"];
     $supervisor = $_POST["supervisor"];
@@ -12,6 +12,7 @@
 
     $dados= false;
     $id = "";
+
 
     if($conexao){
     
@@ -41,30 +42,33 @@
     }
 
 	
-    
-    $dados = array("id"=>$id);
- 
-    //URL para onde vai ser enviado nosso POST
-    $url = "http://ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php/excel.php";
-    
-    // Aqui inicio a função CURL
-    $curl = curl_init();
-    //aqu eu pego a URL para onde será enviado o POST
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_HEADER, 0);
-    curl_setopt($curl, CURLOPT_POST, 1);
-    //aqui eu pego os dados para enviar via POST
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
-    curl_exec($curl);
-    curl_close($curl);
-
     if($resultado){
+        $dados = array("id"=>$id);
+ 
+        //URL para onde vai ser enviado nosso POST
+        $url = "http://ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php/excel_usuario.php";
+        
+        // Aqui inicio a função CURL
+        $curl = curl_init();
+        //aqu eu pego a URL para onde será enviado o POST
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        //aqui eu pego os dados para enviar via POST
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
+        curl_exec($curl);
+        curl_close($curl);
+
         echo '{"sucesso": true}';
         //print_r($contagem);
 
     }
     else{
         echo'{"sucesso": false}';
-	}
+    }
+    
+   
+
+    
         
 ?>

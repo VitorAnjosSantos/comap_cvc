@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { LoadingController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { InserirNoBancoService } from '../services/database/inserir-no-banco.service';
-import { GerarPlanilhaService } from '../services/api/gerar-planilha.service';
+//import { GerarPlanilhaService } from '../services/api/gerar-planilha.service';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -26,7 +26,7 @@ export class Tab1Page {
   constructor(private navCtrl: NavController, 
               private storage: Storage,
               private inserir: InserirNoBancoService,
-              private gerar: GerarPlanilhaService,
+              //private gerar: GerarPlanilhaService,
               public loadingController: LoadingController,
               private toastController: ToastController,
               private alertController: AlertController
@@ -315,32 +315,30 @@ export class Tab1Page {
               this.pesquisador = pesq;
               this.supervisor = supe;
               
+              const formData = new FormData();
+
+              formData.append("pesquisador", this.pesquisador);
+              formData.append("supervisor", this.supervisor);
+              formData.append("contagem", val);
+
+              this.inserir.inserirDados(formData).subscribe((data: any) => {
+
+                if(data.sucesso){
+                  this.limparCache();  
+
+                  this.presentToast();
+                  this.ocultaCarregando();
+                }else{
+                  
+                  this.toastErro();
+                  this.ocultaCarregando();
+                  
+                }
+
+              });
             });
           });
-          const formData = new FormData();
-
-          formData.append("pesquisador", this.pesquisador);
-          formData.append("supervisor", this.supervisor);
-          formData.append("contagem", val);
-
-          this.inserir.inserirDados(formData).subscribe(() => {
-                        
-            this.inserir.gerarDados(formData).subscribe((data: any) => {
-              if(data.sucesso){
-                this.limparCache();  
-
-                this.presentToast();
-                this.ocultaCarregando();
-              }else{
-                 
-                this.toastErro();
-                this.ocultaCarregando();
-                
-              }
-              
-            });
-
-          });
+          
         }
       });
        

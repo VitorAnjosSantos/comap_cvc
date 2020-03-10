@@ -11,12 +11,12 @@ export class InserirNoBancoService {
   constructor(public http: HttpClient) { }
 
   inserirDados(dados: any){
-    return this.http.post(this.url + '/inserir.php', dados);
+    return this.http.post(this.url + '/inserir_usuario.php', dados);
     
   }
 
   gerarDados(dados: any){
-    return this.http.post(this.url + '/excel.php', dados);
+    return this.http.post(this.url + '/excel_usuario.php', dados);
     
   }
   

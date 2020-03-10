@@ -11,7 +11,7 @@ url: string="http://ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php";
   constructor(public http: HttpClient) { }
 
   gerarDados(dados: any){
-    return this.http.post(this.url + '/excel.php', dados);
+    return this.http.post(this.url + '/excel_usuario.php', dados);
     
   }
 }

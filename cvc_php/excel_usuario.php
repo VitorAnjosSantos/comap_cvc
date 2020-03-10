@@ -4,7 +4,7 @@
     //header("Access-Control-Allow-Headers: Content-Type");
     //header('Content-Type: application/json');
 
-    include("./conexao.php");
+    include("./conexao_usuario.php");
 
 	$id = $_POST['id'];
     
@@ -57,7 +57,7 @@
 
 				$data= $dateCorrigida;
 				$hora = $timeCorrigido;
-		      }
+			}
 		
 		// Exibe o vettor JSON
 		
