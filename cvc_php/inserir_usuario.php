@@ -4,6 +4,7 @@
     //header('Content-Type: application/json');
     include("./conexao_usuario.php");
 
+    $idDevice = $_POST["idDevice"];
     $pesquisador = $_POST["pesquisador"];
     $supervisor = $_POST["supervisor"];
     $json = $_POST["contagem"];
@@ -43,7 +44,7 @@
 
 	
     if($resultado){
-        $dados = array("id"=>$id);
+        $dados = array("id"=>$id, "idDevice"=>$idDevice);
  
         //URL para onde vai ser enviado nosso POST
         $url = "http://ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php/excel_usuario.php";

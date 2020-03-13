@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoginService } from '../services/logar/login.service';
 import { NavController, AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 
 @Component({
   selector: 'app-login',
@@ -16,11 +17,20 @@ export class LoginPage{
     supervisor: new FormControl('', Validators.required)
   });
 
+  idDevice: any;
+
+
   constructor(private alertCtrl: AlertController,
               private loginService: LoginService, 
               private navCtrl: NavController,
               private storage: Storage,
+              private uniqueDeviceID: UniqueDeviceID
+
               ) { 
+
+    this.uniqueDeviceID.get().then((uuid: any) => {
+      this.idDevice = uuid;
+    }).catch((error: any) => navigator['app'].exitApp());
     
   }
 
@@ -38,17 +48,30 @@ export class LoginPage{
   }
 
   login(dadosLogin: any) {
+    this.storage.set("idDevice", this.idDevice).then(()=>{
 
-    this.storage.set("pesquisador", dadosLogin.pesquisador).then((val)=>{
+      this.storage.set("pesquisador", dadosLogin.pesquisador).then(()=>{
 
-      this.storage.set("supervisor", dadosLogin.supervisor).then((data)=>{
+        this.storage.set("supervisor", dadosLogin.supervisor).then(()=>{
 
-        this.navCtrl.navigateRoot("/tabs/tab1");
+          this.storage.get("pesquisador").then((val) => {
+            this.storage.get("supervisor").then((data) => {
 
-      }, (error) => {
+              if(data == "" || val == ""){
+                console.log(this.presentAlert());
+              }else[
+                this.navCtrl.navigateRoot("/tabs/tab1")
+              ]
+            });
+
+          });
+        });
           
-        console.log(this.presentAlert());
-      });
+
+        });
+    }, (error) => {
+          
+      console.log(this.presentAlert());
     });
 
   }

@@ -14,6 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
+
 //import { SQLite } from '@ionic-native/sqlite/ngx';
 //import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 //import { DatabaseService } from './services/database/database.service';
@@ -29,7 +31,8 @@ import { AppComponent } from './app.component';
     GerarPlanilhaService,
     InserirNoBancoService,
     LoginService,
-    CadastrarService
+    CadastrarService,
+    UniqueDeviceID
     //DatabaseService,
     //SQLite,
     //SQLitePorter

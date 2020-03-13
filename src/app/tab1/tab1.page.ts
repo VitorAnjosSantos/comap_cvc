@@ -29,9 +29,9 @@ export class Tab1Page {
               //private gerar: GerarPlanilhaService,
               public loadingController: LoadingController,
               private toastController: ToastController,
-              private alertController: AlertController
+              private alertController: AlertController,
             ) {
-
+            
    this.count= {
       date: '',
       time: '',
@@ -309,38 +309,50 @@ export class Tab1Page {
           this.ocultaCarregando();
         }
         else{
-          
-          this.storage.get("pesquisador").then((pesq)=>{
-            this.storage.get("supervisor").then((supe)=>{
-              this.pesquisador = pesq;
-              this.supervisor = supe;
+
+            
+          this.storage.get("idDevice").then((id)=>{
+            this.storage.get("pesquisador").then((pesq)=>{
+              this.storage.get("supervisor").then((supe)=>{
+                  this.pesquisador = pesq;
+                  this.supervisor = supe;
+                  
+                  const formData = new FormData();
+
+                  formData.append("pesquisador", this.pesquisador);
+                  formData.append("supervisor", this.supervisor);
+                  formData.append("contagem", val);
+                  formData.append("idDevice", id);
+
+                  this.inserir.inserirDados(formData).subscribe((data: any) => {
+
+                    if(data.sucesso){
+                      this.limparCache();  
+
+                      this.presentToast();
+                      this.ocultaCarregando();
+                    }else{
+                      
+                      this.toastErro();
+                      this.ocultaCarregando();
+                      
+                    }
+
+                  }, (error) => {
               
-              const formData = new FormData();
+                    this.toastErro();
+                    this.ocultaCarregando();
+                  });
 
-              formData.append("pesquisador", this.pesquisador);
-              formData.append("supervisor", this.supervisor);
-              formData.append("contagem", val);
+                });
 
-              this.inserir.inserirDados(formData).subscribe((data: any) => {
-
-                if(data.sucesso){
-                  this.limparCache();  
-
-                  this.presentToast();
-                  this.ocultaCarregando();
-                }else{
-                  
-                  this.toastErro();
-                  this.ocultaCarregando();
-                  
-                }
-
-              });
             });
+            
           });
           
         }
-      });
+    });      
+
        
   // }, 10000);        
   }
