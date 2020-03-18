@@ -15,6 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
+
 
 //import { SQLite } from '@ionic-native/sqlite/ngx';
 //import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
@@ -32,7 +34,8 @@ import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
     InserirNoBancoService,
     LoginService,
     CadastrarService,
-    UniqueDeviceID
+    UniqueDeviceID,
+    NativeAudio
     //DatabaseService,
     //SQLite,
     //SQLitePorter
