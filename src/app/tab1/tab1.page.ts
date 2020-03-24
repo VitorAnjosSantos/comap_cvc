@@ -324,15 +324,15 @@ export class Tab1Page implements OnInit {
           this.storage.get("idDevice").then((id)=>{
             this.storage.get("pesquisador").then((pesq)=>{
               this.storage.get("supervisor").then((supe)=>{
-                  this.pesquisador = pesq;
-                  this.supervisor = supe;
+                this.storage.get("posto").then((posto)=>{
                   
                   const formData = new FormData();
 
-                  formData.append("pesquisador", this.pesquisador);
-                  formData.append("supervisor", this.supervisor);
+                  formData.append("pesquisador", pesq);
+                  formData.append("supervisor", supe);
                   formData.append("contagem", val);
                   formData.append("idDevice", id);
+                  formData.append("posto", posto);
 
                   this.inserir.inserirDados(formData).subscribe((data: any) => {
 
@@ -355,7 +355,7 @@ export class Tab1Page implements OnInit {
                   });
 
                 });
-
+              });
             });
             
           });

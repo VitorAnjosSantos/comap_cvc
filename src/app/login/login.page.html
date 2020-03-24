@@ -10,15 +10,26 @@
 <ion-content padding>
   
   <form [formGroup]="formLogin" class="formLogin">
+
   <ion-item>
     <ion-label floating>Pesquisador: </ion-label>
-    <ion-input formControlName="pesquisador" type="pesquisador" name="pesquisador"></ion-input>
+    <ion-input formControlName="pesquisador" type="text" name="pesquisador"></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label floating>Supervisor: </ion-label>
-    <ion-input formControlName="supervisor" type="supervisor" name="supervisor"></ion-input>
+    <ion-input formControlName="supervisor" type="text" name="supervisor"></ion-input>
   </ion-item>
+
+  <ion-item>
+    <ion-label floating>Posto</ion-label>
+    <ion-select formControlName="posto" placeholder="Selecione o posto">
+      <ion-select-option value="P01">P01</ion-select-option>
+      <ion-select-option value="P02">P02</ion-select-option>
+      <ion-select-option value="P03">P03</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
 
   <div style="text-align: center">
 
@@ -27,7 +38,7 @@
     <ion-button (click)="login(formLogin.value)" type='submit' color="success" round name="entrar">Entrar</ion-button>    
   
   </div>
-  
+
   </form>  
 
 </ion-content>

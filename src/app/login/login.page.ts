@@ -14,11 +14,11 @@ export class LoginPage{
 
   formLogin = new FormGroup({
     pesquisador: new FormControl('', Validators.required),
-    supervisor: new FormControl('', Validators.required)
+    supervisor: new FormControl('', Validators.required),
+    posto: new FormControl('', Validators.required)
   });
-
+ 
   idDevice: any;
-
 
   constructor(private alertCtrl: AlertController,
               private loginService: LoginService, 
@@ -48,22 +48,26 @@ export class LoginPage{
   }
 
   login(dadosLogin: any) {
+
+   
+    alert(dadosLogin.posto);
     this.storage.set("idDevice", this.idDevice).then(()=>{
 
       this.storage.set("pesquisador", dadosLogin.pesquisador).then(()=>{
 
         this.storage.set("supervisor", dadosLogin.supervisor).then(()=>{
+          this.storage.set("posto", dadosLogin.posto).then(()=>{
+            this.storage.get("pesquisador").then((val) => {
+              this.storage.get("supervisor").then((data) => {
 
-          this.storage.get("pesquisador").then((val) => {
-            this.storage.get("supervisor").then((data) => {
+                if(data == "" || val == ""){
+                  console.log(this.presentAlert());
+                }else[
+                  this.navCtrl.navigateRoot("/tabs/tab1")
+                ]
+              });
 
-              if(data == "" || val == ""){
-                console.log(this.presentAlert());
-              }else[
-                this.navCtrl.navigateRoot("/tabs/tab1")
-              ]
             });
-
           });
         });
           

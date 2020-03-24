@@ -8,6 +8,7 @@
     $pesquisador = $_POST["pesquisador"];
     $supervisor = $_POST["supervisor"];
     $json = $_POST["contagem"];
+    $posto = $_POST["posto"];
 
     $contagem = json_decode($json);
 
@@ -44,7 +45,7 @@
 
 	
     if($resultado){
-        $dados = array("id"=>$id, "idDevice"=>$idDevice);
+        $dados = array("id"=>$id, "idDevice"=>$idDevice, "posto"=>$posto);
  
         //URL para onde vai ser enviado nosso POST
         $url = "http://ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php/excel_usuario.php";

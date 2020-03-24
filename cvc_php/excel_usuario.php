@@ -8,6 +8,8 @@
 
 	$id = $_POST['id'];
 	$idDevice = $_POST["idDevice"];
+	$posto = $_POST["posto"];
+
 
 	$sql = "SELECT pesquisador, supervisor, auto, motos, onibus, caminhao, date, time FROM tb_veiculos v 
 			JOIN tb_usuarios u
@@ -67,7 +69,7 @@
 		// $date = substr($StringJson, 2 , 10);
 		 $dia= "D:".DIRECTORY_SEPARATOR;
 		// $horas= substr($StringJson, 16 , 8);
-		  $dia .= $data. '_'. $hora.'_'. $idDevice.".xls";
+		  $dia .= $posto. '_' . $data. '_'. $hora.'_'. $idDevice.".xls";
 		  
 
     
