@@ -349,9 +349,9 @@ export class Tab1Page implements OnInit {
                     }
 
                   }, (error) => {
-              
-                    this.toastErro();
-                    this.ocultaCarregando();
+                    alert("erro");
+                     this.toastErro();
+                     this.ocultaCarregando();
                   });
 
                 });

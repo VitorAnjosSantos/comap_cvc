@@ -50,21 +50,21 @@ export class LoginPage{
   login(dadosLogin: any) {
 
    
-    alert(dadosLogin.posto);
+    
     this.storage.set("idDevice", this.idDevice).then(()=>{
 
-      this.storage.set("pesquisador", dadosLogin.pesquisador).then(()=>{
+      this.storage.set("pesquisador", dadosLogin.pesquisador.toLowerCase()).then(()=>{
 
-        this.storage.set("supervisor", dadosLogin.supervisor).then(()=>{
-          this.storage.set("posto", dadosLogin.posto).then(()=>{
+        this.storage.set("supervisor", dadosLogin.supervisor.toLowerCase()).then(()=>{
+          this.storage.set("posto", dadosLogin.posto).then((posto)=>{
             this.storage.get("pesquisador").then((val) => {
               this.storage.get("supervisor").then((data) => {
 
-                if(data == "" || val == ""){
+                if(data == "" || val == "" || posto == ""){
                   console.log(this.presentAlert());
-                }else[
+                }else{
                   this.navCtrl.navigateRoot("/tabs/tab1")
-                ]
+                }
               });
 
             });

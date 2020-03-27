@@ -7,14 +7,15 @@
     include("./conexao_usuario.php");
 
 	$id = $_POST['id'];
-	$idDevice = $_POST["idDevice"];
 	$posto = $_POST["posto"];
-
+	//$pesquisador = $_POST["pesquisador"];
 
 	$sql = "SELECT pesquisador, supervisor, auto, motos, onibus, caminhao, date, time FROM tb_veiculos v 
 			JOIN tb_usuarios u
 			ON v.tb_usuarios_id_usuario = u.id_usuario
 			WHERE u.id_usuario = {$id}";	
+
+	$idDevice = "SELECT idDevice FROM tb_usuarios WHERE id_usuario = {$id}";
 
 	$result = mysqli_query($conexao,$sql); 
 	$resultadoDaConsulta = $result; 
@@ -69,7 +70,7 @@
 		// $date = substr($StringJson, 2 , 10);
 		 $dia= "D:".DIRECTORY_SEPARATOR;
 		// $horas= substr($StringJson, 16 , 8);
-		  $dia .= $posto. '_' . $data. '_'. $hora.'_'. $idDevice.".xls";
+		  $dia .= $posto. '_'.$data. '_'.$hora.'_'.$idDevice.".xls";
 		  
 
     

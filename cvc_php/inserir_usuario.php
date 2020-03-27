@@ -20,7 +20,7 @@
     
         $dados= true;
             
-        $query= "INSERT INTO tb_usuarios (pesquisador,supervisor) VALUES ('".$pesquisador."','".$supervisor."')";        
+        $query= "INSERT INTO tb_usuarios (pesquisador,supervisor,posto,idDevice) VALUES ('{$pesquisador}','{$supervisor}','{$posto}','{$idDevice}')";        
         $result= mysqli_query($conexao,$query);
 
         if($result){
@@ -45,7 +45,7 @@
 
 	
     if($resultado){
-        $dados = array("id"=>$id, "idDevice"=>$idDevice, "posto"=>$posto);
+        $dados = array("id"=>$id, "idDevice"=>$idDevice, "posto"=>$posto, "pesquisador"=>$pesquisador);
  
         //URL para onde vai ser enviado nosso POST
         $url = "http://ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php/excel_usuario.php";
