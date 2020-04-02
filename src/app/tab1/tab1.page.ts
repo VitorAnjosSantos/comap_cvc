@@ -132,21 +132,17 @@ export class Tab1Page implements OnInit {
         array = array.concat(JSON.parse(val));
         
       }
-
-      this.ocorrencia[tipo]= tipo;
-
-      console.log(this.ocorrencia[tipo]);
       
-      if(this.ocorrencia.tipo == true){
-          this.ocorrencia.tipo = false;
+      if(this.ocorrencia[0][tipo] == true){
+        this.ocorrencia[0][tipo] = false;
           this.count[tipo] = 'NÃO';
           array.push(this.count);
-          console.log(this.ocorrencia.tipo);
+          //console.log(JSON.stringify(this.ocorrencia));
         }else{
-          this.ocorrencia.tipo = true;
+          this.ocorrencia[0][tipo] = true;
           this.count[tipo] = 'SIM';
           array.push(this.count);
-          console.log(this.ocorrencia.tipo);
+          //console.log(JSON.stringify(this.ocorrencia));
         }
         
         
