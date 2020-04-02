@@ -7,10 +7,9 @@
     include("./conexao_usuario.php");
 
 	$id = $_POST['id'];
-	$posto = $_POST["posto"];
 	//$pesquisador = $_POST["pesquisador"];
 
-	$sql = "SELECT pesquisador, supervisor, auto, motos, onibus, caminhao, date, time FROM tb_veiculos v 
+	$sql = "SELECT * FROM tb_veiculos v 
 			JOIN tb_usuarios u
 			ON v.tb_usuarios_id_usuario = u.id_usuario
 			WHERE u.id_usuario = {$id}";	
@@ -24,37 +23,18 @@
 			
 			// Gera arquivo CSV
 		$fp = fopen("planilha.csv", "w +"); // o "a" indica que o arquivo será sobrescrito sempre que esta função for executada.
-		$escreve = fwrite($fp, "Pesquisador,Supervisor,Data,Hora,Auto,Motos,Onibus,Caminhao");
-		$pesquisador = "";
-		$supervisor = "";
+		$escreve = fwrite($fp, "Pesquisador,Supervisor,Data,Hora,Auto,Motos,Onibus,Caminhao,Transito,Siga e Pare,Chuva ");
 		$data = "";
 		$hora = "";
 		$date = '';
 		$time = '';
-		$auto = '';
-		$motos = '';
-		$onibus = '';
-		$caminhao = '';
 
 		foreach($resultadoDaConsulta as $registro) 
 			{ 		  			
-				$escreve = fwrite($fp, "\n $registro[pesquisador],$registro[supervisor],$registro[date],$registro[time],$registro[auto],$registro[motos],$registro[onibus],$registro[caminhao]");			  
+				$escreve = fwrite($fp, "\n $registro[pesquisador],$registro[supervisor],$registro[date],$registro[time],$registro[auto],$registro[motos],$registro[onibus],$registro[caminhao],$registro[transito],$registro[sigapare],$registro[chuva]");			  
 				
-				$pesquisador = $registro["pesquisador"];
-				$supervisor = $registro["supervisor"];
 				$date = $registro["date"];
 				$time = $registro["time"];
-				$auto = $registro['auto'];
-				$motos = $registro['motos'];
-				$onibus = $registro['onibus'];
-				$caminhao = $registro['caminhao'];
-				
-				'"' . $date . '",';
-				'"' . $time . '",';
-				'"' . $auto . '",';
-				'"' . $motos . '",';	
-			 	'"' . $onibus . '",';	
-				'"' . $caminhao . '"';
 
 				$dateCorrigida = str_replace("/","-", $date );
 				$timeCorrigido = str_replace(":","-", $time );
@@ -70,7 +50,7 @@
 		// $date = substr($StringJson, 2 , 10);
 		 $dia= "D:".DIRECTORY_SEPARATOR;
 		// $horas= substr($StringJson, 16 , 8);
-		  $dia .= $posto. '_'.$data. '_'.$hora.'_'.$idDevice.".xls";
+		  $dia .= $data. '_'.$hora.'_'.$idDevice.".xls";
 		  
 
     

@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
+import {Tab1Page} from './tab1/tab1.page';
 
 
 //import { SQLite } from '@ionic-native/sqlite/ngx';
@@ -35,7 +36,8 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
     LoginService,
     CadastrarService,
     UniqueDeviceID,
-    NativeAudio
+    NativeAudio,
+    Tab1Page
     //DatabaseService,
     //SQLite,
     //SQLitePorter

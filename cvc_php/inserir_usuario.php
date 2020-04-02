@@ -8,7 +8,6 @@
     $pesquisador = $_POST["pesquisador"];
     $supervisor = $_POST["supervisor"];
     $json = $_POST["contagem"];
-    $posto = $_POST["posto"];
 
     $contagem = json_decode($json);
 
@@ -20,7 +19,7 @@
     
         $dados= true;
             
-        $query= "INSERT INTO tb_usuarios (pesquisador,supervisor,posto,idDevice) VALUES ('{$pesquisador}','{$supervisor}','{$posto}','{$idDevice}')";        
+        $query= "INSERT INTO tb_usuarios (pesquisador,supervisor,idDevice) VALUES ('{$pesquisador}','{$supervisor}','{$idDevice}')";        
         $result= mysqli_query($conexao,$query);
 
         if($result){
@@ -37,15 +36,19 @@
         $motos = $value->{'motos'};
         $onibus = $value->{'onibus'};
         $caminhao = $value->{'caminhao'};
-
-        $sql = "INSERT INTO tb_veiculos (auto, motos, onibus, caminhao, date, time, tb_usuarios_id_usuario) VALUES ('$auto', '$motos', '$onibus', '$caminhao', '$date', '$time', '$id')";
+        $transito = $value->{'transito'};
+        $sigapare = $value->{'sigapare'};
+        $chuva = $value->{'chuva'};
+          
+        $sql = "INSERT INTO tb_veiculos (auto, motos, onibus, caminhao, date, time, transito, sigapare, chuva,tb_usuarios_id_usuario) 
+                VALUES ('{$auto}', '{$motos}', '{$onibus}', '{$caminhao}', '{$date}', '{$time}', '{$transito}', '{$sigapare}', '{$chuva}', '{$id}')";
         $resultado = mysqli_query($conexao,$sql);
 
     }
 
 	
     if($resultado){
-        $dados = array("id"=>$id, "idDevice"=>$idDevice, "posto"=>$posto, "pesquisador"=>$pesquisador);
+        $dados = array("id"=>$id, "idDevice"=>$idDevice, "pesquisador"=>$pesquisador);
  
         //URL para onde vai ser enviado nosso POST
         $url = "http://ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php/excel_usuario.php";

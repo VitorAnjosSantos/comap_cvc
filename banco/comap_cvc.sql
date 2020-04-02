@@ -20,10 +20,30 @@ USE `comap_cvc_usuario` ;
 -- -----------------------------------------------------
 -- Table `mydb`.`tb_usuarios`
 -- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_login` (
+  `id_login` INT NOT NULL AUTO_INCREMENT,
+  `usuario` VARCHAR(50) NULL,
+  `senha` VARCHAR(32) NULL,
+  PRIMARY KEY (`id_login`))
+ENGINE = InnoDB;
+INSERT INTO tb_login(usuario,senha) VALUES ("administrador", md5("comapcvc"));
+
+CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_projetos` (
+  `id_projeto` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(100) NULL,
+  `rodovia` VARCHAR(100) NULL,
+  `km` VARCHAR(100) NULL,
+  `qtd_postos` INT NULL,
+  PRIMARY KEY (`id_projeto`))
+ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_usuarios` (
   `id_usuario` INT NOT NULL AUTO_INCREMENT,
   `pesquisador` VARCHAR(50) NULL,
   `supervisor` VARCHAR(50) NULL,
+  `posto` VARCHAR(5) NULL,
+  `sentido` VARCHAR(5) NULL,
+  `idDevice` VARCHAR(50) NULL,
   PRIMARY KEY (`id_usuario`))
 ENGINE = InnoDB;
 
@@ -38,6 +58,9 @@ CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_veiculos` (
   `caminhao` INT NULL,
   `date` VARCHAR(25) NULL,
   `time` VARCHAR(25) NULL,
+  `transito` VARCHAR(25) NULL,
+  `sigapare` VARCHAR(25) NULL,
+  `chuva` VARCHAR(25) NULL,
   `tb_usuarios_id_usuario` INT NOT NULL,
   PRIMARY KEY (`id_veiculo`),
   CONSTRAINT `fk_tb_veiculos_tb_usuarios`
@@ -51,15 +74,17 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-insert into tb_usuarios (pesquisador,supervisor) value ("teste","teste");
-
 select * from tb_veiculos;
 select * from tb_usuarios;
+select * from tb_projetos;
+select * from tb_login;
+
+SELECT pesquisador, supervisor, auto, motos, onibus, caminhao, date, time FROM tb_veiculos v 
+			JOIN tb_usuarios u
+			ON v.tb_usuarios_id_usuario = u.id_usuario
+			WHERE u.id_usuario = 8;
 
 truncate tb_usuarios;
-            
+
 SET foreign_key_checks = 0;
 SET foreign_key_checks = 1;
-
-drop table tb_veiculos;
-drop database comap_cvc_usuario;

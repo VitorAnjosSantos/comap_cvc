@@ -49,18 +49,16 @@ export class LoginPage{
 
   login(dadosLogin: any) {
 
-   
-    
     this.storage.set("idDevice", this.idDevice).then(()=>{
 
       this.storage.set("pesquisador", dadosLogin.pesquisador.toLowerCase()).then(()=>{
 
         this.storage.set("supervisor", dadosLogin.supervisor.toLowerCase()).then(()=>{
-          this.storage.set("posto", dadosLogin.posto).then((posto)=>{
+          
             this.storage.get("pesquisador").then((val) => {
               this.storage.get("supervisor").then((data) => {
 
-                if(data == "" || val == "" || posto == ""){
+                if(data == "" || val == ""){
                   console.log(this.presentAlert());
                 }else{
                   this.navCtrl.navigateRoot("/tabs/tab1")
@@ -69,8 +67,6 @@ export class LoginPage{
 
             });
           });
-        });
-          
 
         });
     }, (error) => {

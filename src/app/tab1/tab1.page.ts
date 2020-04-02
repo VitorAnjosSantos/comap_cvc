@@ -15,14 +15,18 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
 })
 export class Tab1Page implements OnInit {
  
-  count: any;
+  public count: any;
   listaForm: any;
   localdate: any;
   loading: any = null;
-  contagem: any;
-  conta: any;
+  public contagem: any;
+  public conta: any;
   pesquisador: any;
   supervisor: any;
+  transito: boolean= false;
+  sigapare: boolean= false;
+  chuva: boolean= false; 
+  ocorrencia: any= [{transito: false, sigapare: false, chuva: false}];
 
   constructor(private navCtrl: NavController, 
               private storage: Storage,
@@ -32,7 +36,8 @@ export class Tab1Page implements OnInit {
               private toastController: ToastController,
               private alertController: AlertController,
               private nativeAudio: NativeAudio
-            ) {
+            ) 
+            {
             
    this.count= {
       date: '',
@@ -41,6 +46,9 @@ export class Tab1Page implements OnInit {
       motos: 0,
       onibus: 0,
       caminhao: 0,
+      transito: 'NÃO', 
+      sigapare: 'NÃO', 
+      chuva: 'NÃO'
       
       /* 
       auto: 0,
@@ -113,62 +121,51 @@ export class Tab1Page implements OnInit {
     
   }
 
+  ocorrencias(tipo){
+    this.storage.get("listaForm").then((val: any) => {
+      
+      let tipoOcorrencia = tipo;
+
+      let array: any[] = [];
+
+      if (val !== "") {
+        array = array.concat(JSON.parse(val));
+        
+      }
+
+      this.ocorrencia[tipo]= tipo;
+
+      console.log(this.ocorrencia[tipo]);
+      
+      if(this.ocorrencia.tipo == true){
+          this.ocorrencia.tipo = false;
+          this.count[tipo] = 'NÃO';
+          array.push(this.count);
+          console.log(this.ocorrencia.tipo);
+        }else{
+          this.ocorrencia.tipo = true;
+          this.count[tipo] = 'SIM';
+          array.push(this.count);
+          console.log(this.ocorrencia.tipo);
+        }
+        
+        
+
+    });
+  }
+
   ngOnInit() {
 
     this.nativeAudio.preloadSimple('uniqueId1', 'assets/audios/pop.mp3');
     
   }
 
-  async alertaEnviar() {
-    const alert = await this.alertController.create({
-      header: 'Alerta!!',
-      message: '<strong>Deseja realmente enviar os dados de contagem?</strong>',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Envio cancelado');
-          }
-        }, {
-          text: 'Enviar',
-          handler: () => {
-            this.enviar();
-          }
-        }
-      ]
-    });
-
-    return alert.present();
-  }
-
   formataZerosEsquerda(valor: number) {
     return valor > 9 ? valor : "0" + valor;
   }
 
-  async presentToast() {
-    const toast = await this.toastController.create({
-      message: 'Dados enviados com sucesso',
-      duration: 4000,
-      position: "top"
-     
-    });
-    toast.present();
-  }
-
-  async toastErro() {
-    const toastErro = await this.toastController.create({
-      message: 'Erro: os dados não foram enviados',
-      duration: 4000,
-      position: "top"
-     
-    });
-    toastErro.present();
-  } 
-
   contador(tipo: string){
-    this.nativeAudio.play('uniqueId1').then(()=> {
+    //this.nativeAudio.play('uniqueId1').then(()=> {
 
       if(this.count[tipo] == 0 && this.conta[tipo] == 0 ){
         this.count[tipo]++;
@@ -212,14 +209,13 @@ export class Tab1Page implements OnInit {
 
           this.storage.set("historico", this.conta).then((val: any) => {
             this.contagem = val
-            this.count= {
-              date: '',
-              time: '',
-              auto: 0,
-              motos: 0,
-              onibus: 0,
-              caminhao: 0
-            };
+            this.count.date= '';
+            this.count.time= '';
+            this.count.auto= 0;
+            this.count.motos= 0;
+            this.count.onibus= 0;
+            this.count.caminhao= 0;
+            
             
           });
 
@@ -227,7 +223,7 @@ export class Tab1Page implements OnInit {
     
         });
       });
-    });
+    //});
   }
 
   contados(tipo: string){
@@ -236,46 +232,9 @@ export class Tab1Page implements OnInit {
    
   }
 
-  limpar(){
-    this.storage.set("listaForm", "").then(() =>{
-      this.storage.set("historico", "").then(() =>{
-        this.storage.set("pesquisador", "").then(() =>{
-          this.storage.set("supervisor", "").then(() =>{
-
-            this.contagem= {
-              date: '',
-              time: '',
-              auto: 0,
-              motos: 0,
-              onibus: 0,
-              caminhao: 0
-            };
-            this.conta= {
-              date: '',
-              time: '',
-              auto: 0,
-              motos: 0,
-              onibus: 0,
-              caminhao: 0
-            };
-            this.count= {
-              date: '',
-              time: '',
-              auto: 0,
-              motos: 0,
-              onibus: 0,
-              caminhao: 0
-            };
-            });
-          });
-      });
-    });    
-  }
-
   limparCache(){
     this.storage.set("listaForm", "").then(() =>{
       this.storage.set("historico", "").then(() =>{
-       
 
             this.contagem= {
               date: '',
@@ -283,7 +242,10 @@ export class Tab1Page implements OnInit {
               auto: 0,
               motos: 0,
               onibus: 0,
-              caminhao: 0
+              caminhao: 0,
+              transito: 'NÃO', 
+              sigapare: 'NÃO', 
+              chuva: 'NÃO'
             };
             this.conta= {
               date: '',
@@ -291,7 +253,10 @@ export class Tab1Page implements OnInit {
               auto: 0,
               motos: 0,
               onibus: 0,
-              caminhao: 0
+              caminhao: 0,
+              transito: 'NÃO', 
+              sigapare: 'NÃO', 
+              chuva: 'NÃO'
             };
             this.count= {
               date: '',
@@ -299,87 +264,14 @@ export class Tab1Page implements OnInit {
               auto: 0,
               motos: 0,
               onibus: 0,
-              caminhao: 0
+              caminhao: 0,
+              transito: 'NÃO', 
+              sigapare: 'NÃO', 
+              chuva: 'NÃO'
             };
            
       });
     });    
-  }
-
-  async enviar(){
-    //setInterval(() => { 
-     
-    await this.mostraCarregando();
-   
-      this.storage.get("listaForm").then((val: any) => {
-
-        if(val == ""){
-          alert("Contagem vazia!!! \nCertifique-se de realizar uma contagem!!");
-          this.toastErro();
-          this.ocultaCarregando();
-        }
-        else{
-
-            
-          this.storage.get("idDevice").then((id)=>{
-            this.storage.get("pesquisador").then((pesq)=>{
-              this.storage.get("supervisor").then((supe)=>{
-                this.storage.get("posto").then((posto)=>{
-                  
-                  const formData = new FormData();
-
-                  formData.append("pesquisador", pesq);
-                  formData.append("supervisor", supe);
-                  formData.append("contagem", val);
-                  formData.append("idDevice", id);
-                  formData.append("posto", posto);
-
-                  this.inserir.inserirDados(formData).subscribe((data: any) => {
-
-                    if(data.sucesso){
-                      this.limparCache();  
-
-                      this.presentToast();
-                      this.ocultaCarregando();
-                    }else{
-                      
-                      this.toastErro();
-                      this.ocultaCarregando();
-                      
-                    }
-
-                  }, (error) => {
-                    alert("erro");
-                     this.toastErro();
-                     this.ocultaCarregando();
-                  });
-
-                });
-              });
-            });
-            
-          });
-          
-        }
-    });      
-
-       
-  // }, 10000);        
-  }
-
-  async mostraCarregando() {
-    this.loading = await this.loadingController.create({
-      message: 'Enviando dados ...',
-      spinner: 'crescent',
-      duration: 0 
-      
-    });
-    
-    await this.loading.present();
-  }
-  
-  async ocultaCarregando() {
-    await this.loading.dismiss();
   }
 
 }
