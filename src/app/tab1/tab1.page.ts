@@ -7,6 +7,8 @@ import { InserirNoBancoService } from '../services/database/inserir-no-banco.ser
 //import { GerarPlanilhaService } from '../services/api/gerar-planilha.service';
 import { AlertController } from '@ionic/angular';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 
 @Component({
   selector: 'app-tab1',
@@ -27,6 +29,8 @@ export class Tab1Page implements OnInit {
   sigapare: boolean= false;
   chuva: boolean= false; 
   ocorrencia: any= [{transito: false, sigapare: false, chuva: false}];
+  geo = {latitude: 0, longitude: 0};
+  array: any[] = [];
 
   constructor(private navCtrl: NavController, 
               private storage: Storage,
@@ -35,7 +39,9 @@ export class Tab1Page implements OnInit {
               public loadingController: LoadingController,
               private toastController: ToastController,
               private alertController: AlertController,
-              private nativeAudio: NativeAudio
+              private nativeAudio: NativeAudio,
+              private geoLocation: Geolocation,
+
             ) 
             {
             
@@ -48,7 +54,8 @@ export class Tab1Page implements OnInit {
       caminhao: 0,
       transito: 'NÃO', 
       sigapare: 'NÃO', 
-      chuva: 'NÃO'
+      chuva: 'NÃO',
+     
       
       /* 
       auto: 0,
@@ -111,21 +118,41 @@ export class Tab1Page implements OnInit {
         this.conta = val;
         
       }else{
-        this.storage.set("historico", this.count).then((val: any) => {
-          this.contagem = val;
+        this.storage.set("historico", '').then((val: any) => {
+          this.limparCache();
           
         });
       }
       
-    });     
+    });   
     
+    this.geolocaliza();
+
+  }
+
+  geolocaliza(){
+    
+      this.geoLocation.getCurrentPosition().then((resp) => {
+  
+        this.geo.latitude  = resp.coords.latitude;
+        this.geo.longitude  = resp.coords.longitude;
+        //alert(JSON.stringify(this.geo));
+        let latitude = JSON.stringify(this.geo.latitude);
+        let longitude = JSON.stringify(this.geo.longitude);
+
+          setInterval(()=>{
+            this.count['latitude'] = latitude;
+            this.count['longitude'] = longitude;
+          },10000);
+
+        }).catch((error: any) => navigator['app'].exitApp());
+      //alert(JSON.stringify(this.count));  
+
   }
 
   ocorrencias(tipo){
     this.storage.get("listaForm").then((val: any) => {
       
-      let tipoOcorrencia = tipo;
-
       let array: any[] = [];
 
       if (val !== "") {
@@ -133,20 +160,19 @@ export class Tab1Page implements OnInit {
         
       }
       
+      console.log(JSON.stringify(this.ocorrencia));
       if(this.ocorrencia[0][tipo] == true){
-        this.ocorrencia[0][tipo] = false;
+          this.ocorrencia[0][tipo] = false;
           this.count[tipo] = 'NÃO';
-          array.push(this.count);
-          //console.log(JSON.stringify(this.ocorrencia));
+          array.push(val);
+          console.log(JSON.stringify(this.ocorrencia));
         }else{
           this.ocorrencia[0][tipo] = true;
           this.count[tipo] = 'SIM';
-          array.push(this.count);
-          //console.log(JSON.stringify(this.ocorrencia));
+          array.push(val);
+          console.log(JSON.stringify(this.ocorrencia));
         }
         
-        
-
     });
   }
 
@@ -173,7 +199,6 @@ export class Tab1Page implements OnInit {
       
       this.storage.get("listaForm").then((val: any) => {
         let array: any[] = [];
-
         if (val !== "") {
           array = array.concat(JSON.parse(val));
           
@@ -193,39 +218,55 @@ export class Tab1Page implements OnInit {
               segundos = this.formataZerosEsquerda(horaCompleta.getSeconds());
 
           date = dia + "/" + mes + "/" + ano;
-          time = hora + ":" + minutos + ":" + segundos;
-          
+          time = hora + ":" + minutos + ":" + segundos;         
           
           this.count["date"] = date;
           this.count["time"] = time;
-        
+
           array.push(this.count);
 
         this.storage.set("listaForm", JSON.stringify(array)).then((data: any) => {
 
           this.storage.set("historico", this.conta).then((val: any) => {
-            this.contagem = val
+            this.contagem = val;
+
             this.count.date= '';
             this.count.time= '';
             this.count.auto= 0;
             this.count.motos= 0;
             this.count.onibus= 0;
             this.count.caminhao= 0;
-            
-            
+            this.count.latitude= '';
+            this.count.longitude= '';
+
+                        
           });
 
         console.log(data);
     
         });
+        
       });
     //});
   }
 
   contados(tipo: string){
 
-      return this.contagem[tipo];
-   
+    return this.contagem[tipo];
+  }
+
+  limpaCount(){
+    this.count= {
+      date: '',
+      time: '',
+      auto: 0,
+      motos: 0,
+      onibus: 0,
+      caminhao: 0,
+      transito: 'NÃO', 
+      sigapare: 'NÃO', 
+      chuva: 'NÃO'
+    };
   }
 
   limparCache(){

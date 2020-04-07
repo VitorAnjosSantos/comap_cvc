@@ -61,6 +61,8 @@ CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_veiculos` (
   `transito` VARCHAR(25) NULL,
   `sigapare` VARCHAR(25) NULL,
   `chuva` VARCHAR(25) NULL,
+  `latitude` VARCHAR(25) NULL,
+  `longitude` VARCHAR(25) NULL,
   `tb_usuarios_id_usuario` INT NOT NULL,
   PRIMARY KEY (`id_veiculo`),
   CONSTRAINT `fk_tb_veiculos_tb_usuarios`
@@ -84,7 +86,10 @@ SELECT pesquisador, supervisor, auto, motos, onibus, caminhao, date, time FROM t
 			ON v.tb_usuarios_id_usuario = u.id_usuario
 			WHERE u.id_usuario = 8;
 
+SELECT idDevice FROM tb_usuarios WHERE id_usuario = 1;
+
 truncate tb_usuarios;
+truncate tb_veiculos;
 
 SET foreign_key_checks = 0;
 SET foreign_key_checks = 1;

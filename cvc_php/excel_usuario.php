@@ -1,8 +1,9 @@
 ﻿<?php
-	header('Access-Control-Allow-Origin: *');
-    include("./Classes/PHPExcel/IOFactory.php");   
-    //header("Access-Control-Allow-Headers: Content-Type");
-    //header('Content-Type: application/json');
+    header('Access-Control-Allow-Origin: *');
+    header("Access-Control-Allow-Headers: Content-Type");
+    header('Content-Type: application/json');
+	include("./Classes/PHPExcel/IOFactory.php");   
+
 
     include("./conexao_usuario.php");
 
@@ -14,33 +15,35 @@
 			ON v.tb_usuarios_id_usuario = u.id_usuario
 			WHERE u.id_usuario = {$id}";	
 
-	$idDevice = "SELECT idDevice FROM tb_usuarios WHERE id_usuario = {$id}";
+	$idDevice = '';
 
 	$result = mysqli_query($conexao,$sql); 
 	$resultadoDaConsulta = $result; 
-	
+
 	if ($resultadoDaConsulta) {
 			
 			// Gera arquivo CSV
 		$fp = fopen("planilha.csv", "w +"); // o "a" indica que o arquivo será sobrescrito sempre que esta função for executada.
-		$escreve = fwrite($fp, "Pesquisador,Supervisor,Data,Hora,Auto,Motos,Onibus,Caminhao,Transito,Siga e Pare,Chuva ");
+		$escreve = fwrite($fp, "Pesquisador,Supervisor,Latitude,Longitude,Data,Hora,Auto,Motos,Onibus,Caminhao,Transito,Siga e Pare,Chuva ");
 		$data = "";
 		$hora = "";
 		$date = '';
 		$time = '';
 
 		foreach($resultadoDaConsulta as $registro) 
-			{ 		  			
-				$escreve = fwrite($fp, "\n $registro[pesquisador],$registro[supervisor],$registro[date],$registro[time],$registro[auto],$registro[motos],$registro[onibus],$registro[caminhao],$registro[transito],$registro[sigapare],$registro[chuva]");			  
+			{ 
+				$escreve = fwrite($fp, "\n $registro[pesquisador],$registro[supervisor],$registro[latitude],$registro[longitude],$registro[date],$registro[time],$registro[auto],$registro[motos],$registro[onibus],$registro[caminhao],$registro[transito],$registro[sigapare],$registro[chuva]");			  
 				
 				$date = $registro["date"];
 				$time = $registro["time"];
-
+				
 				$dateCorrigida = str_replace("/","-", $date );
 				$timeCorrigido = str_replace(":","-", $time );
-
+				
 				$data= $dateCorrigida;
 				$hora = $timeCorrigido;
+
+				$idDevice = $registro["idDevice"];
 			}
 		
 		// Exibe o vettor JSON

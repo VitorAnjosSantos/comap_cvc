@@ -102,21 +102,20 @@ export class Tab2Page {
                   
                   this.inserir.inserirDados(formData).subscribe((data: any) => {
 
-                    if(data.sucesso){
+                    if(data.sucesso == true){
                       this.limparCache();  
-
                       this.presentToast();
                       this.ocultaCarregando();
                     }else{
-                      
+
                       this.toastErro();
                       this.ocultaCarregando();               
                     }
 
                   }, (error) => {
-                    alert("erro");
-                     this.toastErro();
-                     this.ocultaCarregando();
+                    this.limparCache();  
+                    this.presentToast();
+                    this.ocultaCarregando();
                   });
                 });              
             });  

@@ -17,6 +17,8 @@ import { AppComponent } from './app.component';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
 import {Tab1Page} from './tab1/tab1.page';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 
 
 //import { SQLite } from '@ionic-native/sqlite/ngx';
@@ -37,7 +39,8 @@ import {Tab1Page} from './tab1/tab1.page';
     CadastrarService,
     UniqueDeviceID,
     NativeAudio,
-    Tab1Page
+    Tab1Page,
+    Geolocation
     //DatabaseService,
     //SQLite,
     //SQLitePorter
