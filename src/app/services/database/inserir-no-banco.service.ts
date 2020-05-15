@@ -19,5 +19,10 @@ export class InserirNoBancoService {
     return this.http.post(this.url + '/excel_usuario.php', dados);
     
   }
+
+  botoesJson(){
+    return this.http.get('http://ec2-18-211-204-199.compute-1.amazonaws.com/site-comap-cvc/objetos/json.php');
+    
+  }
   
 }

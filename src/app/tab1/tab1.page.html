@@ -1,30 +1,6 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Contagem</ion-title>
-    <ion-row floating="right">
-
-      <ion-col>
-        <ion-item padding="0px">
-        <img  src="../assets/imagens/transito.png" width="70px" height="60px">
-        <ion-toggle (ionChange)="ocorrencias('transito')"></ion-toggle>
-        </ion-item>
-      </ion-col>
-
-      <ion-col>
-        <ion-item>
-        <img src="../assets/imagens/sigapare.png" width="80px" height="45px">
-        <ion-toggle (ionChange)="ocorrencias('sigapare')"></ion-toggle>
-        </ion-item>
-      </ion-col>
-
-      <ion-col>
-        <ion-item>
-        <img src="../assets/imagens/chuva.png" width="45px" height="45px">
-        <ion-toggle (ionChange)="ocorrencias('chuva')"></ion-toggle>
-        </ion-item>
-      </ion-col>
-
-    </ion-row>
 
   </ion-toolbar>
 </ion-header>
@@ -33,7 +9,7 @@
 
   <ion-grid>
 
-    <ion-row>
+   <!--  <ion-row>
 
       <ion-col>
         <ion-button name="auto" class="div" (click)="contador('auto')" color="azul" > 
@@ -59,7 +35,13 @@
         </ion-button>
       </ion-col>
     
-    </ion-row> 
+    </ion-row>  -->
+
+    
+
+    <ion-button *ngFor="let botao of botoes" class="div" (click)="contador(''+botao.nome_botao)" color="azul" > 
+      {{botao.nome_botao}} <br> ({{contados(''+botao.nome_botao)}})
+      </ion-button>
 
      <ion-button style="width: 100px; height: 50px;" (click)="limparCache()" color='danger'>
       Limpar
