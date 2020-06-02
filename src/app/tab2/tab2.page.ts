@@ -92,32 +92,29 @@ export class Tab2Page {
           this.storage.get("idDevice").then((id)=>{
             this.storage.get("pesquisador").then((pesq)=>{
               this.storage.get("supervisor").then((supe)=>{
+                this.storage.get("tb_formularios_id_formulario").then((fk)=>{
                   
                   const formData = new FormData();
 
                   formData.append("pesquisador", pesq);
                   formData.append("supervisor", supe);
-                  formData.append("contagem", val);
+                  formData.append("contagem", JSON.stringify(val));
                   formData.append("idDevice", id);
+                  formData.append("fk", fk);
                   
                   this.inserir.inserirDados(formData).subscribe((data: any) => {
 
-                    if(data.sucesso == true){
-                      this.limparCache();  
                       this.presentToast();
                       this.ocultaCarregando();
-                    }else{
-
-                      this.toastErro();
-                      this.ocultaCarregando();               
-                    }
-
+                  
                   }, (error) => {
-                    this.limparCache();  
-                    this.presentToast();
-                    this.ocultaCarregando();
+                   
+                    this.toastErro();
+                    this.ocultaCarregando();  
+                    
                   });
-                });              
+                }); 
+              });              
             });  
           });
         }

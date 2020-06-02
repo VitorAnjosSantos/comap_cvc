@@ -62,8 +62,9 @@ export class Tab1Page implements OnInit {
 
          count++;
       });
-      console.log(JSON.stringify(this.botoes));
-     
+
+    this.storage.set("tb_formularios_id_formulario", this.botoes[0]['tb_formularios_id_formulario']).then(() => { 
+    }); 
 
     this.storage.get("listaForm").then((val: any) => {
       if(val !== null){

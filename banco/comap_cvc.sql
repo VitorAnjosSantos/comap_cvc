@@ -65,22 +65,74 @@ ENGINE = InnoDB;
 -- Table `mydb`.`tb_veiculos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_veiculos` (
-  `id_veiculo` INT NOT NULL AUTO_INCREMENT,
-  `auto` INT NULL,
-  `motos` INT NULL,
-  `onibus` INT NULL,
-  `caminhao` INT NULL,
-  `date` VARCHAR(25) NULL,
-  `time` VARCHAR(25) NULL,
-  `transito` VARCHAR(25) NULL,
-  `sigapare` VARCHAR(25) NULL,
-  `chuva` VARCHAR(25) NULL,
-  `latitude` VARCHAR(25) NULL,
-  `longitude` VARCHAR(25) NULL,
-  `tb_usuarios_id_usuario` INT NOT NULL,
-  PRIMARY KEY (`id_veiculo`),
-  CONSTRAINT `fk_tb_veiculos_tb_usuarios`
-    FOREIGN KEY (`tb_usuarios_id_usuario`)
+	`id_veiculo` INT NOT NULL AUTO_INCREMENT,
+	`contagem` Text NULL,
+	`tb_usuarios_id_usuario` INT NOT NULL,
+	`tb_formularios_id_formulario`INT NOT NULL,
+	PRIMARY KEY (`id_veiculo`),
+	CONSTRAINT `fk_tb_veiculos_tb_usuarios`
+	FOREIGN KEY (`tb_usuarios_id_usuario`)
+	REFERENCES `comap_cvc_usuario`.`tb_usuarios` (`id_usuario`)
+    ON DELETE NO ACTION
+	ON UPDATE NO ACTION,
+    CONSTRAINT `fk_tb_veiculos_tb_formularios`
+    FOREIGN KEY (`tb_formularios_id_formulario`)
+    REFERENCES `comap_cvc_usuario`.`tb_formularios` (`id_formulario`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_veiculos_9e36UtiCam2L` (
+	`id_veiculo_9e36UtiCam2L` INT NOT NULL AUTO_INCREMENT,
+	`auto` INT NULL,
+	`utilitario` INT NULL,
+	`auto3E` INT NULL,
+	`auto4E` INT NULL,
+	`onibus2E` INT NULL,
+	`onibus3E` INT NULL,
+	`onibus4E` INT NULL,
+	`veiculoOficial` INT NULL,
+	`veiculoEspecial` INT NULL,
+	`motos` INT NULL,
+	`cLeve2E` INT NULL,
+	`c2E` INT NULL,
+	`c3R` INT NULL,
+	`c31S` INT NULL,
+	`c4R` INT NULL,
+	`c41S` INT NULL,
+	`c42S` INT NULL,
+	`c5R` INT NULL,
+	`c51S` INT NULL,
+	`c52S` INT NULL,
+	`c6R` INT NULL,
+	`c61S` INT NULL,
+	`c62S` INT NULL,
+	`c63S` INT NULL,
+	`c7R` INT NULL,
+	`c71S` INT NULL,
+	`c72S` INT NULL,
+	`c73S` INT NULL,
+	`c8R` INT NULL,
+	`c81S` INT NULL,
+	`c82S` INT NULL,
+	`c83S` INT NULL,
+	`c84S` INT NULL,
+	`c9R` INT NULL,
+	`c91S` INT NULL,
+	`c92S` INT NULL,
+	`c93S` INT NULL,
+	`c94S` INT NULL,
+	`date` VARCHAR(25) NULL,
+	`time` VARCHAR(25) NULL,
+	`transito` VARCHAR(25) NULL,
+	`sigapare` VARCHAR(25) NULL,
+	`chuva` VARCHAR(25) NULL,
+	`latitude` VARCHAR(25) NULL,
+	`longitude` VARCHAR(25) NULL,
+	`tb_usuarios_id_usuario_9e36UtiCam2L` INT NOT NULL,
+  PRIMARY KEY (`id_veiculo_9e36UtiCam2L`),
+  CONSTRAINT `fk_tb_veiculos_tb_usuarios_9e36UtiCam2L`
+    FOREIGN KEY (`tb_usuarios_id_usuario_9e36UtiCam2L`)
     REFERENCES `comap_cvc_usuario`.`tb_usuarios` (`id_usuario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -94,7 +146,7 @@ ENGINE = InnoDB;
 
 INSERT INTO tb_formularios(nome) VALUES('TESTE');
 INSERT INTO tb_botoes(nome_botao,nome_relatorio,qtd_eixos,qtd_suspensos,seq_tablet,seq_relatorio,cor,tb_formularios_id_formulario) 
-	VALUES('auto2','AUTO2',0,0,1,1,'#ffffff',1);
+	VALUES('auto','AUTO',0,0,1,1,'#ffffff',1);
 
 CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_botoes` (
   `id_botao` INT NOT NULL AUTO_INCREMENT,
@@ -118,6 +170,8 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+USE `comap_cvc_usuario` ;
+
 select * from tb_veiculos;
 select * from tb_projetos;
 select * from tb_config_projeto;
@@ -137,16 +191,43 @@ SELECT idDevice FROM tb_usuarios WHERE id_usuario = 1;
 SELECT SUM(auto) AS Total FROM tb_veiculos_9e36UtiCam2L v 
 			JOIN tb_usuarios u
 			ON v.tb_usuarios_id_usuario_9e36UtiCam2L = u.id_usuario
-			WHERE u.id_usuario = 18;
-
-truncate tb_usuarios;
-truncate tb_veiculos;
-truncate tb_projetos;
-truncate tb_config_projeto;
-truncate tb_veiculos_9e36uticam2L;
+			WHERE u.id_usuario = 25;
 
 select sum(auto)  from tb_veiculos_9e36uticam2L;
 
 
 SET foreign_key_checks = 0;
 SET foreign_key_checks = 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+truncate tb_usuarios;
+truncate tb_veiculos;
+truncate tb_projetos;
+truncate tb_config_projeto;
+truncate tb_veiculos_9e36uticam2L;
+truncate tb_botoes;

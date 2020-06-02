@@ -8,12 +8,11 @@
     $pesquisador = $_POST["pesquisador"];
     $supervisor = $_POST["supervisor"];
     $json = $_POST["contagem"];
-
-    $contagem = json_decode($json);
+    $fk = $_POST["fk"];
+    $contagem = json_decode($json,true);
 
     $dados= false;
     $id = "";
-
 
     if($conexao){
 
@@ -27,56 +26,31 @@
         }
 
     }
-        foreach ($contagem as $value) {
 
-            $date = $value->{"date"};
-            $time = $value->{"time"};
-            $auto = $value->{'auto'};
-            $motos = $value->{'motos'};
-            $onibus = $value->{'onibus'};
-            $caminhao = $value->{'caminhao'};
-            $transito = $value->{'transito'};
-            $sigapare = $value->{'sigapare'};
-            $chuva = $value->{'chuva'};
-            
-            if(isset($value->{'latitude'}) && isset($value->{'longitude'})){
-                $latitude = $value->{'latitude'};
-                $longitude = $value->{'longitude'};
-            }else{
-                $latitude = "";
-                $longitude = "";
-            }
-            
-            $sql = "INSERT INTO tb_veiculos (auto, motos, onibus, caminhao, date, time, transito, sigapare, chuva,latitude,longitude,tb_usuarios_id_usuario) 
-                    VALUES ('{$auto}', '{$motos}', '{$onibus}', '{$caminhao}', '{$date}', '{$time}', '{$transito}', '{$sigapare}', '{$chuva}', '{$latitude}', '{$longitude}', '{$id}')";
-            $resultado = mysqli_query($conexao,$sql);
-    
-        }
+    $aux = json_encode($contagem);
+    $sql = "INSERT INTO tb_veiculos (contagem,tb_usuarios_id_usuario,tb_formularios_id_formulario) 
+            VALUES ('{$aux}', '{$id}', '{$fk}')";
+    $resultado = mysqli_query($conexao,$sql);
 
-        if($resultado){
-            $dados = array("id"=>$id);
-            //URL para onde vai ser enviado nosso POST
-            $url = "http://ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php/excel_usuario.php";
-            
-            // Aqui inicio a função CURL
-            $curl = curl_init();
-            //aqu eu pego a URL para onde será enviado o POST
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_HEADER, 0);
-            curl_setopt($curl, CURLOPT_POST, 1);
-            //aqui eu pego os dados para enviar via POST
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
-            curl_exec($curl);
-            curl_close($curl);
-    
-            echo '{sucesso: true}';
-            //print_r($contagem);
-    
-        }
-        else{
-            echo'{"sucesso": false}';
-        }
+    if($resultado){
+        $dados = array("id"=>$id,"fk"=>$fk);
+        //URL para onde vai ser enviado nosso POST
+        $url = "http://ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php/excel_usuario.php";
+        
+        // Aqui inicio a função CURL
+        $curl = curl_init();
+        //aqu eu pego a URL para onde será enviado o POST
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        //aqui eu pego os dados para enviar via POST
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
+        curl_exec($curl);
+        curl_close($curl);
+        //print_r($contagem);
 
+    }
+   
         
     
     

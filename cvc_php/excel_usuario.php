@@ -8,6 +8,7 @@
     include("./conexao_usuario.php");
 
 	$id = $_POST['id'];
+	$fk = $_POST['fk'];
 	//$pesquisador = $_POST["pesquisador"];
 
 	$sql = "SELECT * FROM tb_veiculos v 
@@ -21,22 +22,57 @@
 	$resultadoDaConsulta = $result; 
 
 	if ($resultadoDaConsulta) {
-			
+		
 			// Gera arquivo CSV
 		$fp = fopen("planilha.csv", "w +"); // o "a" indica que o arquivo será sobrescrito sempre que esta função for executada.
-		$escreve = fwrite($fp, "Pesquisador,Supervisor,Latitude,Longitude,Data,Hora,Auto,Motos,Onibus,Caminhao,Transito,Siga e Pare,Chuva ");
-		$data = "";
-		$hora = "";
+		$escreve = fwrite($fp, "Pesquisador,Supervisor,Latitude,Longitude,Data,Hora,");
+		$data = '';
+		$hora = '';
 		$date = '';
 		$time = '';
+		$botao = '';
+		$count = 0;
+		$count2 = 0;
+
+		$query = "SELECT * FROM tb_botoes WHERE tb_formularios_id_formulario =  {$fk}";
+		$resultQuery = mysqli_query($conexao,$query); 
+		$resultadoQuery = $resultQuery; 
+
+		foreach($resultadoQuery as $value) 
+			{
+				$escreve = fwrite($fp, "$value[nome_relatorio],");
+			}
+
 
 		foreach($resultadoDaConsulta as $registro) 
-			{ 
-				$escreve = fwrite($fp, "\n $registro[pesquisador],$registro[supervisor],$registro[latitude],$registro[longitude],$registro[date],$registro[time],$registro[auto],$registro[motos],$registro[onibus],$registro[caminhao],$registro[transito],$registro[sigapare],$registro[chuva]");			  
+			{ 	
+				$contagem = json_decode($registro['contagem'], true);
+				$teste = $contagem;			
 				
-				$date = $registro["date"];
-				$time = $registro["time"];
-				
+				foreach($teste as $key ) 
+				{
+					
+					unset($key['latitude'],$key['longitude'],$key['date'],$key['time']);
+
+					$latitude = json_encode($contagem[$count]['latitude']);
+					$longitude = json_encode($contagem[$count]['longitude']);
+					$date = $contagem[$count]['date'];
+					$time = $contagem[$count]['time'];
+
+					$escreve = fwrite($fp, "\n $registro[pesquisador],$registro[supervisor],".$latitude.",".$longitude.",".$date.",".$time.",");
+
+					foreach($key as $k => $v) 
+					{
+						$escreve = fwrite($fp, "".$key[$k].",");		  
+
+						$count2++;
+					}
+
+					$count++;
+				}
+
+			
+
 				$dateCorrigida = str_replace("/","-", $date );
 				$timeCorrigido = str_replace(":","-", $time );
 				
