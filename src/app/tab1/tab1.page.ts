@@ -92,28 +92,77 @@ export class Tab1Page implements OnInit {
     this.geolocaliza(); 
 
     this.nativeAudio.preloadSimple('uniqueId1', 'assets/audios/pop.mp3');
+
+    setInterval(() => { 
+    
+      let horaCompleta = new Date();
+
+      let hora = this.formataZerosEsquerda(horaCompleta.getHours()),   
+          minutos = this.formataZerosEsquerda(horaCompleta.getMinutes()),
+          segundos = this.formataZerosEsquerda(horaCompleta.getSeconds());
+
+      let time = hora + ":" + minutos + ":" + segundos;
+
+      if(time == "00:00:00"){
+        this.storage.set("contagemTotal", "");
+        let count = 0;
+        this.botoes.forEach(()=>{
+          this.conta[this.botoes[count]["nome_botao"]] = 0;
+
+          count++;
+        });
+      }
+    }, 100);
+
+    setInterval(() => { 
+      this.setValor();
+    }, 1000);
     
   }
 
-
   geolocaliza(){
     
-      this.geoLocation.getCurrentPosition().then((resp) => {
-  
-        this.geo.latitude  = resp.coords.latitude;
-        this.geo.longitude  = resp.coords.longitude;
-        //alert(JSON.stringify(this.geo));
-        let latitude = JSON.stringify(this.geo.latitude);
-        let longitude = JSON.stringify(this.geo.longitude);
+    this.geoLocation.getCurrentPosition().then((resp) => {
 
-          setInterval(()=>{
-            this.count['latitude'] = latitude;
-            this.count['longitude'] = longitude;
-          },10000);
+      this.geo.latitude  = resp.coords.latitude;
+      this.geo.longitude  = resp.coords.longitude;
+      //alert(JSON.stringify(this.geo));
+      let latitude = JSON.stringify(this.geo.latitude);
+      let longitude = JSON.stringify(this.geo.longitude);
+     
+      this.count['latitude'] = latitude;
+      this.count['longitude'] = longitude;
+        
 
-        }).catch((error: any) => navigator['app'].exitApp());
-      //alert(JSON.stringify(this.count));  
+      }).catch((error: any) => navigator['app'].exitApp());
+    //alert(JSON.stringify(this.count));  
 
+  }
+
+  ocorrencias(tipo){
+    this.storage.get("listaForm").then((val: any) => {
+      
+      let array: any[] = [];
+
+      if (val !== "") {
+        array = array.concat(JSON.parse(val));
+        
+      }
+      
+      console.log(JSON.stringify(this.ocorrencia));
+      if(this.ocorrencia[0][tipo] == true){
+          this.ocorrencia[0][tipo] = false;
+          this.count[tipo] = 'NÃO';
+          array.push(val);
+          console.log(JSON.stringify(this.ocorrencia));
+        }else{
+          this.ocorrencia[0][tipo] = true;
+          this.count[tipo] = 'SIM';
+          array.push(val);
+          console.log(JSON.stringify(this.ocorrencia));
+        }
+        
+    });
   }
 
   formataZerosEsquerda(valor: number) {
@@ -121,87 +170,69 @@ export class Tab1Page implements OnInit {
   }
 
   getValor(tipo: any){
-    return new Promise ((resolve, reject) => {
       
-      this.geolocaliza();
+    this.geolocaliza();
 
-      let array = JSON.stringify(this.count);
-  
-      let aux = JSON.parse(array);
-      
-      aux[tipo]++; 
+    let array = JSON.stringify(this.count);
 
-      let date: any;
-      let time: any;
-
-      let dataCompleta = new Date(),
-          horaCompleta = new Date();
-
-      let dia = this.formataZerosEsquerda(dataCompleta.getDate()),
-          mes = this.formataZerosEsquerda((dataCompleta.getMonth() + 1)),
-          ano = dataCompleta.getFullYear(),
-          hora = this.formataZerosEsquerda(horaCompleta.getHours()),   
-          minutos = this.formataZerosEsquerda(horaCompleta.getMinutes()),
-          segundos = this.formataZerosEsquerda(horaCompleta.getSeconds()),
-          milisegundos = this.formataZerosEsquerda(horaCompleta.getMilliseconds());
-
-      date = dia + "/" + mes + "/" + ano;
-      time = hora + ":" + minutos + ":" + segundos + ":" + milisegundos;         
-      
-      aux["date"] = date;
-      aux["time"] = time;
-
-      resolve(aux); 
-             
-    })
-  }
-
-  async setValor(val:any){
-    return new Promise ((resolve, reject) => {
-      
-      this.array = this.array.concat(val);
-      this.storage.set("listaForm", this.array).then((data)=>{
-         
-        resolve(data);
-        
-      })
-    });
-  }
-
-  async  setHistorico(){
-    return new Promise ((resolve, reject) => {
-      this.storage.set("historico", this.conta).then((val: any) => {
-       
-        
-        resolve('2');
-        
-      });
-    });
+    let aux = JSON.parse(array);
     
+    aux[tipo]++; 
+
+    let date: any;
+    let time: any;
+
+    let dataCompleta = new Date(),
+        horaCompleta = new Date();
+
+    let dia = this.formataZerosEsquerda(dataCompleta.getDate()),
+        mes = this.formataZerosEsquerda((dataCompleta.getMonth() + 1)),
+        ano = dataCompleta.getFullYear(),
+        hora = this.formataZerosEsquerda(horaCompleta.getHours()),   
+        minutos = this.formataZerosEsquerda(horaCompleta.getMinutes()),
+        segundos = this.formataZerosEsquerda(horaCompleta.getSeconds()),
+        milisegundos = this.formataZerosEsquerda(horaCompleta.getMilliseconds());
+
+    date = dia + "/" + mes + "/" + ano;
+    time = hora + ":" + minutos + ":" + segundos + ":" + milisegundos;         
+    
+    aux["date"] = date;
+    aux["time"] = time;
+   
+    this.array = this.array.concat(aux);
+
   }
 
-  audio(){
-    return new Promise ((resolve, reject) => {
-      this.nativeAudio.play('uniqueId1').then(()=> {
+  setValor(){
+    
+    this.storage.set("listaForm", this.array).then((data)=>{
+        this.setHistorico();
+        this.storage.set("contagemTotal", this.conta).then(() =>{});
+        console.log(data);
+    })
+
+  }
+
+  setHistorico(){
+
+    this.storage.set("historico", this.conta).then((val: any) => {
         
-        resolve("Ok");
       });
-    });
-  }  
+   
+  }
 
   async contador(tipo: any){
-    this.conta[tipo]++;
+    //this.nativeAudio.play('uniqueId1');
+    
+    this.conta[tipo]++;     
 
-    /* let d = await this.audio(); */
-    let a = await this.getValor(tipo);
-    let b = await this.setValor(a);
-    let c = await this.setHistorico();
-  
-    console.log(b);  
+      /* let d = await this.audio(); */
+     this.getValor(tipo);
+   
   }
 
   contados(tipo: string){
-
+    
     return this.conta[tipo];
   }
 
@@ -212,15 +243,16 @@ export class Tab1Page implements OnInit {
   limparCache(){
     this.storage.set("listaForm", "").then(() =>{
       this.storage.set("historico", "").then(() =>{
-        this.array = [];
+        this.storage.set("contagemTotal", "").then(() =>{
+          this.array = [];
 
-        let count = 0;
-        this.botoes.forEach(()=>{
-          this.count[this.botoes[count]["nome_botao"]] = 0;
-          this.conta[this.botoes[count]["nome_botao"]] = 0;
-          count++;
-       });
-           
+            let count = 0;
+            this.botoes.forEach(()=>{
+              this.count[this.botoes[count]["nome_botao"]] = 0;
+              this.conta[this.botoes[count]["nome_botao"]] = 0;
+              count++;
+            });
+        });    
       });
     });    
   }

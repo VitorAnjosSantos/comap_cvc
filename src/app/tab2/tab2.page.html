@@ -7,9 +7,15 @@
 </ion-header>
 
 <ion-content>
+  
 
-  <ion-button style="width: 100px; height: 50px;" (click)="alertaEnviar()" color='success'>
-    Enviar
-  </ion-button>
+  <div class="child">
+
+    <h1>Total da Contagem: {{totalContagem}}</h1>
+    <ion-button expand="full" (click)="alertaEnviar()" color='success'>
+      Enviar
+    </ion-button>
+
+  </div>
   
 </ion-content>

@@ -16,6 +16,7 @@ import {Tab1Page} from '../tab1/tab1.page';
 export class Tab2Page {
 
   loading: any = null;
+  totalContagem: any;
 
   constructor(private navCtrl: NavController,
               private storage: Storage,
@@ -24,11 +25,13 @@ export class Tab2Page {
               public loadingController: LoadingController,
               private toastController: ToastController,
               private alertController: AlertController,
-              public tab: Tab1Page
               ) 
               {
 
               }
+    ionViewWillEnter(){
+     this.total();
+    }
 
   async alertaEnviar() {
     const alert = await this.alertController.create({
@@ -73,6 +76,29 @@ export class Tab2Page {
     });
     toastErro.present();
   } 
+
+  total(){
+    this.storage.get("contagemTotal").then((val: any) => {
+      let count = 0;
+      let numeros = [];
+      let teste = [];
+      
+      numeros = val;
+      this.totalContagem = Object.keys(numeros);
+      for(let i= 0 ;  i < this.totalContagem.length ; i++){
+        
+        teste.push(numeros[this.totalContagem[count]]);
+        count++;
+      };
+
+      this.totalContagem = teste.reduce((acumulador , valorAtual) => acumulador  + valorAtual, 0);
+
+      console.log(val);
+    });
+
+    return this.totalContagem;
+    
+  }
 
 
   async enviar(){
@@ -139,92 +165,6 @@ export class Tab2Page {
     await this.loading.dismiss();
   }
 
-  limpar(){
-    this.storage.set("listaForm", "").then(() =>{
-      this.storage.set("historico", "").then(() =>{
-        this.storage.set("pesquisador", "").then(() =>{
-          this.storage.set("supervisor", "").then(() =>{
-
-            this.tab.contagem= {
-              date: '',
-              time: '',
-              auto: 0,
-              motos: 0,
-              onibus: 0,
-              caminhao: 0,
-              transito: 'NÃO', 
-              sigapare: 'NÃO', 
-              chuva: 'NÃO'
-            };
-            this.tab.conta= {
-              date: '',
-              time: '',
-              auto: 0,
-              motos: 0,
-              onibus: 0,
-              caminhao: 0,
-              transito: 'NÃO', 
-              sigapare: 'NÃO', 
-              chuva: 'NÃO'
-            };
-            this.tab.count= {
-              date: '',
-              time: '',
-              auto: 0,
-              motos: 0,
-              onibus: 0,
-              caminhao: 0,
-              transito: 'NÃO', 
-              sigapare: 'NÃO', 
-              chuva: 'NÃO'
-            };
-            });
-          });
-      });
-    });    
-  }
-
-  limparCache(){
-    this.storage.set("listaForm", "").then(() =>{
-      this.storage.set("historico", "").then(() =>{
-       
-
-            this.tab.contagem= {
-              date: '',
-              time: '',
-              auto: 0,
-              motos: 0,
-              onibus: 0,
-              caminhao: 0,
-              transito: 'NÃO', 
-              sigapare: 'NÃO', 
-              chuva: 'NÃO'
-            };
-            this.tab.conta= {
-              date: '',
-              time: '',
-              auto: 0,
-              motos: 0,
-              onibus: 0,
-              caminhao: 0,
-              transito: 'NÃO', 
-              sigapare: 'NÃO', 
-              chuva: 'NÃO'
-            };
-            this.tab.count= {
-              date: '',
-              time: '',
-              auto: 0,
-              motos: 0,
-              onibus: 0,
-              caminhao: 0,
-              transito: 'NÃO', 
-              sigapare: 'NÃO', 
-              chuva: 'NÃO'
-            };
-           
-      });
-    });    
-  }
+  
 
 }
