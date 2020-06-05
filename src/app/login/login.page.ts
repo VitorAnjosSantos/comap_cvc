@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LoginService } from '../services/logar/login.service';
 import { NavController, AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
   selector: 'app-login',
@@ -20,22 +18,31 @@ export class LoginPage{
     supervisor: new FormControl('', Validators.required),
     posto: new FormControl('', Validators.required)
   });
+
+  pesq: any;
+  sup: any;
  
   idDevice: string = "10101010";
 
   constructor(private alertCtrl: AlertController,
-              private loginService: LoginService, 
               private navCtrl: NavController,
               private storage: Storage,
               private uniqueDeviceID: UniqueDeviceID,
-              private geoLocation: Geolocation,
-
               ) { 
 
     this.uniqueDeviceID.get().then((uuid: any) => {
       this.idDevice = uuid;
     }).catch((error: any) => navigator['app'].exitApp());
 
+    this.storage.get("pesquisador").then((val) => {
+      this.storage.get("supervisor").then((data) => {
+
+        this.pesq = val;
+        this.sup = data;
+        
+      });
+
+    });
    
   }
 
@@ -85,4 +92,5 @@ export class LoginPage{
   cadastrar(){
    this.navCtrl.navigateRoot("/cadastrar");
   }
+  
 }

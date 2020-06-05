@@ -33,6 +33,11 @@
 		$botao = '';
 		$count = 0;
 		$count2 = 0;
+		$aux = [];
+		$totalVertical = 0;
+		$totalHorizontal = "\n,,,,,Total,";
+		$array = [];
+		$auxTotal = [];
 
 		$query = "SELECT * FROM tb_botoes WHERE tb_formularios_id_formulario =  {$fk}";
 		$resultQuery = mysqli_query($conexao,$query); 
@@ -43,6 +48,7 @@
 				$escreve = fwrite($fp, "$value[nome_relatorio],");
 			}
 
+		$escreve = fwrite($fp, "TOTAL,TRANSITO,SIGA E PARE,CHUVA");
 
 		foreach($resultadoDaConsulta as $registro) 
 			{ 	
@@ -60,19 +66,52 @@
 					$time = $contagem[$count]['time'];
 
 					$escreve = fwrite($fp, "\n $registro[pesquisador],$registro[supervisor],".$latitude.",".$longitude.",".$date.",".$time.",");
+					
+					$aux = $key;
+					unset($key['transito']);	
+					unset($key['sigapare']);
+					unset($key['chuva']);  
 
 					foreach($key as $k => $v) 
 					{
-						$escreve = fwrite($fp, "".$key[$k].",");		  
 
-						$count2++;
+						$totalVertical = array_sum($key);
+						$auxTotal[$k] = 0;
+							
+						$escreve = fwrite($fp, "".$key[$k].",");
+						
 					}
 
+					$escreve = fwrite($fp, "".$totalVertical.",".$aux['transito'].",".$aux['sigapare'].",".$aux['chuva']);
+					echo($totalVertical);
+					var_dump($key);
+
+					$array[$count] = $key;
+
+					
 					$count++;
 				}
 
-			
+				foreach($array as $key) 
+					{
 
+						foreach($key as $k => $v) 
+						{
+							$auxTotal[$k] += $key[$k];
+							
+								
+						}
+						
+					}
+
+				foreach($auxTotal as $key) 
+					{
+
+						$totalHorizontal .= $key.",";
+						
+					}
+				
+	
 				$dateCorrigida = str_replace("/","-", $date );
 				$timeCorrigido = str_replace(":","-", $time );
 				
@@ -81,7 +120,8 @@
 
 				$idDevice = $registro["idDevice"];
 			}
-		
+			$escreve = fwrite($fp, $totalHorizontal);
+			var_dump($auxTotal);
 		// Exibe o vettor JSON
 		
 		fclose($fp);

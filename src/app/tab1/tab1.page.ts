@@ -56,38 +56,28 @@ export class Tab1Page implements OnInit {
   async ngOnInit() {
 
     let count = 0;
-      this.botoes.forEach(()=>{
-         this.count[this.botoes[count]["nome_botao"]] = 0;
-         this.conta[this.botoes[count]["nome_botao"]] = 0;
+    
+    this.botoes.forEach(()=>{
+        this.count[this.botoes[count]["nome_botao"]] = 0;
+        this.conta[this.botoes[count]["nome_botao"]] = 0;
+        
+        count++;
+    });
 
-         count++;
-      });
+    this.ocorrencia.forEach((val)=>{
+      let aux = [];
+      aux = Object.keys(val);
+      for(let i= 0 ;  i < aux.length ; i++){
+        
+        this.count[aux[i]]= "NAO";
+      };
+          
+    });
+
+    console.log(this.count); 
 
     this.storage.set("tb_formularios_id_formulario", this.botoes[0]['tb_formularios_id_formulario']).then(() => { 
     }); 
-
-    this.storage.get("listaForm").then((val: any) => {
-      if(val !== null){
-        this.array = val;
-        
-      }else{  
-        this.storage.set("listaForm", "").then(() => { 
-          
-        });
-      }
-    });
-
-    this.storage.get("historico").then((val: any) => {
-      if (val) {
-        this.contagem = val;
-        this.conta = val;
-        console.log(JSON.stringify(this.count));
-      }else{
-        this.storage.set("historico", '');
-        this.limparCache();
-      }
-      
-    });      
 
     this.geolocaliza(); 
 
@@ -117,6 +107,30 @@ export class Tab1Page implements OnInit {
     setInterval(() => { 
       this.setValor();
     }, 1000);
+
+    this.storage.get("listaForm").then((val: any) => {
+      if(val !== null){
+        this.array = val;
+        
+      }else{  
+        this.storage.set("listaForm", "").then(() => { 
+          
+        });
+      }
+    });
+
+    this.storage.get("historico").then((val: any) => {
+      if (val) {
+        this.contagem = val;
+        this.conta = val;
+        console.log(JSON.stringify(this.count));
+      }else{
+        this.storage.set("historico", '');
+        this.limparCache();
+      }
+      
+    });      
+
     
   }
 
@@ -145,14 +159,14 @@ export class Tab1Page implements OnInit {
       let array: any[] = [];
 
       if (val !== "") {
-        array = array.concat(JSON.parse(val));
+        array = array.concat(val);
         
       }
       
       console.log(JSON.stringify(this.ocorrencia));
       if(this.ocorrencia[0][tipo] == true){
           this.ocorrencia[0][tipo] = false;
-          this.count[tipo] = 'NÃO';
+          this.count[tipo] = 'NAO';
           array.push(val);
           console.log(JSON.stringify(this.ocorrencia));
         }else{

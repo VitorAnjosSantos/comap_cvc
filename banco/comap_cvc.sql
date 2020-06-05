@@ -172,14 +172,14 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 USE `comap_cvc_usuario` ;
 
+select * from tb_usuarios;
 select * from tb_veiculos;
 select * from tb_projetos;
 select * from tb_config_projeto;
-select * from tb_login;
-select * from tb_usuarios;
-select * from tb_veiculos_9e36UtiCam2L where tb_usuarios_id_usuario_9e36UtiCam2L = 7;
+select * from tb_veiculos_9e36UtiCam2L;
 select * from tb_formularios;
 select * from tb_botoes;
+select * from tb_login;
 
 SELECT * FROM tb_config_projeto v 
 			JOIN tb_projetos u
