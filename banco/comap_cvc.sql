@@ -55,11 +55,17 @@ CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_usuarios` (
   `id_usuario` INT NOT NULL AUTO_INCREMENT,
   `pesquisador` VARCHAR(50) NULL,
   `supervisor` VARCHAR(50) NULL,
-  `posto` VARCHAR(5) NULL,
-  `sentido` VARCHAR(5) NULL,
   `idDevice` VARCHAR(50) NULL,
-  PRIMARY KEY (`id_usuario`))
+  `tb_config_projeto_id_projeto` INT NOT NULL,
+	PRIMARY KEY (`id_usuario`),
+	CONSTRAINT `fk_tb_config_tb_usuarios`
+	FOREIGN KEY (`tb_config_projeto_id_projeto`)
+	REFERENCES `comap_cvc_usuario`.`tb_config_projeto` (`id_config_projeto`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+drop table tb_usuarios;
 
 -- -----------------------------------------------------
 -- Table `mydb`.`tb_veiculos`
@@ -166,25 +172,41 @@ CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_botoes` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_tablets` (
+  `id_tablet` INT NOT NULL AUTO_INCREMENT,
+  `tablet` VARCHAR(100) NULL,
+  `senha` VARCHAR(32) NULL,
+  `tb_projetos_id_projeto` INT NOT NULL,
+  PRIMARY KEY (`id_tablet`),
+  CONSTRAINT `fk_tb_tablets_tb_projetos`
+    FOREIGN KEY (`tb_projetos_id_projeto`)
+    REFERENCES `comap_cvc_usuario`.`tb_projetos` (`id_projeto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 USE `comap_cvc_usuario` ;
 
+INSERT INTO tb_tablets (tablet,senha,tb_projetos_id_projeto) values("tablet3",md5("tablet3"),3);
+
 select * from tb_usuarios;
 select * from tb_veiculos;
 select * from tb_projetos;
+select * from tb_tablets;
 select * from tb_config_projeto;
 select * from tb_veiculos_9e36UtiCam2L;
 select * from tb_formularios;
 select * from tb_botoes;
 select * from tb_login;
 
-SELECT * FROM tb_config_projeto v 
-			JOIN tb_projetos u
-			ON v.tb_projetos_id_projeto = u.id_projeto
-			WHERE u.id_projeto = 1;
+SELECT * FROM tb_veiculos v 
+			JOIN tb_usuarios u ON v.tb_usuarios_id_usuario = u.id_usuario
+			JOIN tb_config_projeto c ON u.tb_config_projeto_id_projeto = c.id_config_projeto
+			WHERE c.id_config_projeto = 3;
 
 SELECT idDevice FROM tb_usuarios WHERE id_usuario = 1;
 
@@ -195,11 +217,10 @@ SELECT SUM(auto) AS Total FROM tb_veiculos_9e36UtiCam2L v
 
 select sum(auto)  from tb_veiculos_9e36uticam2L;
 
-
 SET foreign_key_checks = 0;
 SET foreign_key_checks = 1;
 
-
+delete from tb_projetos where id_projeto = 1;
 
 
 
@@ -228,6 +249,7 @@ SET foreign_key_checks = 1;
 truncate tb_usuarios;
 truncate tb_veiculos;
 truncate tb_projetos;
+truncate tb_tablets;
 truncate tb_config_projeto;
 truncate tb_veiculos_9e36uticam2L;
 truncate tb_botoes;

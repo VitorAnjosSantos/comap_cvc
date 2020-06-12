@@ -16,11 +16,14 @@ export class LoginPage{
   formLogin = new FormGroup({
     pesquisador: new FormControl('', Validators.required),
     supervisor: new FormControl('', Validators.required),
-    posto: new FormControl('', Validators.required)
+    posto: new FormControl('', Validators.required),
+    sentido: new FormControl('', Validators.required)
   });
 
   pesq: any;
   sup: any;
+  postos: any;
+  sentidos: any = [];
  
   idDevice: string = "10101010";
 
@@ -43,7 +46,39 @@ export class LoginPage{
       });
 
     });
+
    
+  }
+
+  ionViewWillEnter(){
+    let count = 0;
+    let count2 = 0;
+    let aux = [];
+    let aux2 = [];
+    let aux3 = [];
+    this.storage.get("postos").then((postos) => {
+
+      this.postos = postos;
+      console.log(this.postos);
+      
+    });
+
+    this.storage.get("sentidos").then((sentidos) => {
+     
+      this.storage.get("idPosto").then((id) => {
+
+        for(let i = 0; i< sentidos.length; i++){
+          this.sentidos.push({'sentidos':'','idPosto':''});
+          this.sentidos[count]['sentidos'] = sentidos[i];
+          this.sentidos[count]['idPosto'] = id[i];
+          
+          count++;
+        }
+        console.log(this.sentidos);
+        
+     });
+      
+    });
   }
 
   async presentAlert() {
@@ -62,26 +97,26 @@ export class LoginPage{
   login(dadosLogin: any) {
 
     this.storage.set("idDevice", this.idDevice).then(()=>{
-
-      this.storage.set("pesquisador", dadosLogin.pesquisador.toLowerCase()).then(()=>{
-
-        this.storage.set("supervisor", dadosLogin.supervisor.toLowerCase()).then(()=>{
-          
+      this.storage.set("PostoSelecionado", dadosLogin.sentido).then(()=>{
+        this.storage.set("pesquisador", dadosLogin.pesquisador.toLowerCase()).then(()=>{
+          this.storage.set("supervisor", dadosLogin.supervisor.toLowerCase()).then(()=>{  
             this.storage.get("pesquisador").then((val) => {
               this.storage.get("supervisor").then((data) => {
 
                 if(data == "" || val == ""){
                   console.log(this.presentAlert());
                 }else{
-                  this.navCtrl.navigateRoot("/tabs/tab1")
-                }
                 
+                  this.navCtrl.navigateRoot("/tabs/tab1");
+                 //console.log(dadosLogin.sentido);
+                
+                }
+                  
               });
-
             });
           });
-
         });
+      });
     }, (error) => {
           
       console.log(this.presentAlert());

@@ -9,9 +9,10 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  },  {
-    path: 'cadastrar',
-    loadChildren: () => import('./cadastrar/cadastrar.module').then( m => m.CadastrarPageModule)
+  },
+  {
+    path: 'tablet',
+    loadChildren: () => import('./tablet/tablet.module').then( m => m.TabletPageModule)
   }
 
   

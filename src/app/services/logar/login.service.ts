@@ -11,7 +11,7 @@ export class LoginService {
   constructor(public http: HttpClient) { }
 
   postLogin(dados: any){
-    return this.http.post(this.url + '/login.php', dados);
+    return this.http.post(this.url + '/login_usuario.php', dados);
     
   }
 }

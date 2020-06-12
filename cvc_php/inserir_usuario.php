@@ -9,6 +9,7 @@
     $supervisor = $_POST["supervisor"];
     $json = $_POST["contagem"];
     $fk = $_POST["fk"];
+    $idPosto = $_POST["idPosto"];
     $contagem = json_decode($json,true);
 
     $dados= false;
@@ -18,7 +19,8 @@
 
         $dados= true;
             
-        $query= "INSERT INTO tb_usuarios (pesquisador,supervisor,idDevice) VALUES ('{$pesquisador}','{$supervisor}','{$idDevice}')";        
+        $query= "INSERT INTO tb_usuarios (pesquisador,supervisor,idDevice, tb_config_projeto_id_projeto) 
+                    VALUES ('{$pesquisador}','{$supervisor}','{$idDevice}','{$idPosto}')";        
         $result= mysqli_query($conexao,$query);
 
         if($result){

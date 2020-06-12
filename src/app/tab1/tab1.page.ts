@@ -55,6 +55,8 @@ export class Tab1Page implements OnInit {
  
   async ngOnInit() {
 
+    console.log(this.botoes);
+
     let count = 0;
     
     this.botoes.forEach(()=>{

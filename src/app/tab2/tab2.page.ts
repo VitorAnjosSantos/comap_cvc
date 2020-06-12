@@ -119,25 +119,27 @@ export class Tab2Page {
             this.storage.get("pesquisador").then((pesq)=>{
               this.storage.get("supervisor").then((supe)=>{
                 this.storage.get("tb_formularios_id_formulario").then((fk)=>{
-                  
-                  const formData = new FormData();
+                  this.storage.get("PostoSelecionado").then((idPosto)=>{
+                    const formData = new FormData();
 
-                  formData.append("pesquisador", pesq);
-                  formData.append("supervisor", supe);
-                  formData.append("contagem", JSON.stringify(val));
-                  formData.append("idDevice", id);
-                  formData.append("fk", fk);
-                  
-                  this.inserir.inserirDados(formData).subscribe((data: any) => {
-
-                      this.presentToast();
-                      this.ocultaCarregando();
-                  
-                  }, (error) => {
-                   
-                    this.toastErro();
-                    this.ocultaCarregando();  
+                    formData.append("pesquisador", pesq);
+                    formData.append("supervisor", supe);
+                    formData.append("contagem", JSON.stringify(val));
+                    formData.append("idDevice", id);
+                    formData.append("fk", fk);
+                    formData.append("idPosto", idPosto);
                     
+                    this.inserir.inserirDados(formData).subscribe((data: any) => {
+
+                        this.presentToast();
+                        this.ocultaCarregando();
+                    
+                    }, (error) => {
+                    
+                      this.toastErro();
+                      this.ocultaCarregando();  
+                      
+                    });
                   });
                 }); 
               });              

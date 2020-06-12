@@ -83,8 +83,8 @@
 					}
 
 					$escreve = fwrite($fp, "".$totalVertical.",".$aux['transito'].",".$aux['sigapare'].",".$aux['chuva']);
-					echo($totalVertical);
-					var_dump($key);
+					/* echo($totalVertical);
+					var_dump($key); */
 
 					$array[$count] = $key;
 
@@ -121,7 +121,7 @@
 				$idDevice = $registro["idDevice"];
 			}
 			$escreve = fwrite($fp, $totalHorizontal);
-			var_dump($auxTotal);
+			//var_dump($auxTotal);
 		// Exibe o vettor JSON
 		
 		fclose($fp);

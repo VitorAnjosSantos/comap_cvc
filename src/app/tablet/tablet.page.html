@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Sincronizar</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content >
+
+  <div class="centralizar">
+    <ion-item>
+      <ion-label >Tablet: </ion-label>
+      <ion-input [(ngModel)]="tablet" type="text" ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label >Senha: </ion-label>
+      <ion-input [(ngModel)]="senha" type="text"></ion-input>
+    </ion-item>
+
+    <div style="text-align: center">
+  
+     <ion-button (click)="alertaEnviar()" type='submit' color="success" round name="sincronizar">Sincronizar</ion-button>    
+   
+    </div>
+
+  </div>
+ 
+</ion-content>
