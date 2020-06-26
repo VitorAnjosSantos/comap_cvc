@@ -30,8 +30,8 @@
     }
 
     $aux = json_encode($contagem);
-    $sql = "INSERT INTO tb_veiculos (contagem,tb_usuarios_id_usuario,tb_formularios_id_formulario) 
-            VALUES ('{$aux}', '{$id}', '{$fk}')";
+    $sql = "INSERT INTO tb_veiculos (contagem,tb_usuarios_id_usuario,tb_formularios_id_formulario,tb_config_projeto_id_posto_sentido) 
+            VALUES ('{$aux}', '{$id}', '{$fk}','{$idPosto}')";
     $resultado = mysqli_query($conexao,$sql);
 
     if($resultado){

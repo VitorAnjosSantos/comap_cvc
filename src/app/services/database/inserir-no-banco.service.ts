@@ -20,8 +20,8 @@ export class InserirNoBancoService {
     
   }
 
-  botoesJson(){
-    return this.http.get('http://ec2-18-211-204-199.compute-1.amazonaws.com/site-comap-cvc/objetos/json.php');
+  botoesJson(dados: any){
+    return this.http.post('http://ec2-18-211-204-199.compute-1.amazonaws.com/site-comap-cvc/objetos/json.php', dados);
     
   }
   

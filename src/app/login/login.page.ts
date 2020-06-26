@@ -17,13 +17,15 @@ export class LoginPage{
     pesquisador: new FormControl('', Validators.required),
     supervisor: new FormControl('', Validators.required),
     posto: new FormControl('', Validators.required),
-    sentido: new FormControl('', Validators.required)
+    sentido: new FormControl('', Validators.required),
   });
 
   pesq: any;
   sup: any;
   postos: any;
   sentidos: any = [];
+  rodovia: any;
+  km: any;
  
   idDevice: string = "10101010";
 
@@ -37,25 +39,35 @@ export class LoginPage{
       this.idDevice = uuid;
     }).catch((error: any) => navigator['app'].exitApp());
 
-    this.storage.get("pesquisador").then((val) => {
-      this.storage.get("supervisor").then((data) => {
 
-        this.pesq = val;
-        this.sup = data;
-        
+    this.storage.get("rodovias").then((rod)=>{
+
+      this.storage.get("kms").then((km)=>{
+        this.storage.get("pesquisador").then((val) => {
+          this.storage.get("supervisor").then((data) => {
+
+            this.pesq = val;
+            this.sup = data;
+            this.rodovia = rod;
+            this.km = km;
+            
+          });
+
+        });
       });
 
     });
+
 
    
   }
 
   ionViewWillEnter(){
     let count = 0;
-    let count2 = 0;
+  /*   let count2 = 0;
     let aux = [];
     let aux2 = [];
-    let aux3 = [];
+    let aux3 = []; */
     this.storage.get("postos").then((postos) => {
 
       this.postos = postos;
@@ -63,22 +75,25 @@ export class LoginPage{
       
     });
 
-    this.storage.get("sentidos").then((sentidos) => {
-     
-      this.storage.get("idPosto").then((id) => {
-
-        for(let i = 0; i< sentidos.length; i++){
-          this.sentidos.push({'sentidos':'','idPosto':''});
-          this.sentidos[count]['sentidos'] = sentidos[i];
-          this.sentidos[count]['idPosto'] = id[i];
-          
-          count++;
-        }
-        console.log(this.sentidos);
+    
+        this.storage.get("sentidos").then((sentidos) => {
         
-     });
-      
-    });
+          this.storage.get("idPosto").then((id) => {
+
+            for(let i = 0; i< sentidos.length; i++){
+              this.sentidos.push({'sentidos':'','idPosto':''});
+              this.sentidos[count]['sentidos'] = sentidos[i];
+              this.sentidos[count]['idPosto'] = id[i];
+              
+              count++;
+            }
+            this.rodovia
+            console.log(this.sentidos);
+            
+          });
+          
+        });
+    
   }
 
   async presentAlert() {

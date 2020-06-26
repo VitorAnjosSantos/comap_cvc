@@ -28,66 +28,6 @@ CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_login` (
 ENGINE = InnoDB;
 INSERT INTO tb_login(usuario,senha) VALUES ("administrador", md5("comapcvc"));
 
-CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_projetos` (
-  `id_projeto` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(100) NULL,
-  PRIMARY KEY (`id_projeto`))
-ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_config_projeto` (
-  `id_config_projeto` INT NOT NULL AUTO_INCREMENT,
-  `rodovia` VARCHAR(100) NULL,
-  `km` VARCHAR(100) NULL,
-  `posto` VARCHAR(100) NULL,
-  `sentido` VARCHAR(100) NULL,
-  `dataInicio` VARCHAR(100) NULL,
-  `dataFim` VARCHAR(100) NULL,
-  `tb_projetos_id_projeto` INT NOT NULL,
-  PRIMARY KEY (`id_config_projeto`),
-   CONSTRAINT `fk_tb_config_projeto_tb_projetos`
-    FOREIGN KEY (`tb_projetos_id_projeto`)
-    REFERENCES `comap_cvc_usuario`.`tb_projetos` (`id_projeto`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_usuarios` (
-  `id_usuario` INT NOT NULL AUTO_INCREMENT,
-  `pesquisador` VARCHAR(50) NULL,
-  `supervisor` VARCHAR(50) NULL,
-  `idDevice` VARCHAR(50) NULL,
-  `tb_config_projeto_id_projeto` INT NOT NULL,
-	PRIMARY KEY (`id_usuario`),
-	CONSTRAINT `fk_tb_config_tb_usuarios`
-	FOREIGN KEY (`tb_config_projeto_id_projeto`)
-	REFERENCES `comap_cvc_usuario`.`tb_config_projeto` (`id_config_projeto`)
-	ON DELETE NO ACTION
-	ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-drop table tb_usuarios;
-
--- -----------------------------------------------------
--- Table `mydb`.`tb_veiculos`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_veiculos` (
-	`id_veiculo` INT NOT NULL AUTO_INCREMENT,
-	`contagem` Text NULL,
-	`tb_usuarios_id_usuario` INT NOT NULL,
-	`tb_formularios_id_formulario`INT NOT NULL,
-	PRIMARY KEY (`id_veiculo`),
-	CONSTRAINT `fk_tb_veiculos_tb_usuarios`
-	FOREIGN KEY (`tb_usuarios_id_usuario`)
-	REFERENCES `comap_cvc_usuario`.`tb_usuarios` (`id_usuario`)
-    ON DELETE NO ACTION
-	ON UPDATE NO ACTION,
-    CONSTRAINT `fk_tb_veiculos_tb_formularios`
-    FOREIGN KEY (`tb_formularios_id_formulario`)
-    REFERENCES `comap_cvc_usuario`.`tb_formularios` (`id_formulario`)
-	ON DELETE NO ACTION
-	ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
 CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_veiculos_9e36UtiCam2L` (
 	`id_veiculo_9e36UtiCam2L` INT NOT NULL AUTO_INCREMENT,
 	`auto` INT NULL,
@@ -144,15 +84,75 @@ CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_veiculos_9e36UtiCam2L` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_projetos` (
+  `id_projeto` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(100) NULL,
+  PRIMARY KEY (`id_projeto`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_config_projeto` (
+  `id_config_projeto` INT NOT NULL AUTO_INCREMENT,
+  `rodovia` VARCHAR(100) NULL,
+  `km` VARCHAR(100) NULL,
+  `posto` VARCHAR(100) NULL,
+  `sentido` VARCHAR(100) NULL,
+  `dataInicio` VARCHAR(100) NULL,
+  `dataFim` VARCHAR(100) NULL,
+  `tb_projetos_id_projeto` INT NOT NULL,
+  PRIMARY KEY (`id_config_projeto`),
+   CONSTRAINT `fk_tb_config_projeto_tb_projetos`
+    FOREIGN KEY (`tb_projetos_id_projeto`)
+    REFERENCES `comap_cvc_usuario`.`tb_projetos` (`id_projeto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_usuarios` (
+  `id_usuario` INT NOT NULL AUTO_INCREMENT,
+  `pesquisador` VARCHAR(50) NULL,
+  `supervisor` VARCHAR(50) NULL,
+  `idDevice` VARCHAR(50) NULL,
+  `tb_config_projeto_id_projeto` INT NOT NULL,
+	PRIMARY KEY (`id_usuario`),
+	CONSTRAINT `fk_tb_config_tb_usuarios`
+	FOREIGN KEY (`tb_config_projeto_id_projeto`)
+	REFERENCES `comap_cvc_usuario`.`tb_config_projeto` (`id_config_projeto`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`tb_veiculos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_veiculos` (
+	`id_veiculo` INT NOT NULL AUTO_INCREMENT,
+	`contagem` Text NULL,
+	`tb_usuarios_id_usuario` INT NOT NULL,
+	`tb_formularios_id_formulario`INT NOT NULL,
+    `tb_config_projeto_id_posto_sentido` INT NOT NULL,
+	PRIMARY KEY (`id_veiculo`),
+	CONSTRAINT `fk_tb_veiculos_tb_usuarios`
+	FOREIGN KEY (`tb_usuarios_id_usuario`)
+	REFERENCES `comap_cvc_usuario`.`tb_usuarios` (`id_usuario`)
+    ON DELETE NO ACTION
+	ON UPDATE NO ACTION,
+    CONSTRAINT `fk_tb_veiculos_tb_formularios`
+    FOREIGN KEY (`tb_formularios_id_formulario`)
+    REFERENCES `comap_cvc_usuario`.`tb_formularios` (`id_formulario`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION,
+	CONSTRAINT `fk_tb_config_projeto_id_posto_sentido`
+	FOREIGN KEY (`tb_config_projeto_id_posto_sentido`)
+	REFERENCES `comap_cvc_usuario`.`tb_config_projeto` (`id_config_projeto`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_formularios` (
   `id_formulario` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(100) NULL,
   PRIMARY KEY (`id_formulario`))
 ENGINE = InnoDB;
-
-INSERT INTO tb_formularios(nome) VALUES('TESTE');
-INSERT INTO tb_botoes(nome_botao,nome_relatorio,qtd_eixos,qtd_suspensos,seq_tablet,seq_relatorio,cor,tb_formularios_id_formulario) 
-	VALUES('auto','AUTO',0,0,1,1,'#ffffff',1);
 
 CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_botoes` (
   `id_botao` INT NOT NULL AUTO_INCREMENT,
@@ -191,7 +191,19 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 USE `comap_cvc_usuario` ;
 
-INSERT INTO tb_tablets (tablet,senha,tb_projetos_id_projeto) values("tablet3",md5("tablet3"),3);
+INSERT INTO tb_formularios(nome) VALUES('TESTE');
+
+INSERT INTO tb_botoes(nome_botao,nome_relatorio,qtd_eixos,qtd_suspensos,seq_tablet,seq_relatorio,cor,tb_formularios_id_formulario) 
+	VALUES('moto','Moto',0,0,1,1,'#ffffff',1);
+    
+INSERT INTO tb_tablets (tablet,senha,tb_projetos_id_projeto) values("tablet1",md5("tablet1"),1);
+
+SELECT * FROM tb_veiculos v 
+        JOIN tb_usuarios u ON v.tb_usuarios_id_usuario = u.id_usuario
+        JOIN tb_config_projeto c ON u.tb_config_projeto_id_projeto = c.id_config_projeto
+        WHERE v.id_veiculo = 1;
+        
+SELECT * FROM tb_botoes WHERE tb_formularios_id_formulario = 1;
 
 select * from tb_usuarios;
 select * from tb_veiculos;
@@ -206,7 +218,7 @@ select * from tb_login;
 SELECT * FROM tb_veiculos v 
 			JOIN tb_usuarios u ON v.tb_usuarios_id_usuario = u.id_usuario
 			JOIN tb_config_projeto c ON u.tb_config_projeto_id_projeto = c.id_config_projeto
-			WHERE c.id_config_projeto = 3;
+			WHERE c.id_config_projeto = 2;
 
 SELECT idDevice FROM tb_usuarios WHERE id_usuario = 1;
 
@@ -220,7 +232,6 @@ select sum(auto)  from tb_veiculos_9e36uticam2L;
 SET foreign_key_checks = 0;
 SET foreign_key_checks = 1;
 
-delete from tb_projetos where id_projeto = 1;
 
 
 
@@ -241,15 +252,13 @@ delete from tb_projetos where id_projeto = 1;
 
 
 
+-- delete from tb_projetos where id_projeto = 5;
 
-
-
-
-
-truncate tb_usuarios;
-truncate tb_veiculos;
-truncate tb_projetos;
-truncate tb_tablets;
-truncate tb_config_projeto;
-truncate tb_veiculos_9e36uticam2L;
-truncate tb_botoes;
+-- truncate tb_usuarios;
+-- truncate tb_veiculos;
+-- truncate tb_projetos;
+-- truncate tb_tablets;
+-- truncate tb_config_projeto;
+-- truncate tb_veiculos_9e36uticam2L;
+-- truncate tb_botoes;
+-- truncate tb_formularios;

@@ -33,7 +33,7 @@ export class Tab1Page implements OnInit {
   geo = {latitude: 0, longitude: 0};
   array: any;
   botoes: any;
-
+  bt= "2";
   constructor(private navCtrl: NavController, 
               private storage: Storage,
               private inserir: InserirNoBancoService,
@@ -45,9 +45,11 @@ export class Tab1Page implements OnInit {
               private geoLocation: Geolocation,
               public _http: HttpClient
             ){
+    const formData = new FormData();
 
-    this.inserir.botoesJson()
-    .subscribe((botoes)=>{
+    formData.append("id_formulario", this.bt);
+
+    this.inserir.botoesJson(formData).subscribe((botoes)=>{
       this.botoes = botoes;
       this.ngOnInit();
     });   
@@ -242,7 +244,7 @@ export class Tab1Page implements OnInit {
     
     this.conta[tipo]++;     
 
-      /* let d = await this.audio(); */
+      // let d = await this.audio(); 
      this.getValor(tipo);
    
   }
