@@ -33,7 +33,7 @@ export class Tab1Page implements OnInit {
   geo = {latitude: 0, longitude: 0};
   array: any;
   botoes: any;
-  bt= "2";
+  bt= "1";
   constructor(private navCtrl: NavController, 
               private storage: Storage,
               private inserir: InserirNoBancoService,
@@ -60,12 +60,13 @@ export class Tab1Page implements OnInit {
     console.log(this.botoes);
 
     let count = 0;
-    
-    this.botoes.forEach(()=>{
-        this.count[this.botoes[count]["nome_botao"]] = 0;
-        this.conta[this.botoes[count]["nome_botao"]] = 0;
-        
-        count++;
+    this.storage.get("botoes").then((botoes)=>{
+      botoes.forEach(()=>{
+          this.count[this.botoes[count]["nome_botao"]] = 0;
+          this.conta[this.botoes[count]["nome_botao"]] = 0;
+          
+          count++;
+      });
     });
 
     this.ocorrencia.forEach((val)=>{
@@ -79,9 +80,6 @@ export class Tab1Page implements OnInit {
     });
 
     console.log(this.count); 
-
-    this.storage.set("tb_formularios_id_formulario", this.botoes[0]['tb_formularios_id_formulario']).then(() => { 
-    }); 
 
     this.geolocaliza(); 
 
@@ -100,10 +98,12 @@ export class Tab1Page implements OnInit {
       if(time == "00:00:00"){
         this.storage.set("contagemTotal", "");
         let count = 0;
-        this.botoes.forEach(()=>{
-          this.conta[this.botoes[count]["nome_botao"]] = 0;
-
-          count++;
+        this.storage.get("botoes").then((botoes)=>{
+          botoes.forEach(()=>{
+              this.conta[this.botoes[count]["nome_botao"]] = 0;
+              
+              count++;
+          });
         });
       }
     }, 100);
@@ -265,10 +265,13 @@ export class Tab1Page implements OnInit {
           this.array = [];
 
             let count = 0;
-            this.botoes.forEach(()=>{
-              this.count[this.botoes[count]["nome_botao"]] = 0;
-              this.conta[this.botoes[count]["nome_botao"]] = 0;
-              count++;
+            this.storage.get("botoes").then((botoes)=>{
+              botoes.forEach(()=>{
+                  this.count[this.botoes[count]["nome_botao"]] = 0;
+                  this.conta[this.botoes[count]["nome_botao"]] = 0;
+                  
+                  count++;
+              });
             });
         });    
       });

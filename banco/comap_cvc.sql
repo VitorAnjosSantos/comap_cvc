@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_tablets` (
   PRIMARY KEY (`id_tablet`),
   CONSTRAINT `fk_tb_tablets_tb_projetos`
     FOREIGN KEY (`tb_projetos_id_projeto`)
-    REFERENCES `comap_cvc_usuario`.`tb_projetos` (`id_projeto`)
+    REFERENCES `comap_cvc_usuario`.`tb_config_projeto` (`id_config_projeto`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -197,6 +197,7 @@ INSERT INTO tb_botoes(nome_botao,nome_relatorio,qtd_eixos,qtd_suspensos,seq_tabl
 	VALUES('moto','Moto',0,0,1,1,'#ffffff',1);
     
 INSERT INTO tb_tablets (tablet,senha,tb_projetos_id_projeto) values("tablet1",md5("tablet1"),1);
+
 
 SELECT * FROM tb_veiculos v 
         JOIN tb_usuarios u ON v.tb_usuarios_id_usuario = u.id_usuario

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/logar/login.service';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { InserirNoBancoService } from '../services/database/inserir-no-banco.service';
 
 @Component({
   selector: 'app-tablet',
@@ -15,6 +16,7 @@ export class TabletPage implements OnInit {
 
   constructor(private sinc: LoginService,
               private storage: Storage,
+              private inserir: InserirNoBancoService,
               private alertController: AlertController,
               public loadingController: LoadingController,
               private toastController: ToastController) 
@@ -33,7 +35,7 @@ export class TabletPage implements OnInit {
     
     this.sinc.postLogin(formData).subscribe((data: any) => {
 
-      this.storage.set("postos",data['posto']).then((postos)=>{
+      this.storage.set("postos",data['posto']).then(()=>{
         
         this.storage.set("sentidos",data['sentido']).then(()=>{
 
@@ -41,10 +43,23 @@ export class TabletPage implements OnInit {
 
             this.storage.set("kms",data['km']).then(()=>{
 
-              this.storage.set("idPosto",data['idPosto']).then((fk)=>{
+              this.storage.set("idPosto",data['idPosto']).then(()=>{
 
-                  this.presentToast();
-                  this.ocultaCarregando();
+                this.storage.set("tb_formularios_id_formulario",data['id_formulario']).then((fk)=>{
+
+                  const formData = new FormData();
+
+                    formData.append("id_formulario", fk);
+
+                    this.inserir.botoesJson(formData).subscribe((botoes)=>{
+                      this.storage.set("botoes",botoes).then((bt)=>{
+                        console.log(bt);
+                        this.presentToast();
+                        this.ocultaCarregando();
+                      });
+                    });
+                
+                });
               
               });
 

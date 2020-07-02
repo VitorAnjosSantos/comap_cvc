@@ -14,20 +14,21 @@ $id = 0;
 $row = mysqli_num_rows($result);
 /* $dados_usuario = mysqli_fetch_assoc($result);
 $_SESSION["id"] = $dados_usuario['id_usuario']; */
-$json = ['posto'=> [],'sentido'=> [],'rodovia'=> [],'km'=> [],'idPosto'=> []];
+$json = ['posto'=> [],'sentido'=> [],'rodovia'=> [],'km'=> [],'idPosto'=> [],  'id_formulario'=> []/* , 'id_botao'=> [],'nome_botao'=> [],'nome_relatorio'=> [], 'qtd_eixos'=> [], 'qtd_suspensos'=> [], 'seq_tablet'=> [], 'seq_relatorio'=> [], 'cor'=> [], 'tb_formularios_id_formulario'=> [] */];
 $count = 0;
 
 if($row > 0 ){
     foreach($result as $value) 
 			{
-                $id = $value['tb_projetos_id_projeto'];
+                $id = $value['tb_formularios_id_formulario'];
 				
 			}
 
     $sql = "SELECT * FROM tb_config_projeto v 
-                JOIN tb_projetos u ON v.tb_projetos_id_projeto = u.id_projeto
-                JOIN tb_tablets t ON v.tb_projetos_id_projeto = t.tb_projetos_id_projeto
-                WHERE t.tb_projetos_id_projeto = {$id}";
+            JOIN tb_projetos u ON v.tb_projetos_id_projeto = u.id_projeto
+            JOIN tb_tablets t ON v.id_config_projeto = t.tb_projetos_id_projeto
+            JOIN tb_botoes b ON t.tb_formularios_id_formulario = b.tb_formularios_id_formulario
+            WHERE t.tb_formularios_id_formulario = {$id}";
 
     $resultSql = mysqli_query($conexao,$sql);
 
@@ -38,6 +39,17 @@ if($row > 0 ){
                 $json['sentido'][] .= $value['sentido'];
                 $json['rodovia'][] .= $value['rodovia'];
                 $json['km'][] .= $value['km'];
+                $json['id_formulario'][] .= $value['tb_formularios_id_formulario'];
+                
+                /* $json['id_botao'][] .= $value['id_botao'];
+                $json['nome_botao'][] .= $value['nome_botao'];
+                $json['nome_relatorio'][] .= $value['nome_relatorio'];
+                $json['qtd_eixos'][] .= $value['qtd_eixos'];
+                $json['qtd_suspensos'][] .= $value['qtd_suspensos'];
+                $json['seq_tablet'][] .= $value['seq_tablet'];
+                $json['seq_relatorio'][] .= $value['seq_relatorio'];
+                $json['cor'][] .= $value['cor'];
+                $json['tb_formularios_id_formulario'] .= $value['tb_formularios_id_formulario']; */
 			}
 
     $posto['posto'] = array_unique($json['posto']);
@@ -46,8 +58,9 @@ if($row > 0 ){
     $km['km'] = array_unique($json['km']);
     $fk['id'] = $id;
     $idPosto['idPosto'] = $json['idPosto'];
+    $idFormulario['id_formulario'] = $json['id_formulario'][0];
 
-    $array = array_merge($posto,$sentido,$rodovia,$km,$fk,$idPosto);
+    $array = array_merge($posto,$sentido,$rodovia,$km,$fk,$idPosto,$idFormulario);
 
     echo json_encode($array);
     
