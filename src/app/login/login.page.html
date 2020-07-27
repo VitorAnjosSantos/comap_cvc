@@ -1,4 +1,4 @@
-<ion-menu side="end" menuId="main-menu" content-id="main">
+<!-- <ion-menu side="end" menuId="main-menu" content-id="main">
   <ion-header>
     <ion-toolbar>
       <ion-title>
@@ -12,13 +12,13 @@
     </ion-button>
   </ion-content>
 </ion-menu>
-<ion-router-outlet id="main"></ion-router-outlet>
+<ion-router-outlet id="main"></ion-router-outlet> -->
 
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <!-- <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
-    </ion-buttons>
+    </ion-buttons> -->
     <ion-title>Login</ion-title>
     <ion-buttons slot="start">
       <ion-menu-button menu="main-menu">
@@ -30,22 +30,24 @@
 
 <ion-content padding>
   
-  <form [formGroup]="formLogin" class="formLogin">
+  <form [formGroup]="formLogin" >
 
     <ion-item>
-      <ion-label floating>Postos</ion-label>
-      <ion-select formControlName="posto" placeholder="Selecione o Posto">
+      <ion-label floating>Posto</ion-label>
+      <ion-input type="text" name="posto" value="{{postos}}" disabled></ion-input>
+      <!-- <ion-select formControlName="posto" placeholder="Selecione o Posto">
         <ion-select-option *ngFor="let posto of postos" value="{{posto}}">{{posto}}</ion-select-option>
         
-      </ion-select>
+      </ion-select> -->
     </ion-item> 
 
     <ion-item>
-      <ion-label floating>Sentidos</ion-label>
-      <ion-select formControlName="sentido" placeholder="Selecione o Sentido">
+      <ion-label floating>Sentido</ion-label>
+      <ion-input type="text" name="sentido" value="{{sentidos}}" disabled></ion-input>
+      <!-- <ion-select formControlName="sentido" placeholder="Selecione o Sentido">
         <ion-select-option *ngFor="let sentido of sentidos" value="{{sentido.idPosto}}">{{sentido.sentidos}}</ion-select-option>
         
-      </ion-select>
+      </ion-select> -->
     </ion-item> 
 
     <ion-item>
@@ -73,7 +75,7 @@
 
      <!-- <ion-button (click)="cadastrar()" fill="clear">Cadastrar</ion-button> -->
 
-    <ion-button (click)="login(formLogin.value)" type='submit' color="success" round name="entrar">Entrar</ion-button>    
+    <ion-button (click)="alertaEntrar(formLogin.value)" type='submit' color="success" round name="entrar">Entrar</ion-button>    
   
 
   </div>
@@ -85,7 +87,15 @@
   <ion-item>
     <ion-label floating>{{sup}}</ion-label>
   </ion-item>
-  
+
+  <div style="text-align: center">
+
+    <!-- <ion-button (click)="cadastrar()" fill="clear">Cadastrar</ion-button> -->
+
+   <ion-button (click)="continuar()" type='submit' color="success" round name="continuar">Continuar</ion-button>    
+ 
+
+ </div>
   
 
   </form>  

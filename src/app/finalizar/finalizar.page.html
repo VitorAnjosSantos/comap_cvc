@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>finalizar</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="centralizar">
+
+    <ion-item>
+      <ion-label >Senha: </ion-label>
+      <ion-input [(ngModel)]="senha" type="text"></ion-input>
+    </ion-item>
+
+    <div style="text-align: center">
+  
+     <ion-button (click)="alertaEnviar()" type='submit' color="success" round name="finalizar">Finalizar Contagem</ion-button>    
+   
+    </div>
+
+  </div>
+</ion-content>

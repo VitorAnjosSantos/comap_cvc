@@ -30,7 +30,12 @@
     --ion-color-azul: #047BF2;
     --ion-color-laranja: #FA932D;
     --ion-color-verde: #24cc12;
+    --ion-color-roxo: #71095b;
 
+  }
+
+.ion-color-roxo {
+    --ion-color-base: var(--ion-color-roxo) !important;
   }
   
 .ion-color-vermelho {

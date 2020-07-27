@@ -1,8 +1,10 @@
 //import { TabsPage } from './tabs/tabs.page';
 import { Component } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Storage } from '@ionic/storage';
+
 //import { DatabaseService } from './services/database/database.service';
 
 @Component({
@@ -17,6 +19,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    private navCtrl: NavController,
+    private storage: Storage
     //private dbService: DatabaseService
     
   ) {
@@ -27,6 +31,14 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.storage.get('postos').then((posto)=>{
+        if(posto){
+          this.navCtrl.navigateRoot('login');
+        }else{
+          this.navCtrl.navigateRoot('tablet');
+        }
+      });
+    
      /* this.dbService.createDatabase().then(()=>{
 
         this.openTabsPage(this.splashScreen);

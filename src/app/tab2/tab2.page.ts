@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController} from '@ionic/angular';
+import { NavController, ModalController} from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { LoadingController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
@@ -7,6 +7,7 @@ import { InserirNoBancoService } from '../services/database/inserir-no-banco.ser
 //import { GerarPlanilhaService } from '../services/api/gerar-planilha.service';
 import { AlertController } from '@ionic/angular';
 import {Tab1Page} from '../tab1/tab1.page';
+import { FinalizarPage } from '../finalizar/finalizar.page';
 
 @Component({
   selector: 'app-tab2',
@@ -25,6 +26,8 @@ export class Tab2Page {
               public loadingController: LoadingController,
               private toastController: ToastController,
               private alertController: AlertController,
+              public modalCtrl: ModalController,
+             
               ) 
               {
 
@@ -93,7 +96,7 @@ export class Tab2Page {
 
       this.totalContagem = teste.reduce((acumulador , valorAtual) => acumulador  + valorAtual, 0);
 
-      console.log(val);
+      //console.log(val);
     });
 
     return this.totalContagem;
@@ -119,7 +122,7 @@ export class Tab2Page {
             this.storage.get("pesquisador").then((pesq)=>{
               this.storage.get("supervisor").then((supe)=>{
                 this.storage.get("tb_formularios_id_formulario").then((fk)=>{
-                  this.storage.get("PostoSelecionado").then((idPosto)=>{
+                  this.storage.get("idPosto").then((idPosto)=>{
                     const formData = new FormData();
 
                     formData.append("pesquisador", pesq);
@@ -167,6 +170,17 @@ export class Tab2Page {
     await this.loading.dismiss();
   }
 
+  async presentModal() {
+    const modal = await this.modalCtrl.create({
+      component: FinalizarPage
+    });
+    return await modal.present();
+  }
   
 
+
 }
+
+  
+
+

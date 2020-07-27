@@ -60,14 +60,17 @@
     
     </ion-row>  -->
 
-    <ion-button style="width: 100px; height: 50px;" (click)="limparCache()" color='danger'>
+    <!-- <ion-button style="width: 100px; height: 50px;" (click)="stop()" color='danger'>
       Limpar
-    </ion-button> 
+    </ion-button>  -->
     
-
-    <ion-button *ngFor="let botao of botoes" class="div" (click)="contador(botao.nome_botao)" color="azul" > 
-      {{botao.nome_botao}} <br> ({{contados(botao.nome_botao)}})
-      </ion-button>
+    
+      <ion-col *ngFor="let botao of botoes" >
+        <ion-button class="div" (click)="contador(botao.nome_botao)" color="{{botao.cor}}" > 
+          {{botao.nome_botao}} <br> ({{contados(botao.nome_botao)}})
+        </ion-button>
+      </ion-col>
+   
 
   <!--
     <ion-row>

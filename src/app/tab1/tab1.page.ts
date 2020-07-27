@@ -34,6 +34,7 @@ export class Tab1Page implements OnInit {
   array: any;
   botoes: any;
   bt= "1";
+  public interval: any;
   constructor(private navCtrl: NavController, 
               private storage: Storage,
               private inserir: InserirNoBancoService,
@@ -45,26 +46,25 @@ export class Tab1Page implements OnInit {
               private geoLocation: Geolocation,
               public _http: HttpClient
             ){
-    const formData = new FormData();
+    /* const formData = new FormData();
 
     formData.append("id_formulario", this.bt);
 
     this.inserir.botoesJson(formData).subscribe((botoes)=>{
-      this.botoes = botoes;
+      botoes = botoes;
       this.ngOnInit();
-    });   
+    });    */
   }
  
-  async ngOnInit() {
-
-    console.log(this.botoes);
-
+  ngOnInit() {
+    
     let count = 0;
     this.storage.get("botoes").then((botoes)=>{
+      this.botoes = botoes;
       botoes.forEach(()=>{
           this.count[this.botoes[count]["nome_botao"]] = 0;
           this.conta[this.botoes[count]["nome_botao"]] = 0;
-          
+          //console.log(this.conta);
           count++;
       });
     });
@@ -79,7 +79,7 @@ export class Tab1Page implements OnInit {
           
     });
 
-    console.log(this.count); 
+    //console.log(this.count); 
 
     this.geolocaliza(); 
 
@@ -100,7 +100,7 @@ export class Tab1Page implements OnInit {
         let count = 0;
         this.storage.get("botoes").then((botoes)=>{
           botoes.forEach(()=>{
-              this.conta[this.botoes[count]["nome_botao"]] = 0;
+              this.conta[botoes[count]["nome_botao"]] = 0;
               
               count++;
           });
@@ -108,9 +108,7 @@ export class Tab1Page implements OnInit {
       }
     }, 100);
 
-    setInterval(() => { 
-      this.setValor();
-    }, 1000);
+    this.intervalo();
 
     this.storage.get("listaForm").then((val: any) => {
       if(val !== null){
@@ -133,26 +131,36 @@ export class Tab1Page implements OnInit {
         this.limparCache();
       }
       
-    });      
-
+    });  
+       
+    this.storage.get('login').then((val)=>{
+      if(val == 0){
+        this.limparCache();
+      }
+    });
     
   }
 
   geolocaliza(){
-    
-    this.geoLocation.getCurrentPosition().then((resp) => {
+      this.count['latitude'] = '';
+      this.count['longitude'] = '';
 
-      this.geo.latitude  = resp.coords.latitude;
-      this.geo.longitude  = resp.coords.longitude;
-      //alert(JSON.stringify(this.geo));
-      let latitude = JSON.stringify(this.geo.latitude);
-      let longitude = JSON.stringify(this.geo.longitude);
-     
-      this.count['latitude'] = latitude;
-      this.count['longitude'] = longitude;
+      this.geoLocation.getCurrentPosition().then((resp) => {
+
+        this.geo.latitude  = resp.coords.latitude;
+        this.geo.longitude  = resp.coords.longitude;
+        //alert(JSON.stringify(this.geo));
+        let latitude = JSON.stringify(this.geo.latitude);
+        let longitude = JSON.stringify(this.geo.longitude);
         
+        this.count['latitude'] = latitude;
+        this.count['longitude'] = longitude;
+          
 
       }).catch((error: any) => navigator['app'].exitApp());
+
+    
+    
     //alert(JSON.stringify(this.count));  
 
   }
@@ -167,7 +175,7 @@ export class Tab1Page implements OnInit {
         
       }
       
-      console.log(JSON.stringify(this.ocorrencia));
+      //console.log(JSON.stringify(this.ocorrencia));
       if(this.ocorrencia[0][tipo] == true){
           this.ocorrencia[0][tipo] = false;
           this.count[tipo] = 'NAO';
@@ -267,15 +275,35 @@ export class Tab1Page implements OnInit {
             let count = 0;
             this.storage.get("botoes").then((botoes)=>{
               botoes.forEach(()=>{
-                  this.count[this.botoes[count]["nome_botao"]] = 0;
-                  this.conta[this.botoes[count]["nome_botao"]] = 0;
+                  this.count[botoes[count]["nome_botao"]] = 0;
+                  this.conta[botoes[count]["nome_botao"]] = 0;
                   
                   count++;
               });
-            });
+            });  
+            
         });    
       });
     });    
+  }
+
+  stop(){
+    clearInterval(this.interval);
+    console.log("pause");
+    //this.storage.clear();
+  }
+
+  intervalo(){
+    this.interval = setInterval(() => { 
+      this.setValor();
+      
+    }, 1000);
+  }
+
+  ngOnDestroy(){
+    clearInterval(this.interval);
+    this.storage.clear();
+    console.log("pause");
   }
 
 }

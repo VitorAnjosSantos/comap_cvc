@@ -57,7 +57,7 @@ if($row > 0 ){
     $rodovia['rodovia'] = array_unique($json['rodovia']);
     $km['km'] = array_unique($json['km']);
     $fk['id'] = $id;
-    $idPosto['idPosto'] = $json['idPosto'];
+    $idPosto['idPosto'] = array_unique($json['idPosto']);
     $idFormulario['id_formulario'] = $json['id_formulario'][0];
 
     $array = array_merge($posto,$sentido,$rodovia,$km,$fk,$idPosto,$idFormulario);

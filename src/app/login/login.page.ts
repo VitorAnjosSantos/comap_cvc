@@ -23,7 +23,7 @@ export class LoginPage{
   pesq: any;
   sup: any;
   postos: any;
-  sentidos: any = [];
+  sentidos: any;
   rodovia: any;
   km: any;
  
@@ -39,7 +39,9 @@ export class LoginPage{
       this.idDevice = uuid;
     }).catch((error: any) => navigator['app'].exitApp());
 
+  }
 
+  ionViewWillEnter(){
     this.storage.get("rodovias").then((rod)=>{
 
       this.storage.get("kms").then((km)=>{
@@ -58,11 +60,6 @@ export class LoginPage{
 
     });
 
-
-   
-  }
-
-  ionViewWillEnter(){
     let count = 0;
   /*   let count2 = 0;
     let aux = [];
@@ -71,14 +68,14 @@ export class LoginPage{
     this.storage.get("postos").then((postos) => {
 
       this.postos = postos;
-      console.log(this.postos);
+      //console.log(this.postos);
       
     });
 
     
         this.storage.get("sentidos").then((sentidos) => {
         
-          this.storage.get("idPosto").then((id) => {
+         /*  this.storage.get("idPosto").then((id) => {
 
             for(let i = 0; i< sentidos.length; i++){
               this.sentidos.push({'sentidos':'','idPosto':''});
@@ -90,7 +87,9 @@ export class LoginPage{
             this.rodovia
             console.log(this.sentidos);
             
-          });
+          }); */
+
+          this.sentidos = sentidos;
           
         });
     
@@ -109,7 +108,47 @@ export class LoginPage{
     console.log(result);
   }
 
-  login(dadosLogin: any) {
+  async alertaContinuar() {
+    const alert = await this.alertCtrl.create({
+      header: 'Atençâo!',
+      subHeader: 'Erro!',
+      message: 'Nenhuma contagem foi iniciada',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
+
+  async alertaEntrar(dadosLogin: any) {
+    const alert = await this.alertCtrl.create({
+      header: 'Muita Atençâo!',
+      subHeader: '<strong>Uma nova contagem será iniciada!</strong>',
+      message: 'Tenha certeza de que enviou os dados da ultima contagem realizada',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Envio cancelado');
+          }
+        }, {
+          text: 'Nova Contagem',
+          handler: () => {
+            this.login(dadosLogin);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
+
+  login(dadosLogin) {
 
     this.storage.set("idDevice", this.idDevice).then(()=>{
       this.storage.set("PostoSelecionado", dadosLogin.sentido).then(()=>{
@@ -121,7 +160,7 @@ export class LoginPage{
                 if(data == "" || val == ""){
                   console.log(this.presentAlert());
                 }else{
-                
+                  this.storage.set('login', 0);
                   this.navCtrl.navigateRoot("/tabs/tab1");
                  //console.log(dadosLogin.sentido);
                 
@@ -137,6 +176,23 @@ export class LoginPage{
       console.log(this.presentAlert());
     });
 
+  }
+
+  continuar(){
+    this.storage.get("pesquisador").then((val) => {
+      this.storage.get("supervisor").then((data) => {
+
+        if(data == null || val == null){
+          console.log(this.alertaContinuar());
+        }else{
+          this.storage.set('login', 1);
+          this.navCtrl.navigateRoot("/tabs/tab1");
+         //console.log(dadosLogin.sentido);
+        
+        }
+          
+      });
+    });
   }
 
   cadastrar(){

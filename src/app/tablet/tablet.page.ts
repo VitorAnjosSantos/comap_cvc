@@ -1,28 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { LoginService } from '../services/logar/login.service';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController, NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { InserirNoBancoService } from '../services/database/inserir-no-banco.service';
+import { Tab1Page } from '../tab1/tab1.page';
 
 @Component({
   selector: 'app-tablet',
   templateUrl: './tablet.page.html',
   styleUrls: ['./tablet.page.scss'],
 })
-export class TabletPage implements OnInit {
+export class TabletPage {
   tablet: any;
   senha: any;
   loading: any = null;
-
   constructor(private sinc: LoginService,
               private storage: Storage,
+              private navCtrl: NavController,
               private inserir: InserirNoBancoService,
               private alertController: AlertController,
               public loadingController: LoadingController,
-              private toastController: ToastController) 
-              {  }
+              private toastController: ToastController,
+              ) 
+              { }
 
-  ngOnInit() {
+  ionViewDidEnter() {
+      
   }
 
   async sincronizar(){
@@ -56,6 +59,7 @@ export class TabletPage implements OnInit {
                         console.log(bt);
                         this.presentToast();
                         this.ocultaCarregando();
+                        this.navCtrl.navigateRoot('login');
                       });
                     });
                 

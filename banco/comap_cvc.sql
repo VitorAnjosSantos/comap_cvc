@@ -126,7 +126,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_veiculos` (
 	`id_veiculo` INT NOT NULL AUTO_INCREMENT,
-	`contagem` Text NULL,
+	`contagem` LONGTEXT NULL,
 	`tb_usuarios_id_usuario` INT NOT NULL,
 	`tb_formularios_id_formulario`INT NOT NULL,
     `tb_config_projeto_id_posto_sentido` INT NOT NULL,
@@ -177,13 +177,29 @@ CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_tablets` (
   `tablet` VARCHAR(100) NULL,
   `senha` VARCHAR(32) NULL,
   `tb_projetos_id_projeto` INT NOT NULL,
+  `tb_formularios_id_formulario` INT NOT NULL,
   PRIMARY KEY (`id_tablet`),
   CONSTRAINT `fk_tb_tablets_tb_projetos`
     FOREIGN KEY (`tb_projetos_id_projeto`)
     REFERENCES `comap_cvc_usuario`.`tb_config_projeto` (`id_config_projeto`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    CONSTRAINT `fk_tb_tablets_tb_formularios`
+    FOREIGN KEY (`tb_formularios_id_formulario`)
+    REFERENCES `comap_cvc_usuario`.`tb_formularios` (`id_formulario`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+UPDATE tb_botoes
+SET cor = 'tertiary'
+WHERE id_botao = 4;
+
+SELECT * FROM tb_config_projeto v 
+            JOIN tb_projetos u ON v.tb_projetos_id_projeto = u.id_projeto
+            JOIN tb_tablets t ON v.id_config_projeto = t.tb_projetos_id_projeto
+            JOIN tb_botoes b ON t.tb_formularios_id_formulario = b.tb_formularios_id_formulario
+            WHERE t.tb_formularios_id_formulario = 2;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -194,17 +210,21 @@ USE `comap_cvc_usuario` ;
 INSERT INTO tb_formularios(nome) VALUES('TESTE');
 
 INSERT INTO tb_botoes(nome_botao,nome_relatorio,qtd_eixos,qtd_suspensos,seq_tablet,seq_relatorio,cor,tb_formularios_id_formulario) 
-	VALUES('moto','Moto',0,0,1,1,'#ffffff',1);
+	VALUES('Caminhao','CAMINHAO',0,0,1,1,'terceary',2);
     
-INSERT INTO tb_tablets (tablet,senha,tb_projetos_id_projeto) values("tablet1",md5("tablet1"),1);
+INSERT INTO tb_tablets (tablet,senha,tb_projetos_id_projeto,tb_formularios_id_formulario) values("tablet1",md5("tablet1"),1,1);
 
 
 SELECT * FROM tb_veiculos v 
         JOIN tb_usuarios u ON v.tb_usuarios_id_usuario = u.id_usuario
         JOIN tb_config_projeto c ON u.tb_config_projeto_id_projeto = c.id_config_projeto
-        WHERE v.id_veiculo = 1;
+        WHERE v.id_veiculo = 7;
         
 SELECT * FROM tb_botoes WHERE tb_formularios_id_formulario = 1;
+
+delete from tb_veiculos where id_veiculo = 6;
+        
+delete from tb_projetos where id_projeto = 2;
 
 select * from tb_usuarios;
 select * from tb_veiculos;
@@ -215,6 +235,11 @@ select * from tb_veiculos_9e36UtiCam2L;
 select * from tb_formularios;
 select * from tb_botoes;
 select * from tb_login;
+SELECT * FROM tb_config_projeto WHERE id_config_projeto= 3 ORDER BY sentido;
+SELECT * FROM tb_veiculos v 
+			JOIN tb_usuarios u ON v.tb_usuarios_id_usuario = u.id_usuario
+			JOIN tb_config_projeto c ON u.tb_config_projeto_id_projeto = c.id_config_projeto
+			WHERE v.id_veiculo = 1;
 
 SELECT * FROM tb_veiculos v 
 			JOIN tb_usuarios u ON v.tb_usuarios_id_usuario = u.id_usuario

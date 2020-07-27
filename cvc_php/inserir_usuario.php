@@ -10,17 +10,17 @@
     $json = $_POST["contagem"];
     $fk = $_POST["fk"];
     $idPosto = $_POST["idPosto"];
-    $contagem = json_decode($json,true);
+    // $contagem = json_decode($json,true);
 
     $dados= false;
-    $id = "";
+    $id = 0;
 
     if($conexao){
 
         $dados= true;
             
         $query= "INSERT INTO tb_usuarios (pesquisador,supervisor,idDevice, tb_config_projeto_id_projeto) 
-                    VALUES ('{$pesquisador}','{$supervisor}','{$idDevice}','{$idPosto}')";        
+                    VALUES ('{$pesquisador}','{$supervisor}','{$idDevice}',{$idPosto})";        
         $result= mysqli_query($conexao,$query);
 
         if($result){
@@ -29,12 +29,12 @@
 
     }
 
-    $aux = json_encode($contagem);
+    //$aux = json_encode($contagem);
     $sql = "INSERT INTO tb_veiculos (contagem,tb_usuarios_id_usuario,tb_formularios_id_formulario,tb_config_projeto_id_posto_sentido) 
-            VALUES ('{$aux}', '{$id}', '{$fk}','{$idPosto}')";
+            VALUES ('{$json}', '{$id}', {$fk},{$idPosto})";
     $resultado = mysqli_query($conexao,$sql);
 
-    if($resultado){
+   /*  if($resultado){
         $dados = array("id"=>$id,"fk"=>$fk);
         //URL para onde vai ser enviado nosso POST
         $url = "http://ec2-18-211-204-199.compute-1.amazonaws.com/cvc_php/excel_usuario.php";
@@ -51,7 +51,7 @@
         curl_close($curl);
         //print_r($contagem);
 
-    }
+    } */
    
         
     
