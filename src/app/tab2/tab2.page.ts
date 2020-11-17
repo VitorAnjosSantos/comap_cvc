@@ -103,7 +103,6 @@ export class Tab2Page {
     
   }
 
-
   async enviar(){
     //setInterval(() => { 
      
@@ -124,14 +123,25 @@ export class Tab2Page {
                 this.storage.get("tb_formularios_id_formulario").then((fk)=>{
                   this.storage.get("idPosto").then((idPosto)=>{
                     const formData = new FormData();
-
+                    /* const dataJson:any = {
+                      "pesquisador": pesq,
+                      "supervisor": supe,
+                      "contagem": val,
+                      "idDevice": id,
+                      "fk": fk,
+                      "idPosto": idPosto
+                    }; */
+                    
+                    
                     formData.append("pesquisador", pesq);
                     formData.append("supervisor", supe);
                     formData.append("contagem", JSON.stringify(val));
                     formData.append("idDevice", id);
                     formData.append("fk", fk);
                     formData.append("idPosto", idPosto);
-                    
+                    //const jstring = JSON.stringify(dataJson);
+                   
+
                     this.inserir.inserirDados(formData).subscribe((data: any) => {
 
                         this.presentToast();

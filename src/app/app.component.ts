@@ -31,11 +31,13 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.storage.get('postos').then((posto)=>{
-        if(posto){
-          this.navCtrl.navigateRoot('login');
-        }else{
+      this.storage.get('historico').then((historico)=>{
+        if(historico == "" || historico == null){
+          //alert('Historico vazio');
           this.navCtrl.navigateRoot('tablet');
+        }else{
+          //alert('Historico OK');
+          this.navCtrl.navigateRoot('login');
         }
       });
     

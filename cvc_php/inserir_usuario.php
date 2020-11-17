@@ -1,7 +1,7 @@
 <?php
     header('Access-Control-Allow-Origin: *');
     header("Access-Control-Allow-Headers: Content-Type");
-    header('Content-Type: application/json; charset=utf-8');
+    header('Content-Type: application/json');
     include("./conexao_usuario.php");
 
     $idDevice = $_POST["idDevice"];
@@ -10,7 +10,8 @@
     $json = $_POST["contagem"];
     $fk = $_POST["fk"];
     $idPosto = $_POST["idPosto"];
-    // $contagem = json_decode($json,true);
+    $contagem = json_decode($_POST["contagem"],true);
+    //echo $pesquisador;
 
     $dados= false;
     $id = 0;
@@ -29,7 +30,10 @@
 
     }
 
-    //$aux = json_encode($contagem);
+    //$jsonSerializado = unserialize($json);
+
+    $aux = json_encode($contagem);
+    
     $sql = "INSERT INTO tb_veiculos (contagem,tb_usuarios_id_usuario,tb_formularios_id_formulario,tb_config_projeto_id_posto_sentido) 
             VALUES ('{$json}', '{$id}', {$fk},{$idPosto})";
     $resultado = mysqli_query($conexao,$sql);

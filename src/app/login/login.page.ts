@@ -124,7 +124,7 @@ export class LoginPage{
   async alertaEntrar(dadosLogin: any) {
     const alert = await this.alertCtrl.create({
       header: 'Muita Atençâo!',
-      subHeader: '<strong>Uma nova contagem será iniciada!</strong>',
+      subHeader: 'Uma nova contagem será iniciada!',
       message: 'Tenha certeza de que enviou os dados da ultima contagem realizada',
       buttons: [
         {

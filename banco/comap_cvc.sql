@@ -222,18 +222,20 @@ SELECT * FROM tb_veiculos v
         
 SELECT * FROM tb_botoes WHERE tb_formularios_id_formulario = 1;
 
-delete from tb_veiculos where id_veiculo = 6;
-        
-delete from tb_projetos where id_projeto = 2;
-
 select * from tb_usuarios;
 select * from tb_veiculos;
 select * from tb_projetos;
 select * from tb_tablets;
 select * from tb_config_projeto;
+
+-- update tb_config_projeto set sentido = 'S1' Where id_config_projeto = 2;
+
 select * from tb_veiculos_9e36UtiCam2L;
 select * from tb_formularios;
+
+-- delete from tb_formularios where id_formulario = 2;
 select * from tb_botoes;
+
 select * from tb_login;
 SELECT * FROM tb_config_projeto WHERE id_config_projeto= 3 ORDER BY sentido;
 SELECT * FROM tb_veiculos v 

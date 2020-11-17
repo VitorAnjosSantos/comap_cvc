@@ -19,22 +19,24 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 export class Tab1Page implements OnInit {
  
   public count: any = {};
-  listaForm: any;
-  localdate: any;
-  loading: any = null;
+  public listaForm: any;
+  public localdate: any;
+  public loading: any = null;
   public contagem: any;
   public conta: any = {};
-  pesquisador: any;
-  supervisor: any;
-  transito: boolean= false;
-  sigapare: boolean= false;
-  chuva: boolean= false; 
-  ocorrencia: any= [{transito: false, sigapare: false, chuva: false}];
-  geo = {latitude: 0, longitude: 0};
-  array: any;
-  botoes: any;
-  bt= "1";
+  public pesquisador: any;
+  public supervisor: any;
+  public transito: boolean= false;
+  public sigapare: boolean= false;
+  public chuva: boolean= false; 
+  public ocorrencia: any= [{transito: false, sigapare: false, chuva: false}];
+  public geo = {latitude: 0, longitude: 0};
+  public array: any;
+  public botoes: any;
   public interval: any;
+  audio: any;
+  //bt= "1";
+  
   constructor(private navCtrl: NavController, 
               private storage: Storage,
               private inserir: InserirNoBancoService,
@@ -57,13 +59,17 @@ export class Tab1Page implements OnInit {
   }
  
   ngOnInit() {
+
+    this.audio = new Audio();
+    this.audio.src = '../../assets/audios/pop.mp3';
+    this.audio.load();
     
     let count = 0;
     this.storage.get("botoes").then((botoes)=>{
       this.botoes = botoes;
       botoes.forEach(()=>{
           this.count[this.botoes[count]["nome_botao"]] = 0;
-          this.conta[this.botoes[count]["nome_botao"]] = 0;
+          
           //console.log(this.conta);
           count++;
       });
@@ -83,30 +89,7 @@ export class Tab1Page implements OnInit {
 
     this.geolocaliza(); 
 
-    this.nativeAudio.preloadSimple('uniqueId1', 'assets/audios/pop.mp3');
-
-    setInterval(() => { 
-    
-      let horaCompleta = new Date();
-
-      let hora = this.formataZerosEsquerda(horaCompleta.getHours()),   
-          minutos = this.formataZerosEsquerda(horaCompleta.getMinutes()),
-          segundos = this.formataZerosEsquerda(horaCompleta.getSeconds());
-
-      let time = hora + ":" + minutos + ":" + segundos;
-
-      if(time == "00:00:00"){
-        this.storage.set("contagemTotal", "");
-        let count = 0;
-        this.storage.get("botoes").then((botoes)=>{
-          botoes.forEach(()=>{
-              this.conta[botoes[count]["nome_botao"]] = 0;
-              
-              count++;
-          });
-        });
-      }
-    }, 100);
+    //this.nativeAudio.preloadComplex('uniqueId1', 'assets/audios/pop.mp3', 1, 1, 0);
 
     this.intervalo();
 
@@ -120,16 +103,20 @@ export class Tab1Page implements OnInit {
         });
       }
     });
+    
 
     this.storage.get("historico").then((val: any) => {
-      if (val) {
-        this.contagem = val;
-        this.conta = val;
-        console.log(JSON.stringify(this.count));
-      }else{
-        this.storage.set("historico", '');
-        this.limparCache();
-      }
+      this.storage.get("contagemTotal").then((contagemTotal: any) => {
+        if (val) {
+          this.contagem = val;
+          this.conta = contagemTotal;
+          console.log(JSON.stringify(this.count));
+        }else{
+          this.storage.set("historico", '');
+          this.limparCache();
+        }
+        
+      });
       
     });  
        
@@ -139,6 +126,28 @@ export class Tab1Page implements OnInit {
       }
     });
     
+  }
+
+  zeroHoras(){
+    let horaCompleta = new Date();
+
+    let hora = this.formataZerosEsquerda(horaCompleta.getHours()),   
+        minutos = this.formataZerosEsquerda(horaCompleta.getMinutes()),
+        segundos = this.formataZerosEsquerda(horaCompleta.getSeconds());
+
+    let time = hora + ":" + minutos + ":" + segundos;
+
+    if(time == "00:00:00"){
+      this.storage.set("contagemTotal", "");
+      let count = 0;
+      this.storage.get("botoes").then((botoes)=>{
+        botoes.forEach(()=>{
+            this.conta[botoes[count]["nome_botao"]] = 0;
+            
+            count++;
+        });
+      });
+    }
   }
 
   geolocaliza(){
@@ -227,33 +236,35 @@ export class Tab1Page implements OnInit {
    
     this.array = this.array.concat(aux);
 
+    
+      console.log(this.array);
+      
   }
 
-  setValor(){
+   setValor(){
     
     this.storage.set("listaForm", this.array).then((data)=>{
-        this.setHistorico();
+      this.storage.set("historico", this.array).then(() => {
         this.storage.set("contagemTotal", this.conta).then(() =>{});
-        console.log(data);
-    })
-
-  }
-
-  setHistorico(){
-
-    this.storage.set("historico", this.conta).then((val: any) => {
-        
+        console.log("Salvo");
       });
-   
-  }
+        
+    });
+
+  } 
+
+  /* setHistorico(){
+
+  } */
 
   async contador(tipo: any){
     //this.nativeAudio.play('uniqueId1');
-    
+    this.audio.play();
+
     this.conta[tipo]++;     
 
       // let d = await this.audio(); 
-     this.getValor(tipo);
+    this.getValor(tipo);
    
   }
 
@@ -270,6 +281,7 @@ export class Tab1Page implements OnInit {
     this.storage.set("listaForm", "").then(() =>{
       this.storage.set("historico", "").then(() =>{
         this.storage.set("contagemTotal", "").then(() =>{
+          
           this.array = [];
 
             let count = 0;
@@ -281,7 +293,7 @@ export class Tab1Page implements OnInit {
                   count++;
               });
             });  
-            
+         
         });    
       });
     });    
@@ -296,14 +308,14 @@ export class Tab1Page implements OnInit {
   intervalo(){
     this.interval = setInterval(() => { 
       this.setValor();
-      
-    }, 1000);
+      this.zeroHoras();
+    }, 15000);
   }
 
   ngOnDestroy(){
     clearInterval(this.interval);
-    this.storage.clear();
-    console.log("pause");
+    
   }
+
 
 }

@@ -30,11 +30,13 @@ export class FinalizarPage implements OnInit {
     
     this.storage.get("senha").then((val)=>{
       if(this.senha == val){       
+          
+          this.navCtrl.navigateRoot('tablet');
+          this.modalCtrl.dismiss();
+          this.storage.clear();
+          console.log("pause");
           this.presentToast();
           this.ocultaCarregando();
-          
-         
-          this.navCtrl.navigateRoot('tablet');
           //this.modalCtrl.dismiss();
                 
       }else{

@@ -20,23 +20,22 @@ $count = 0;
 if($row > 0 ){
     foreach($result as $value) 
 			{
-                $id = $value['tb_formularios_id_formulario'];
+                $id = $value['tb_projetos_id_projeto'];
 				
 			}
 
     $sql = "SELECT * FROM tb_config_projeto v 
-            JOIN tb_projetos u ON v.tb_projetos_id_projeto = u.id_projeto
-            JOIN tb_tablets t ON v.id_config_projeto = t.tb_projetos_id_projeto
-            JOIN tb_botoes b ON t.tb_formularios_id_formulario = b.tb_formularios_id_formulario
-            WHERE t.tb_formularios_id_formulario = {$id}";
+                JOIN tb_projetos u ON v.tb_projetos_id_projeto = u.id_projeto
+                JOIN tb_tablets t ON v.id_config_projeto = t.tb_projetos_id_projeto
+                WHERE t.tb_projetos_id_projeto = {$id}";
 
     $resultSql = mysqli_query($conexao,$sql);
 
     foreach($resultSql as $value) 
 			{
-                $json['idPosto'][] .= $value['id_config_projeto'];
+                $json['idPosto'][0] = $value['id_config_projeto'];
                 $json['posto'][] .= $value['posto'];
-                $json['sentido'][] .= $value['sentido'];
+                $json['sentido'][0] = $value['sentido'];
                 $json['rodovia'][] .= $value['rodovia'];
                 $json['km'][] .= $value['km'];
                 $json['id_formulario'][] .= $value['tb_formularios_id_formulario'];
