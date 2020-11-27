@@ -9,6 +9,7 @@ import { InserirNoBancoService } from '../services/database/inserir-no-banco.ser
 import { AlertController } from '@ionic/angular';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+//import { Vibration } from '@ionic-native/vibration/ngx';
 
 
 @Component({
@@ -47,6 +48,7 @@ export class Tab1Page implements OnInit {
               private nativeAudio: NativeAudio,
               private geoLocation: Geolocation,
               public _http: HttpClient
+             
             ){
     /* const formData = new FormData();
 
@@ -87,11 +89,11 @@ export class Tab1Page implements OnInit {
 
     //console.log(this.count); 
 
-    this.geolocaliza(); 
+    //this.geolocaliza(); 
 
     //this.nativeAudio.preloadComplex('uniqueId1', 'assets/audios/pop.mp3', 1, 1, 0);
 
-    this.intervalo();
+    //this.intervalo();
 
     this.storage.get("listaForm").then((val: any) => {
       if(val !== null){
@@ -169,12 +171,11 @@ export class Tab1Page implements OnInit {
       }).catch((error: any) => navigator['app'].exitApp());
 
     
-    
     //alert(JSON.stringify(this.count));  
 
   }
 
-  ocorrencias(tipo){
+  /* ocorrencias(tipo){
     this.storage.get("listaForm").then((val: any) => {
       
       let array: any[] = [];
@@ -198,7 +199,7 @@ export class Tab1Page implements OnInit {
         }
         
     });
-  }
+  } */
 
   formataZerosEsquerda(valor: number) {
     return valor > 9 ? valor : "0" + valor;
@@ -206,7 +207,7 @@ export class Tab1Page implements OnInit {
 
   getValor(tipo: any){
       
-    this.geolocaliza();
+    //this.geolocaliza();
 
     let array = JSON.stringify(this.count);
 
@@ -235,9 +236,8 @@ export class Tab1Page implements OnInit {
     aux["time"] = time;
    
     this.array = this.array.concat(aux);
-
     
-      console.log(this.array);
+    console.log(this.array);
       
   }
 
@@ -259,12 +259,12 @@ export class Tab1Page implements OnInit {
 
   async contador(tipo: any){
     //this.nativeAudio.play('uniqueId1');
-    this.audio.play();
-
+    //this.audio.play();
+    await this.getValor(tipo);
     this.conta[tipo]++;     
-
+    this.setValor();
       // let d = await this.audio(); 
-    this.getValor(tipo);
+    
    
   }
 
