@@ -178,18 +178,26 @@ CREATE TABLE IF NOT EXISTS `comap_cvc_usuario`.`tb_tablets` (
   `senha` VARCHAR(32) NULL,
   `tb_projetos_id_projeto` INT NOT NULL,
   `tb_formularios_id_formulario` INT NOT NULL,
+  `tb_config_projetos_id_config` INT NOT NULL,
   PRIMARY KEY (`id_tablet`),
-  CONSTRAINT `fk_tb_tablets_tb_projetos`
+CONSTRAINT `fk_tb_tablets_tb_projetos`
     FOREIGN KEY (`tb_projetos_id_projeto`)
-    REFERENCES `comap_cvc_usuario`.`tb_config_projeto` (`id_config_projeto`)
+    REFERENCES `comap_cvc_usuario`.`tb_projetos` (`id_projeto`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-    CONSTRAINT `fk_tb_tablets_tb_formularios`
+CONSTRAINT `fk_tb_tablets_tb_formularios`
     FOREIGN KEY (`tb_formularios_id_formulario`)
     REFERENCES `comap_cvc_usuario`.`tb_formularios` (`id_formulario`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+CONSTRAINT `fk_tb_config_projetos_id_config`
+    FOREIGN KEY (`tb_config_projetos_id_config`)
+    REFERENCES `comap_cvc_usuario`.`tb_config_projeto` (`id_config_projeto`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+drop table tb_tablets;
 
 UPDATE tb_botoes
 SET cor = 'tertiary'
@@ -227,6 +235,11 @@ select * from tb_veiculos;
 select * from tb_projetos;
 select * from tb_tablets;
 select * from tb_config_projeto;
+
+SELECT * FROM tb_config_projeto v 
+                JOIN tb_projetos u ON v.tb_projetos_id_projeto = u.id_projeto
+                JOIN tb_tablets t ON v.id_config_projeto = t.id_tablet
+                WHERE v.id_config_projeto = 4;
 
 -- update tb_config_projeto set sentido = 'S1' Where id_config_projeto = 2;
 

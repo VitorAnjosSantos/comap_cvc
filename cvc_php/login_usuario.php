@@ -20,14 +20,14 @@ $count = 0;
 if($row > 0 ){
     foreach($result as $value) 
 			{
-                $id = $value['tb_projetos_id_projeto'];
+                $id = $value['tb_config_projetos_id_config'];
 				
 			}
 
     $sql = "SELECT * FROM tb_config_projeto v 
                 JOIN tb_projetos u ON v.tb_projetos_id_projeto = u.id_projeto
-                JOIN tb_tablets t ON v.id_config_projeto = t.tb_projetos_id_projeto
-                WHERE t.tb_projetos_id_projeto = {$id}";
+                JOIN tb_tablets t ON v.id_config_projeto = t.tb_config_projetos_id_config
+                WHERE t.tb_config_projetos_id_config = {$id}";
 
     $resultSql = mysqli_query($conexao,$sql);
 

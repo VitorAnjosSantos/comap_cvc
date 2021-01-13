@@ -37,44 +37,48 @@ export class TabletPage {
     formData.append("senha", this.senha);
     
     this.sinc.postLogin(formData).subscribe((data: any) => {
-
-      this.storage.set("postos",data['posto']).then(()=>{
+      if(data == 'Erro'){
+        this.toastErro();
+        this.ocultaCarregando();  
+      }else{
+        this.storage.set("postos",data['posto']).then(()=>{
         
-        this.storage.set("sentidos",data['sentido']).then(()=>{
-
-          this.storage.set("rodovias",data['rodovia']).then(()=>{
-
-            this.storage.set("kms",data['km']).then(()=>{
-
-              this.storage.set("idPosto",data['idPosto']).then(()=>{
-
-                this.storage.set("tb_formularios_id_formulario",data['id_formulario']).then((fk)=>{
-
-                  const formData = new FormData();
-
-                    formData.append("id_formulario", fk);
-
-                    this.inserir.botoesJson(formData).subscribe((botoes)=>{
-                      this.storage.set("botoes",botoes).then((bt)=>{
-                        console.log(bt);
-                        this.presentToast();
-                        this.ocultaCarregando();
-                        this.navCtrl.navigateRoot('login');
+          this.storage.set("sentidos",data['sentido']).then(()=>{
+  
+            this.storage.set("rodovias",data['rodovia']).then(()=>{
+  
+              this.storage.set("kms",data['km']).then(()=>{
+  
+                this.storage.set("idPosto",data['idPosto']).then(()=>{
+  
+                  this.storage.set("tb_formularios_id_formulario",data['id_formulario']).then((fk)=>{
+  
+                    const formData = new FormData();
+  
+                      formData.append("id_formulario", fk);
+  
+                      this.inserir.botoesJson(formData).subscribe((botoes)=>{
+                        this.storage.set("botoes",botoes).then((bt)=>{
+                          console.log(bt);
+                          this.presentToast();
+                          this.ocultaCarregando();
+                          this.navCtrl.navigateRoot('login');
+                        });
                       });
-                    });
+                  
+                  });
                 
                 });
-              
+  
               });
-
+  
             });
-
+  
           });
-
+  
         });
+      };
 
-      });
-    
     }, (error) => {
       
       this.toastErro();

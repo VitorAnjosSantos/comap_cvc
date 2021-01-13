@@ -93,7 +93,7 @@ export class Tab1Page implements OnInit {
 
     //this.nativeAudio.preloadComplex('uniqueId1', 'assets/audios/pop.mp3', 1, 1, 0);
 
-    //this.intervalo();
+    this.intervalo();
 
     this.storage.get("listaForm").then((val: any) => {
       if(val !== null){
@@ -262,7 +262,7 @@ export class Tab1Page implements OnInit {
     //this.audio.play();
     await this.getValor(tipo);
     this.conta[tipo]++;     
-    this.setValor();
+    //this.setValor();
       // let d = await this.audio(); 
     
    
