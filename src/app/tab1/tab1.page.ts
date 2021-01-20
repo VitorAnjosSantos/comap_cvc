@@ -36,6 +36,7 @@ export class Tab1Page implements OnInit {
   public botoes: any;
   public interval: any;
   audio: any;
+  public somBotao: any;
   //bt= "1";
   
   constructor(private navCtrl: NavController, 
@@ -260,8 +261,10 @@ export class Tab1Page implements OnInit {
   async contador(tipo: any){
     //this.nativeAudio.play('uniqueId1');
     //this.audio.play();
+    new Audio('../../assets/audios/pop.wav').play();
     await this.getValor(tipo);
     this.conta[tipo]++;     
+  
     //this.setValor();
       // let d = await this.audio(); 
     

@@ -63,11 +63,13 @@
     <!-- <ion-button style="width: 100px; height: 50px;" (click)="limparCache()" color='danger'>
       Limpar
     </ion-button> --> 
+    <!--<audio id="myAudio"  src="../../assets/audios/pop.mp3"></audio>-->
     
     
       <ion-col *ngFor="let botao of botoes" >
         <ion-button mode="ios" class="div" (click)="contador(botao.nome_botao)" color="{{botao.cor}}" > 
           {{botao.nome_botao}} <br> ({{contados(botao.nome_botao)}})
+          
         </ion-button>
       </ion-col>
    

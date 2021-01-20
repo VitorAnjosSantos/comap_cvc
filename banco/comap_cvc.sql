@@ -236,6 +236,13 @@ select * from tb_projetos;
 select * from tb_tablets;
 select * from tb_config_projeto;
 
+UPDATE tb_tablets SET tablet = 'teste',
+                                senha = md5('123'),
+                                tb_projetos_id_projeto = 1,
+                                tb_formularios_id_formulario = 2, 
+                                tb_config_projetos_id_config = 1
+                            WHERE id_tablet = 2;
+
 SELECT * FROM tb_config_projeto v 
                 JOIN tb_projetos u ON v.tb_projetos_id_projeto = u.id_projeto
                 JOIN tb_tablets t ON v.id_config_projeto = t.id_tablet
@@ -272,10 +279,6 @@ select sum(auto)  from tb_veiculos_9e36uticam2L;
 
 SET foreign_key_checks = 0;
 SET foreign_key_checks = 1;
-
-
-
-
 
 
 

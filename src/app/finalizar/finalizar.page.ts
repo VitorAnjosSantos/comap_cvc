@@ -21,7 +21,7 @@ export class FinalizarPage implements OnInit {
               {}
 
   ngOnInit() {
-    this.storage.set("senha", "comapcvcfinalizar");
+    this.storage.set("senha", "finalizar");
     
   }
 
